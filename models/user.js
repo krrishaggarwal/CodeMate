@@ -10,7 +10,7 @@ const UserSchema = new mongoose.Schema({
     bio: String,    // Short bio or description
     skills: [String],   // List of user's technical skills
     github: String,     // GitHub profile URL or username
-
+    linkedIn: String,     // LinkedIn profile URL or username
     // Follower system - storing MongoDB ObjectId references to other users
     followers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
     following: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
