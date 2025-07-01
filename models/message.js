@@ -8,7 +8,7 @@ const MessageSchema = new mongoose.Schema({
     // This will store MongoDB ObjectId refers to the User schema
     receiver: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     // The actual message content (text only)
-    content: String,
+    content: { type: String, required: true },
     timestamp: { type: Date, default: Date.now }    // timestamp is just a virable to show the time when the message was sent we can use createdAt also 
 });
 

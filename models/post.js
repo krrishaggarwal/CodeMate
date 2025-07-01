@@ -5,8 +5,8 @@ const mongoose = require('mongoose');
 const PostSchema = new mongoose.Schema({
     // Reference to the user who created the post
     user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-    text: String,   // Post text content 
-    image: String,  // Post image URL
+    text: { type: String, required: true },   // Post text content 
+    image: { type: String, default: '' },     // Post image URL
     createdAt: { type: Date, default: Date.now }    // Timestamp when the post was created
 });
 
