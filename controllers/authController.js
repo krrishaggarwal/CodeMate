@@ -3,33 +3,41 @@ const bcrypt = require('bcrypt');
 
 // User Registration
 const registerUser = async (name, email, password) => {
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
-        throw new Error('User already exists');
-    }
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = new User({ name, email, password: hashedPassword });
-    await newUser.save();
+    try {
+        const existingUser = await User.findOne({ email });
+        if (existingUser) {
+            throw new Error('User already exists');
+        }
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const newUser = new User({ name, email, password: hashedPassword });
+        await newUser.save();
 
-    return { message: 'User registered successfully', userId: newUser._id };
+        return { message: 'User registered successfully', userId: newUser._id };
+    } catch (error) {
+        return { error: error.message };
+    }
 };
 
 // User Login
 const loginUser = async (email, password) => {
-    const user = await User.findOne({ email });
-    if (!user) {
-        throw new Error('User not found');
+    try {
+        const user = await User.findOne({ email });
+        if (!user) {
+            throw new Error('User not found');
+        }
+        const matchPassword = await bcrypt.compare(password, user.password);
+        if (!matchPassword) {
+            throw new Error('Incorrect password');
+        }
+        return {
+            message: 'Login successful',
+            userId: user._id,
+            name: user.name,
+            email: user.email,
+        };
+    } catch (error) {
+        return { error: error.message };
     }
-    const matchPassword = await bcrypt.compare(password, user.password);
-    if (!matchPassword) {
-        throw new Error('Incorrect password');
-    }
-    return {
-        message: 'Login successful',
-        userId: user._id,
-        name: user.name,
-        email: user.email,
-    };
 };
 
 module.exports = { registerUser, loginUser };
