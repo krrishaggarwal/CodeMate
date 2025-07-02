@@ -29,6 +29,25 @@ const updateProfile = async (userId, updates) => {
     }
 };
 
-module.exports = {
-    getProfile, updateProfile
+// Search users by keyword (name or email or skill)
+const searchUsers = async (keyword) => {
+    try {
+        const users = await User.find({
+            $or: [
+                { name: { $regex: keyword, $options: 'i' } },
+                { email: { $regex: keyword, $options: 'i' } },
+                { skills: { $regex: keyword, $options: 'i' } }
+            ]
+        }).select('name email skills bio github linkedin');
+
+        return { data: users };
+    } catch (error) {
+        return { error: error.message };
+    }
 };
+
+
+module.exports = {
+    getProfile, updateProfile, searchUsers
+};
+
