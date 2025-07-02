@@ -3,13 +3,34 @@ const mongoose = require('mongoose');
 
 // Creating a new schema for storing chat messages
 const MessageSchema = new mongoose.Schema({
-    // This will store MongoDB ObjectId refers to the User schema
-    sender: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-    // This will store MongoDB ObjectId refers to the User schema
-    receiver: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-    // The actual message content (text only)
-    content: { type: String, required: true },
-    timestamp: { type: Date, default: Date.now }    // timestamp is just a virable to show the time when the message was sent we can use createdAt also 
+    // The sender's user ID (must exist in User collection)
+    sender: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: [true, 'Sender is required'] // Must be provided
+    },
+
+    // The receiver's user ID (must exist in User collection)
+    receiver: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: [true, 'Receiver is required'] // Must be provided
+    },
+
+    // The actual message content
+    content: {
+        type: String,
+        required: [true, 'Message content is required'], // Cannot be empty
+        trim: true,
+        minlength: [1, 'Message must have at least 1 character'],
+        maxlength: [1000, 'Message cannot exceed 1000 characters']
+    },
+
+    // Time the message was sent
+    timestamp: {
+        type: Date,
+        default: Date.now // Automatically sets current time
+    }
 });
 
 // Exporting the Message model

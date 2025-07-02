@@ -3,14 +3,34 @@ const mongoose = require('mongoose');
 
 // Define the schema for follow requests between users
 const FollowRequestSchema = new mongoose.Schema({
-    // stores the User_id as reference from User schema
-    from: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-    // also stores the User_id as reference from User schema    
-    to: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-    // show the status of request accepted/rejected or still pending
-    status: { type: String, enum: ['pending', 'accepted', 'declined'], default: 'pending', required: true },
-    requestedAt: { type: Date, default: Date.now }  // store the time when the request was sent
+    // Sender of the follow request (User ID)
+    from: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: [true, 'Sender user ID (from) is required']
+    },
+
+    // Receiver of the follow request (User ID)
+    to: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: [true, 'Receiver user ID (to) is required']
+    },
+
+    // Status of the follow request
+    status: {
+        type: String,
+        enum: ['pending', 'accepted', 'declined'], // Only these 3 values allowed
+        default: 'pending',
+        required: [true, 'Follow request status is required']
+    },
+
+    // Timestamp of when the request was created
+    requestedAt: {
+        type: Date,
+        default: Date.now // Automatically sets the current time
+    }
 });
 
-// exporting followRequest model
+// Export the model to use it in controllers/routes
 module.exports = mongoose.model('FollowRequest', FollowRequestSchema);

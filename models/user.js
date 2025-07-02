@@ -1,23 +1,67 @@
-// Importing mongoose module
+// Import mongoose to create schema
 const mongoose = require('mongoose');
 
-// Creating User schema
+// Define the User schema
 const UserSchema = new mongoose.Schema({
-    // We don't add custom u_id because MongoDB automatically adds a unique _id for each user
-    name: { type: String, required: true },  // User's name
-    email: { type: String, unique: true, required: true, trim: true, lowercase: true },  // Unique email address
-    password: { type: String, required: true },   // Hashed password
-    bio: String,    // Short bio or description
-    skills: [String],   // List of user's technical skills
-    github: String,     // GitHub profile URL or username
-    linkedin: String,     // LinkedIn profile URL or username
-    // Follower system - storing MongoDB ObjectId references to other users
+    // User's full name
+    name: {
+        type: String,
+        required: [true, 'Name is required'],       // Must be provided
+        trim: true,                                 // Removes leading/trailing spaces
+        minlength: [2, 'Name must be at least 2 characters'], // Min length
+        maxlength: [50, 'Name cannot exceed 50 characters']   // Max length
+    },
+
+    // User's email address
+    email: {
+        type: String,
+        required: [true, 'Email is required'],      // Must be provided
+        unique: true,                               // Must be unique in the database
+        trim: true,                                 // Clean up spaces
+        lowercase: true,                            // Converts to lowercase
+        match: [/\S+@\S+\.\S+/, 'Email is invalid']  // Must follow email pattern
+    },
+
+    // User's password (should be hashed)
+    password: {
+        type: String,
+        required: [true, 'Password is required'],   // Must be provided
+        minlength: [6, 'Password must be at least 6 characters'] // Min length
+    },
+
+    // User's short bio (optional)
+    bio: {
+        type: String,
+        maxlength: [200, 'Bio cannot exceed 200 characters'] // Max length
+    },
+
+    // List of technical skills
+    skills: {
+        type: [String]                              // Array of strings
+    },
+
+    // GitHub profile URL
+    github: {
+        type: String
+    },
+
+    // LinkedIn profile URL
+    linkedin: {
+        type: String
+    },
+
+    // List of users following this user
     followers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+
+    // List of users this user is following
     following: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
 
-    // Timestamp when user account is created
-    createdAt: { type: Date, default: Date.now }
+    // Account creation date
+    createdAt: {
+        type: Date,
+        default: Date.now // Set current time automatically
+    }
 });
 
-// Exporting the model
+// Export the model to use in other files
 module.exports = mongoose.model('User', UserSchema);
