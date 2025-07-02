@@ -5,6 +5,20 @@ const morgan = require('morgan');
 const connectDB = require('./config/db');
 const errorHandler = require('./middlewares/errorHandler');
 
+// Load environment variables from .env
+dotenv.config();
+
+// Initialize express app
+const app = express();
+
+// Connect to MongoDB
+connectDB();
+
+// Core Middleware
+app.use(cors());              // Enable Cross-Origin requests
+app.use(express.json());      // Parse incoming JSON
+app.use(morgan('dev'));       // Log HTTP requests
+
 // Route Imports
 const authRoutes = require('./routes/authRoutes');
 const userRoutes = require('./routes/userRoutes');
@@ -12,37 +26,23 @@ const postRoutes = require('./routes/postRoutes');
 const followRoutes = require('./routes/followRoutes');
 const messageRoutes = require('./routes/messageRoutes');
 
-// Load environment variables
-dotenv.config();
+// Mount Routes
+app.use('/api/auth', authRoutes);           // 🔐 Auth (register/login/logout)
+app.use('/api/users', userRoutes);          // 👤 User profile/search/export
+app.use('/api/posts', postRoutes);          // 📝 Post create/feed/like/comment
+app.use('/api/follow', followRoutes);       // ➕ Follow requests (send/accept)
+app.use('/api/messages', messageRoutes);    // 💬 One-to-one messaging
 
-// Initialize app
-const app = express();
-
-// Connect to MongoDB
-connectDB();
-
-// Middleware
-app.use(cors());
-app.use(express.json());
-app.use(morgan('dev'));
-
-// API Routes
-app.use('/api/auth', authRoutes);           // Signup/Login/Logout
-app.use('/api/users', userRoutes);          // Profile, Follow, Search, Export PDF
-app.use('/api/posts', postRoutes);          // Posts (Home Page, Create, List)
-app.use('/api/follow', followRoutes);       // Follow Requests (Send, Accept/Decline)
-app.use('/api/messages', messageRoutes);    // One-to-one Chat
-
-// Root route
+// Test root route
 app.get('/', (req, res) => {
-    res.send('Welcome to DevBook API!');
+    res.send('🚀 Welcome to CodeMate API!');
 });
 
-// Error Handling Middleware
+// Global Error Handler
 app.use(errorHandler);
 
-// Start server
+// Start Server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+    console.log(`✅ Server running on port ${PORT}`);
 });
