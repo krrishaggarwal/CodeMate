@@ -1,4 +1,5 @@
 const User = require('../models/user');
+const { exportUserProfileToPDF } = require('../utils/pdfExporter');
 
 // Get logged-in user's profile
 const getProfile = async (userId) => {
@@ -47,7 +48,21 @@ const searchUsers = async (keyword) => {
 };
 
 
-module.exports = {
-    getProfile, updateProfile, searchUsers
+const downloadUserProfilePDF = async (req, res) => {
+    try {
+        const user = await User.findById(req.params.userId).select('-password');
+        if (!user) return res.status(404).json({ error: 'User not found' });
+
+        const filePath = await exportUserProfileToPDF(user, `${user.name}-Profile.pdf`);
+        res.download(filePath); // Sends the PDF to the browser
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
 };
 
+module.exports = {
+    getProfile,
+    updateProfile,
+    searchUsers,
+    downloadUserProfilePDF // ✅ Add this line
+};

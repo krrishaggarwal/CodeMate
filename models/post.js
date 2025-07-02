@@ -1,6 +1,25 @@
 // Importing mongoose
 const mongoose = require('mongoose');
 
+// Creating the Comment schema
+const CommentSchema = new mongoose.Schema({
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
+    },
+    text: {
+        type: String,
+        required: true,
+        trim: true,
+        maxlength: [300, 'Comment cannot exceed 300 characters']
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now
+    }
+});
+
 // Creating the Post schema
 const PostSchema = new mongoose.Schema({
     // Reference to the user who created the post
@@ -28,6 +47,15 @@ const PostSchema = new mongoose.Schema({
             'Invalid image URL format'
         ]
     },
+
+    // Likes: array of user IDs
+    likes: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    }],
+
+    // Comments: array of comment objects
+    comments: [CommentSchema],
 
     // Timestamp when the post was created
     createdAt: {

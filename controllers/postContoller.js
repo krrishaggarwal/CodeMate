@@ -14,7 +14,7 @@ const createPost = async (userId, text, image) => {
     }
 };
 
-// show random Posts (for homepage)
+// Show random Posts (for homepage)
 const getPosts = async () => {
     try {
         const posts = await Post.find().populate('user', 'name');
@@ -34,4 +34,64 @@ const getMyPosts = async (userId) => {
     }
 };
 
-module.exports = { createPost, getPosts, getMyPosts };
+// Like a post
+const likePost = async (postId, userId) => {
+    try {
+        const post = await Post.findById(postId);
+        if (!post) return { error: 'Post not found' };
+
+        if (!post.likes.includes(userId)) {
+            post.likes.push(userId);
+            await post.save();
+        }
+
+        return { data: post };
+    } catch (error) {
+        return { error: error.message };
+    }
+};
+
+// Unlike a post
+const unlikePost = async (postId, userId) => {
+    try {
+        const post = await Post.findById(postId);
+        if (!post) return { error: 'Post not found' };
+
+        post.likes = post.likes.filter(id => id.toString() !== userId);
+        await post.save();
+
+        return { data: post };
+    } catch (error) {
+        return { error: error.message };
+    }
+};
+
+// Add comment to a post
+const addComment = async (postId, userId, commentText) => {
+    try {
+        const post = await Post.findById(postId);
+        if (!post) return { error: 'Post not found' };
+
+        const comment = {
+            user: userId,
+            text: commentText,
+            createdAt: new Date()
+        };
+
+        post.comments.push(comment);
+        await post.save();
+
+        return { data: post };
+    } catch (error) {
+        return { error: error.message };
+    }
+};
+
+module.exports = {
+    createPost,
+    getPosts,
+    getMyPosts,
+    likePost,
+    unlikePost,
+    addComment
+};
