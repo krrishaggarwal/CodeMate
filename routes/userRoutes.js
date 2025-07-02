@@ -1,12 +1,29 @@
 const express = require('express');
 const router = express.Router();
+
 const {
     getProfile,
     updateProfile,
-    searchUsers
+    searchUsers,
+    downloadUserProfilePDF // ✅ added PDF export function
 } = require('../controllers/userController');
+
+// 📤 Export user's profile as PDF
+// GET /api/users/export/:userId
 router.get('/export/:userId', downloadUserProfilePDF);
 
+// 🔍 Search users by name, email, or skills
+// GET /api/users/search?keyword=krish
+router.get('/search', async (req, res) => {
+    const { keyword } = req.query;
+
+    const result = await searchUsers(keyword || '');
+    if (result.error) {
+        return res.status(400).json({ error: result.error });
+    }
+
+    res.status(200).json(result.data);
+});
 
 // 📥 Get a user's profile by ID
 // GET /api/users/:userId
@@ -28,19 +45,6 @@ router.put('/update/:userId', async (req, res) => {
     const updates = req.body;
 
     const result = await updateProfile(userId, updates);
-    if (result.error) {
-        return res.status(400).json({ error: result.error });
-    }
-
-    res.status(200).json(result.data);
-});
-
-// 🔍 Search users by name, email, or skills
-// GET /api/users/search?keyword=krish
-router.get('/search', async (req, res) => {
-    const { keyword } = req.query;
-
-    const result = await searchUsers(keyword || '');
     if (result.error) {
         return res.status(400).json({ error: result.error });
     }
