@@ -1,4 +1,4 @@
-// Importing mongoose to define schema and interact with MongoDB
+/* this model helps storing the data for messages */
 const mongoose = require('mongoose');
 
 // Creating a new schema for storing chat messages

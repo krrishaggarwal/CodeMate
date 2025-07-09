@@ -1,4 +1,4 @@
-// Import mongoose to create schema
+/* this model defines the schema for the the user which collect various details of the user with some validations*/
 const mongoose = require('mongoose');
 
 // Define the User schema

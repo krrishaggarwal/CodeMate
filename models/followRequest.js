@@ -1,4 +1,4 @@
-// Import mongoose to define the schema
+/* this model stores the data for follow requests */
 const mongoose = require('mongoose');
 
 // Define the schema for follow requests between users

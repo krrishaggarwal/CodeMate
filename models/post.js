@@ -1,4 +1,4 @@
-// Importing mongoose
+/*this model collect the data related to posts*/
 const mongoose = require('mongoose');
 
 // Creating the Comment schema
