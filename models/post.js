@@ -1,18 +1,18 @@
 /*this model collect the data related to posts*/
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 // Creating the Comment schema
 const CommentSchema = new mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
+        ref: "User",
         required: true
     },
     text: {
         type: String,
         required: true,
         trim: true,
-        maxlength: [300, 'Comment cannot exceed 300 characters']
+        maxlength: [300, "max 300 characters"]
     },
     createdAt: {
         type: Date,
@@ -25,33 +25,33 @@ const PostSchema = new mongoose.Schema({
     // Reference to the user who created the post
     user: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-        required: [true, 'User ID is required'], // Must link to a user
+        ref: "User",
+        required: [true, "Required"], // Must link to a user
     },
 
     // Post text content
     text: {
         type: String,
-        required: [true, 'Post text is required'], // Cannot be empty
+        required: [true, "Required"], // Cannot be empty
         trim: true,
-        minlength: [1, 'Post must have at least 1 character'],
-        maxlength: [500, 'Post cannot exceed 500 characters']
+        minlength: [1, "min 1 character"],
+        maxlength: [500, "max 500 character"]
     },
 
     // Optional image URL for the post
     image: {
         type: String,
-        default: '', // Default to empty string if not provided
+        default: "", // Default to empty string if not provided
         match: [
             /^$|^https?:\/\/.+\.(jpg|jpeg|png|gif|webp)$/i,
-            'Invalid image URL format'
+            "invalid format"
         ]
     },
 
     // Likes: array of user IDs
     likes: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
+        ref: "User"
     }],
 
     // Comments: array of comment objects
@@ -65,4 +65,4 @@ const PostSchema = new mongoose.Schema({
 });
 
 // Exporting the Post model
-module.exports = mongoose.model('Post', PostSchema);
+module.exports = mongoose.model("Post", PostSchema);

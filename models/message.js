@@ -1,29 +1,29 @@
 /* this model helps storing the data for messages */
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 // Creating a new schema for storing chat messages
 const MessageSchema = new mongoose.Schema({
     // The sender's user ID (must exist in User collection)
     sender: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-        required: [true, 'Sender is required'] // Must be provided
+        ref: "User",
+        required: [true, "Required"] // Must be provided
     },
 
     // The receiver's user ID (must exist in User collection)
     receiver: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-        required: [true, 'Receiver is required'] // Must be provided
+        ref: "User",
+        required: [true, "Required"] // Must be provided
     },
 
     // The actual message content
     content: {
         type: String,
-        required: [true, 'Message content is required'], // Cannot be empty
+        required: [true, "Required"], // Cannot be empty
         trim: true,
-        minlength: [1, 'Message must have at least 1 character'],
-        maxlength: [1000, 'Message cannot exceed 1000 characters']
+        minlength: [1, "min 1 character"],
+        maxlength: [1000, "max 1000 character"]
     },
 
     // Time the message was sent
