@@ -1,16 +1,16 @@
 // routes/authRoutes.js
 const express = require('express');
 const router = express.Router();
-const { registerUser, loginUser } = require('../controllers/authController'); // adjust path if needed
+const authController = require("../controllers/authController");
 
 // Register Route
 router.post('/register', async (req, res) => {
     const { name, email, password } = req.body;
-    const result = await registerUser(name, email, password);
+    const result = await authController.registerUser(name, email, password);
     if (result.error) {
         return res.status(400).json({ error: result.error });
     }
-    res.status(201).json(result);
+    res.json(result);
 });
 
 // Login Route
@@ -20,7 +20,7 @@ router.post('/login', async (req, res) => {
     if (result.error) {
         return res.status(400).json({ error: result.error });
     }
-    res.status(200).json(result);
+    res.json(result);
 });
 
 module.exports = router;
