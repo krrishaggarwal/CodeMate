@@ -16,7 +16,7 @@ router.post('/register', async (req, res) => {
 // Login Route
 router.post('/login', async (req, res) => {
     const { email, password } = req.body;
-    const result = await loginUser(email, password);
+    const result = await authController.loginUser(email, password);
     if (result.error) {
         return res.status(400).json({ error: result.error });
     }

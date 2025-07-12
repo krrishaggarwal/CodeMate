@@ -1,0 +1,139 @@
+/* ========================
+   Chat Container
+=========================== */
+.chatbox-container {
+  max-width: 600px;
+  height: 500px;
+  background: #f9fafb;
+  margin: 2rem auto;
+  display: flex;
+  flex-direction: column;
+  border-radius: 14px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+/* ========================
+   Message Area
+=========================== */
+.chatbox-messages {
+  flex: 1;
+  padding: 1rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  scroll-behavior: smooth;
+}
+
+.chat-message {
+  padding: 0.75rem 1.1rem;
+  border-radius: 20px;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  max-width: 75%;
+  word-wrap: break-word;
+  transition: background 0.3s;
+}
+
+.chat-message.sent {
+  background: #3b82f6;
+  color: #fff;
+  align-self: flex-end;
+}
+
+.chat-message.received {
+  background: #e5e7eb;
+  color: #111827;
+  align-self: flex-start;
+}
+
+/* ========================
+   Input Area
+=========================== */
+.chatbox-input {
+  display: flex;
+  padding: 0.6rem;
+  border-top: 1px solid #ddd;
+  background: #fff;
+}
+
+.chatbox-input input {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  background: #f3f4f6;
+  color: #111;
+  transition: background 0.3s ease;
+  margin-right: 0.5rem;
+}
+
+.chatbox-input input:focus {
+  outline: none;
+  background: #e2e8f0;
+}
+
+.chatbox-input button {
+  padding: 0 1.4rem;
+  font-size: 1rem;
+  background: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.25s ease;
+}
+
+.chatbox-input button:hover {
+  background: #2563eb;
+}
+
+/* ========================
+   Dark Mode Support
+=========================== */
+body.dark .chatbox-container {
+  background: #1e1e1e;
+}
+
+body.dark .chatbox-messages .sent {
+  background: #60a5fa;
+}
+
+body.dark .chatbox-messages .received {
+  background: #374151;
+  color: #f1f5f9;
+}
+
+body.dark .chatbox-input {
+  background: #111827;
+  border-top: 1px solid #2d3748;
+}
+
+body.dark .chatbox-input input {
+  background: #2d3748;
+  color: #f9fafb;
+}
+
+body.dark .chatbox-input input:focus {
+  background: #3a4454;
+}
+
+body.dark .chatbox-input button {
+  background: #60a5fa;
+}
+
+body.dark .chatbox-input button:hover {
+  background: #3b82f6;
+}
+
+/* ========================
+   Responsive
+=========================== */
+@media (max-width: 640px) {
+  .chatbox-container {
+    margin: 1rem;
+    height: 90vh;
+  }
+}

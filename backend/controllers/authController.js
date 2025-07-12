@@ -10,7 +10,6 @@ function registerUser(name, email, password) {
             if (existingUser) {
                 return { error: 'User already exists' };
             }
-
             return bcrypt.hash(password, 10)
                 .then(hashedPassword => {
                     const newUser = new User({

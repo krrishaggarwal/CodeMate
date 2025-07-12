@@ -1,0 +1,99 @@
+/* Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@400;500;600&display=swap');
+
+/* Base styles */
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  background-color: #fafafa;
+  color: #333;
+  transition: background 0.3s, color 0.3s;
+  line-height: 1.6;
+}
+
+/* Developer-specific fonts */
+.code-text,
+.skill-tag,
+.stat-number,
+.profile-nav button {
+  font-family: 'Fira Code', monospace;
+}
+
+/* Inherit font for buttons */
+button {
+  font-family: inherit;
+}
+
+/* Smooth transitions for UI */
+input,
+textarea,
+select,
+button,
+.dashboard-container,
+.profile-container,
+.edit-profile-container,
+.settings-container,
+.explore-container,
+.manage-posts-container,
+.auth-container .auth-card,
+.messages-container {
+  transition: background 0.3s, color 0.3s, border-color 0.3s;
+}
+
+/* ========================
+   Dark Mode Base Styling
+======================== */
+body.dark {
+  background: #121212;
+  color: #ddd;
+}
+
+/* Inputs & Form Fields in Dark */
+body.dark input,
+body.dark textarea,
+body.dark select {
+  background: #1e1e1e;
+  color: #ddd;
+  border: 1px solid #333;
+}
+
+/* Cards & Major Sections */
+body.dark .dashboard-card,
+body.dark .about-card,
+body.dark .post-card,
+body.dark .project-card,
+body.dark .auth-card,
+body.dark .profile-header,
+body.dark .post-item,
+body.dark .developer-card {
+  background: #1e1e1e;
+  color: #ddd;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.4);
+  border-color: #333;
+}
+
+/* Common Button Enhancements */
+body.dark .auth-button,
+body.dark .theme-btn,
+body.dark .edit-profile-btn,
+body.dark .download-btn,
+body.dark .action-btn,
+body.dark .follow-btn,
+body.dark .message-btn,
+body.dark .delete-btn {
+  filter: brightness(1.1);
+}
+
+/* Links & Interactive Elements */
+body.dark a,
+body.dark .social-link,
+body.dark .auth-link,
+body.dark .edit-link,
+body.dark .view-all-link {
+  color: #82aaff;
+}
+
+/* Scrollbar for Dark Mode */
+body.dark ::-webkit-scrollbar {
+  background: #121212;
+}

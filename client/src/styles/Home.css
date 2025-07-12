@@ -1,0 +1,104 @@
+.home-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.home-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.home-header h1 {
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 1rem;
+  transition: color 0.3s;
+}
+
+.filter-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.filter-tabs button {
+  padding: 0.5rem 1.5rem;
+  font-size: 1rem;
+  border: 2px solid #007bff;
+  background: transparent;
+  color: #007bff;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: background 0.3s, color 0.3s, transform 0.2s;
+}
+
+.filter-tabs button:hover {
+  background: #007bff;
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+.filter-tabs .active {
+  background: #007bff;
+  color: #fff;
+}
+
+.posts-feed {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.loading,
+.no-posts {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #777;
+  margin-top: 2rem;
+  transition: color 0.3s;
+}
+
+/* =========================
+   Dark Mode Support
+========================= */
+body.dark .home-header h1 {
+  color: #ddd;
+}
+
+body.dark .filter-tabs button {
+  border-color: #82aaff;
+  color: #82aaff;
+}
+
+body.dark .filter-tabs button:hover,
+body.dark .filter-tabs .active {
+  background: #82aaff;
+  color: #121212;
+}
+
+body.dark .loading,
+body.dark .no-posts {
+  color: #aaa;
+}
+
+/* =========================
+   Responsive Styles
+========================= */
+@media (max-width: 600px) {
+  .home-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .filter-tabs {
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: center;
+  }
+
+  .filter-tabs button {
+    width: 100%;
+    max-width: 300px;
+  }
+}
