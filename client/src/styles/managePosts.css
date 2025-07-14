@@ -39,13 +39,13 @@
   border: 1px solid #eee;
   border-radius: 14px;
   padding: 1.5rem;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.07);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.07);
   transition: transform 0.25s, box-shadow 0.25s;
 }
 
 .post-item:hover {
   transform: translateY(-5px);
-  box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
 }
 
 .post-item h3 {
@@ -119,7 +119,7 @@ body.dark .post-item p {
 body.dark .post-item {
   background: rgba(30, 30, 30, 0.75);
   border: 1px solid #333;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
 }
 
 body.dark .message {
@@ -131,6 +131,7 @@ body.dark .message {
 body.dark .post-actions button:last-child {
   background: #d32f2f;
 }
+
 body.dark .post-actions button:last-child:hover {
   background: #b71c1c;
   box-shadow: 0 0 10px #d32f2f;

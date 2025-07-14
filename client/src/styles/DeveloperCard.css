@@ -1,15 +1,17 @@
+/* DeveloperCard.css */
+
 .developer-card {
   background: #ffffff;
   border-radius: 16px;
   padding: 1.5rem;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
   text-align: center;
   transition: transform 0.3s, box-shadow 0.3s;
 }
 
 .developer-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 12px 25px rgba(0,0,0,0.1);
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1);
 }
 
 .dev-image img {

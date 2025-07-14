@@ -8,7 +8,7 @@
   border: 1px solid #ddd;
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
 }
 
 /* Sidebar */
@@ -146,6 +146,7 @@
 .chat-messages::-webkit-scrollbar {
   width: 6px;
 }
+
 .sidebar ul::-webkit-scrollbar-thumb,
 .chat-messages::-webkit-scrollbar-thumb {
   background: #bbb;

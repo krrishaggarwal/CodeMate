@@ -59,7 +59,7 @@
   background: #fff;
   border-radius: 10px;
   padding: 1rem;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
 }
 
 .form-section h3 {
@@ -70,7 +70,8 @@
   padding-bottom: 0.2rem;
 }
 
-input, textarea {
+input,
+textarea {
   width: 100%;
   padding: 0.5rem 0.8rem;
   margin: 0.5rem 0;
@@ -79,7 +80,8 @@ input, textarea {
   font-size: 1rem;
 }
 
-input:focus, textarea:focus {
+input:focus,
+textarea:focus {
   outline: none;
   border-color: #6c63ff;
   box-shadow: 0 0 0 2px rgba(108, 99, 255, 0.2);
@@ -231,7 +233,7 @@ body.dark .form-section,
 body.dark .project-item {
   background: #1e1e1e;
   color: #ddd;
-  box-shadow: 0 0 8px rgba(0,0,0,0.4);
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.4);
 }
 
 body.dark input,

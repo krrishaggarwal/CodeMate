@@ -43,7 +43,10 @@ body.dark {
 }
 
 /* Input & form elements */
-input, textarea, select, button {
+input,
+textarea,
+select,
+button {
   transition: background 0.3s, color 0.3s, border-color 0.3s;
 }
 
@@ -67,7 +70,7 @@ body.dark .post-item,
 body.dark .developer-card {
   background: #1e1e1e;
   color: #ddd;
-  box-shadow: 0 0 8px rgba(0,0,0,0.4);
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.4);
   border-color: #333;
 }
 

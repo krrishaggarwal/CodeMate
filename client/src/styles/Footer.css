@@ -1,6 +1,7 @@
 /* Footer container */
+
 .footer {
- background: #1f2937;
+  background: #1f2937;
   color: #1e293b;
   padding: 2rem;
   display: flex;
@@ -8,7 +9,8 @@
   align-items: center;
   justify-content: center;
   border-top: 1px solid #e2e8f0;
-  margin-top: auto; /* Push footer to bottom if using flex layout */
+  margin-top: auto;
+  /* Push footer to bottom if using flex layout */
 }
 
 /* Brand and tagline */

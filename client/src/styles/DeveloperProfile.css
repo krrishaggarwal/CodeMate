@@ -6,7 +6,11 @@
   padding: 1rem;
 }
 
-.loading, .error, .no-posts, .no-projects, .no-content {
+.loading,
+.error,
+.no-posts,
+.no-projects,
+.no-content {
   text-align: center;
   color: #555;
   font-size: 1rem;
@@ -20,7 +24,7 @@
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: flex-start;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   margin-bottom: 1.5rem;
 }
 
@@ -92,7 +96,12 @@
   flex-wrap: wrap;
 }
 
-.follow-btn, .unfollow-btn, .message-btn, .pending-btn, .download-btn, .edit-profile-btn {
+.follow-btn,
+.unfollow-btn,
+.message-btn,
+.pending-btn,
+.download-btn,
+.edit-profile-btn {
   padding: 0.5rem 1rem;
   border: none;
   border-radius: 6px;
@@ -120,13 +129,17 @@
   color: #fff;
 }
 
-.download-btn, .edit-profile-btn {
+.download-btn,
+.edit-profile-btn {
   background: #17a2b8;
   color: #fff;
 }
 
-.follow-btn:hover, .unfollow-btn:hover, .message-btn:hover, 
-.download-btn:hover, .edit-profile-btn:hover {
+.follow-btn:hover,
+.unfollow-btn:hover,
+.message-btn:hover,
+.download-btn:hover,
+.edit-profile-btn:hover {
   opacity: 0.9;
 }
 
@@ -164,17 +177,20 @@
   background: #fff;
   border-radius: 10px;
   padding: 1rem;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
-.skills-list, .social-links, .project-technologies {
+.skills-list,
+.social-links,
+.project-technologies {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
   margin-top: 0.5rem;
 }
 
-.skill-tag, .tech-tag {
+.skill-tag,
+.tech-tag {
   background: #007bff;
   color: #fff;
   padding: 0.3rem 0.6rem;
@@ -192,20 +208,23 @@
   text-decoration: underline;
 }
 
-.posts-grid, .projects-grid {
+.posts-grid,
+.projects-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 1.2rem;
 }
 
-.post-card, .project-card {
+.post-card,
+.project-card {
   background: #fff;
   border-radius: 10px;
   padding: 1rem;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
-.post-meta, .project-technologies {
+.post-meta,
+.project-technologies {
   margin-top: 0.5rem;
   font-size: 0.9rem;
   color: #666;
@@ -236,7 +255,7 @@ body.dark .post-card,
 body.dark .project-card {
   background: #1e1e1e;
   color: #ccc;
-  box-shadow: 0 0 8px rgba(0,0,0,0.4);
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.4);
 }
 
 body.dark .profile-meta,
@@ -260,7 +279,8 @@ body.dark .profile-nav button:hover {
   color: #121212;
 }
 
-body.dark .skill-tag, body.dark .tech-tag {
+body.dark .skill-tag,
+body.dark .tech-tag {
   background: #2c2c2c;
 }
 
