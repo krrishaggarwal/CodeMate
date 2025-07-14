@@ -1,17 +1,17 @@
+/* global.css */
+
 /* Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@400;500;600&display=swap');
 
-/* Base styles */
 body {
   margin: 0;
   font-family: 'Inter', sans-serif;
-  background-color: #fafafa;
+  background: #fafafa;
   color: #333;
   transition: background 0.3s, color 0.3s;
-  line-height: 1.6;
 }
 
-/* Developer-specific fonts */
+/* Developer font */
 .code-text,
 .skill-tag,
 .stat-number,
@@ -19,16 +19,18 @@ body {
   font-family: 'Fira Code', monospace;
 }
 
-/* Inherit font for buttons */
+/* Utility */
 button {
   font-family: inherit;
 }
 
-/* Smooth transitions for UI */
-input,
-textarea,
-select,
-button,
+/* Dark Mode */
+body.dark {
+  background: #121212;
+  color: #ddd;
+}
+
+/* Common containers */
 .dashboard-container,
 .profile-container,
 .edit-profile-container,
@@ -37,27 +39,24 @@ button,
 .manage-posts-container,
 .auth-container .auth-card,
 .messages-container {
+  transition: background 0.3s, color 0.3s;
+}
+
+/* Input & form elements */
+input, textarea, select, button {
   transition: background 0.3s, color 0.3s, border-color 0.3s;
 }
 
-/* ========================
-   Dark Mode Base Styling
-======================== */
-body.dark {
-  background: #121212;
-  color: #ddd;
-}
-
-/* Inputs & Form Fields in Dark */
+/* Dark Mode: Inputs */
 body.dark input,
 body.dark textarea,
 body.dark select {
   background: #1e1e1e;
   color: #ddd;
-  border: 1px solid #333;
+  border-color: #333;
 }
 
-/* Cards & Major Sections */
+/* Dark Mode: Cards & sections */
 body.dark .dashboard-card,
 body.dark .about-card,
 body.dark .post-card,
@@ -68,11 +67,11 @@ body.dark .post-item,
 body.dark .developer-card {
   background: #1e1e1e;
   color: #ddd;
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 0 8px rgba(0,0,0,0.4);
   border-color: #333;
 }
 
-/* Common Button Enhancements */
+/* Dark Mode: Buttons */
 body.dark .auth-button,
 body.dark .theme-btn,
 body.dark .edit-profile-btn,
@@ -84,7 +83,7 @@ body.dark .delete-btn {
   filter: brightness(1.1);
 }
 
-/* Links & Interactive Elements */
+/* Dark Mode: Links */
 body.dark a,
 body.dark .social-link,
 body.dark .auth-link,
@@ -93,7 +92,7 @@ body.dark .view-all-link {
   color: #82aaff;
 }
 
-/* Scrollbar for Dark Mode */
+/* Scrollbars */
 body.dark ::-webkit-scrollbar {
   background: #121212;
 }

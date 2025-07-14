@@ -3,7 +3,7 @@ import { AuthContext } from '../context/AuthContext';
 import '../styles/Setting.css';
 
 const Settings = () => {
-  const { user, logout, toggleTheme, theme } = useContext(AuthContext);
+  const { user, token, logout, toggleTheme, theme } = useContext(AuthContext);
   const [deleteMessage, setDeleteMessage] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -16,13 +16,10 @@ const Settings = () => {
       const res = await fetch(`${process.env.REACT_APP_API_URL}/api/users/delete`, {
         method: 'DELETE',
         headers: {
-          'Content-Type': 'application/json'
+          Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ userId: user._id })  // send userId in body
       });
-
       const data = await res.json();
-
       if (res.ok) {
         setDeleteMessage('Account deleted successfully.');
         logout();

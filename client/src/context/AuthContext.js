@@ -4,20 +4,19 @@ export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(() => {
-    const storedUser = localStorage.getItem('user');
-    return storedUser ? JSON.parse(storedUser) : null;
+    const localUser = localStorage.getItem('user');
+    return localUser ? JSON.parse(localUser) : null;
   });
-
   const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'light');
 
   useEffect(() => {
-    document.body.classList.toggle('dark', theme === 'dark');
     localStorage.setItem('theme', theme);
+    document.body.classList.toggle('dark', theme === 'dark');
   }, [theme]);
 
-  const login = (userData) => {
-    setUser(userData);
-    localStorage.setItem('user', JSON.stringify(userData));
+  const login = (newUser) => {
+    setUser(newUser);
+    localStorage.setItem('user', JSON.stringify(newUser));
   };
 
   const logout = () => {
@@ -35,7 +34,16 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, theme, login, logout, updateUser, toggleTheme }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        theme,
+        login,
+        logout,
+        updateUser,
+        toggleTheme,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

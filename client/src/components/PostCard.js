@@ -2,23 +2,23 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/PostCard.css';
 
-const PostCard = ({ post, onLike, onComment }) => {
+const PostCard = ({ post }) => {
   const navigate = useNavigate();
 
   return (
     <div className="post-card">
-      {post.image && (
+      {post.imageUrl && (
         <div className="post-card-image">
-          <img src={post.image} alt="Post" />
+          <img src={post.imageUrl} alt={post.title || "Post"} />
         </div>
       )}
 
       <div className="post-card-content">
         <h3>{post.title || 'Untitled Post'}</h3>
         <p className="post-snippet">
-          {post.text?.length > 100 
-            ? `${post.text.substring(0, 100)}...`
-            : post.text}
+          {post.content.length > 100 
+            ? `${post.content.substring(0, 100)}...`
+            : post.content}
         </p>
 
         <div className="post-meta">
@@ -26,10 +26,7 @@ const PostCard = ({ post, onLike, onComment }) => {
           <span>{new Date(post.createdAt).toLocaleDateString()}</span>
         </div>
 
-        <button 
-          onClick={() => navigate(`/post/${post._id}`)} 
-          className="view-post-btn"
-        >
+        <button onClick={() => navigate(`/post/${post._id}`)} className="view-post-btn">
           Read More
         </button>
       </div>

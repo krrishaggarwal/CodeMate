@@ -1,38 +1,38 @@
-/* this model defines the schema for the the user which collect various details of the user with some validations*/
-const mongoose = require("mongoose");
+// Import mongoose to create schema
+const mongoose = require('mongoose');
 
 // Define the User schema
 const UserSchema = new mongoose.Schema({
     // User's full name
     name: {
         type: String,
-        required: [true, "Required"],       // Must be provided
-        trim: true,                         // Removes extra spaces
-        minlength: [2, "min 2 characters"], // Min length
-        maxlength: [50, "max 50 characters"]   // Max length
+        required: [true, 'Name is required'],       // Must be provided
+        trim: true,                                 // Removes leading/trailing spaces
+        minlength: [2, 'Name must be at least 2 characters'], // Min length
+        maxlength: [50, 'Name cannot exceed 50 characters']   // Max length
     },
 
     // User's email address
     email: {
         type: String,
-        required: [true, "Required"],      // Must be provided
+        required: [true, 'Email is required'],      // Must be provided
         unique: true,                               // Must be unique in the database
         trim: true,                                 // Clean up spaces
         lowercase: true,                            // Converts to lowercase
-        match: [/\S+@\S+\.\S+/, "Invalid Email"]  // Must follow email pattern
+        match: [/\S+@\S+\.\S+/, 'Email is invalid']  // Must follow email pattern
     },
 
     // User's password (should be hashed)
     password: {
         type: String,
-        required: [true, "Required"],   // Must be provided
-        minlength: [6, "min 6 characters"] // Min length
+        required: [true, 'Password is required'],   // Must be provided
+        minlength: [6, 'Password must be at least 6 characters'] // Min length
     },
 
     // User's short bio (optional)
     bio: {
         type: String,
-        maxlength: [200, "Max 200 characters"] // Max length
+        maxlength: [200, 'Bio cannot exceed 200 characters'] // Max length
     },
 
     // List of technical skills
@@ -64,4 +64,4 @@ const UserSchema = new mongoose.Schema({
 });
 
 // Export the model to use in other files
-module.exports = mongoose.model("User", UserSchema);
+module.exports = mongoose.model('User', UserSchema);

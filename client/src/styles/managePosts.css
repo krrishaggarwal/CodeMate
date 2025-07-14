@@ -1,3 +1,5 @@
+/* managePosts.css */
+
 .manage-posts-container {
   max-width: 1000px;
   margin: 2rem auto;
@@ -10,7 +12,6 @@
   font-size: 2.3rem;
   font-weight: 700;
   color: #222;
-  transition: color 0.3s;
 }
 
 /* Message box */
@@ -22,7 +23,6 @@
   border-left: 4px solid #00bcd4;
   border-radius: 6px;
   color: #007c91;
-  transition: background 0.3s, color 0.3s;
 }
 
 /* Posts grid */
@@ -39,27 +39,25 @@
   border: 1px solid #eee;
   border-radius: 14px;
   padding: 1.5rem;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.07);
-  transition: transform 0.25s, box-shadow 0.25s, background 0.3s;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.07);
+  transition: transform 0.25s, box-shadow 0.25s;
 }
 
 .post-item:hover {
   transform: translateY(-5px);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.12);
 }
 
 .post-item h3 {
   margin: 0 0 0.8rem;
   font-size: 1.3rem;
   color: #333;
-  transition: color 0.3s;
 }
 
 .post-item p {
   color: #555;
   margin-bottom: 1rem;
   line-height: 1.4;
-  transition: color 0.3s;
 }
 
 .post-img {
@@ -70,7 +68,7 @@
   margin-bottom: 1rem;
 }
 
-/* Action buttons */
+/* Buttons for actions */
 .post-actions {
   display: flex;
   gap: 0.8rem;
@@ -85,7 +83,7 @@
   border-radius: 8px;
   font-size: 0.95rem;
   cursor: pointer;
-  transition: background 0.25s, box-shadow 0.25s;
+  transition: all 0.25s;
 }
 
 .post-actions button:hover {
@@ -93,7 +91,6 @@
   box-shadow: 0 0 10px #6c63ff;
 }
 
-/* Delete button */
 .post-actions button:last-child {
   background: #f44336;
 }
@@ -103,28 +100,26 @@
   box-shadow: 0 0 10px #f44336;
 }
 
-/* Fallback message (empty or loading) */
+/* Loading & empty states */
 .manage-posts-container p {
   text-align: center;
   color: #666;
   margin-top: 2rem;
-  transition: color 0.3s;
 }
 
 /* ===========================
    DARK MODE SUPPORT
-=========================== */
+============================= */
 body.dark .manage-posts-container h1,
 body.dark .post-item h3,
-body.dark .post-item p,
-body.dark .manage-posts-container p {
+body.dark .post-item p {
   color: #eee;
 }
 
 body.dark .post-item {
   background: rgba(30, 30, 30, 0.75);
   border: 1px solid #333;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.5);
 }
 
 body.dark .message {
@@ -133,14 +128,9 @@ body.dark .message {
   color: #aeefff;
 }
 
-body.dark .post-actions button {
-  filter: brightness(1.1);
-}
-
 body.dark .post-actions button:last-child {
   background: #d32f2f;
 }
-
 body.dark .post-actions button:last-child:hover {
   background: #b71c1c;
   box-shadow: 0 0 10px #d32f2f;

@@ -1,7 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialTheme = localStorage.getItem('theme') || 'light';
-document.body.classList.toggle('dark', initialTheme === 'dark'); // sync on load
 
 const themeSlice = createSlice({
   name: 'theme',
@@ -16,7 +15,7 @@ const themeSlice = createSlice({
       state.mode = action.payload;
       localStorage.setItem('theme', state.mode);
       document.body.classList.toggle('dark', state.mode === 'dark');
-    },
+    }
   },
 });
 

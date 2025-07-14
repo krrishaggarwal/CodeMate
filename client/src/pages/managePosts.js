@@ -4,88 +4,76 @@ import { useNavigate } from 'react-router-dom';
 import '../styles/managePosts.css';
 
 const ManagePosts = () => {
-  const { user } = useContext(AuthContext);
+  const { user, token } = useContext(AuthContext);
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [message, setMessage] = useState({ text: '', type: '' });
+  const [message, setMessage] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchPosts = async () => {
-      if (!user?._id) return;
-
       try {
-        const res = await fetch(`${process.env.REACT_APP_API_URL}/api/posts/user/${user._id}`);
-        const result = await res.json();
-
-        if (!res.ok) {
-          throw new Error(result.error || 'Failed to fetch posts');
+        const res = await fetch(`${process.env.REACT_APP_API_URL}/api/posts/user`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const data = await res.json();
+        if (res.ok) {
+          setPosts(data.posts);
+        } else {
+          setMessage(data.message || 'Failed to fetch posts');
         }
-
-        setPosts(result.data || []);
-        setMessage({ text: '', type: '' });
       } catch (err) {
-        setMessage({ text: err.message, type: 'error' });
+        setMessage('Error fetching posts.');
       } finally {
         setLoading(false);
       }
     };
 
-    fetchPosts();
-  }, [user]);
+    if (user) fetchPosts();
+  }, [user, token]);
 
-  const formatDate = (dateString) => {
-    const options = { year: 'numeric', month: 'short', day: 'numeric' };
-    return new Date(dateString).toLocaleDateString(undefined, options);
+  const handleDelete = async (postId) => {
+    if (!window.confirm('Are you sure you want to delete this post?')) return;
+
+    try {
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/posts/${postId}`, {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setPosts((prev) => prev.filter((post) => post._id !== postId));
+        setMessage('Post deleted successfully.');
+      } else {
+        setMessage(data.message || 'Failed to delete post');
+      }
+    } catch (err) {
+      setMessage('Network error while deleting.');
+    }
   };
 
   return (
     <div className="manage-posts-container">
       <h1>Manage Your Posts</h1>
-
-      {message.text && (
-        <div className={`message ${message.type}`}>
-          {message.text}
-        </div>
-      )}
-
+      {message && <p className="message">{message}</p>}
       {loading ? (
-        <div className="loading-spinner">Loading...</div>
+        <p>Loading posts...</p>
       ) : posts.length === 0 ? (
-        <p className="no-posts">You have not created any posts yet.</p>
+        <p>You have not posted anything yet.</p>
       ) : (
         <div className="posts-list">
           {posts.map((post) => (
             <div key={post._id} className="post-item">
-              <div className="post-header">
-                <span className="post-date">{formatDate(post.createdAt)}</span>
-              </div>
-
-              {post.text && <p className="post-text">{post.text}</p>}
-
-              {post.image && (
-                <div className="post-image-container">
-                  <img
-                    src={post.image}
-                    alt="Post content"
-                    className="post-image"
-                    onClick={() => window.open(post.image, '_blank')}
-                  />
-                </div>
-              )}
-
-              <div className="post-stats">
-                <span>❤️ {post.likes?.length || 0} likes</span>
-                <span>💬 {post.comments?.length || 0} comments</span>
-              </div>
-
+              <h3>{post.title || 'Untitled Post'}</h3>
+              {post.imageUrl && <img src={post.imageUrl} alt="Post visual" className="post-img" />}
+              <p>{post.content}</p>
               <div className="post-actions">
-                <button
-                  className="edit-btn"
-                  onClick={() => navigate(`/edit-post/${post._id}`)}
-                >
-                  Edit
-                </button>
+                <button onClick={() => navigate(`/edit-post/${post._id}`)}>Edit</button>
+                <button onClick={() => handleDelete(post._id)}>Delete</button>
               </div>
             </div>
           ))}

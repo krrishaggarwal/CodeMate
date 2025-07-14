@@ -4,7 +4,7 @@ import PostCard from '../components/PostCard';
 import '../styles/Home.css';
 
 const Home = () => {
-  const { user } = useContext(AuthContext);
+  const { user, token } = useContext(AuthContext);
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('trending'); // 'trending' or 'following'
@@ -17,13 +17,16 @@ const Home = () => {
     try {
       setLoading(true);
       const endpoint = filter === 'trending' ? '/api/posts/trending' : '/api/posts/following';
-      const response = await fetch(`${process.env.REACT_APP_API_URL}${endpoint}`);
+      const response = await fetch(`${process.env.REACT_APP_API_URL}${endpoint}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      });
       
       if (response.ok) {
         const data = await response.json();
         setPosts(data);
-      } else {
-        console.error('Failed to load posts');
       }
     } catch (error) {
       console.error('Error fetching posts:', error);
@@ -37,18 +40,17 @@ const Home = () => {
       const response = await fetch(`${process.env.REACT_APP_API_URL}/api/posts/${postId}/like`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
-        },
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
       });
 
       if (response.ok) {
-        setPosts(prev =>
-          prev.map(post =>
-            post._id === postId
-              ? { ...post, likes: post.likes + 1, isLiked: true }
-              : post
-          )
-        );
+        setPosts(posts.map(post => 
+          post._id === postId 
+            ? { ...post, likes: post.likes + 1, isLiked: true }
+            : post
+        ));
       }
     } catch (error) {
       console.error('Error liking post:', error);
@@ -60,20 +62,19 @@ const Home = () => {
       const response = await fetch(`${process.env.REACT_APP_API_URL}/api/posts/${postId}/comment`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ comment }),
+        body: JSON.stringify({ comment })
       });
 
       if (response.ok) {
         const newComment = await response.json();
-        setPosts(prev =>
-          prev.map(post =>
-            post._id === postId
-              ? { ...post, comments: [...post.comments, newComment] }
-              : post
-          )
-        );
+        setPosts(posts.map(post => 
+          post._id === postId 
+            ? { ...post, comments: [...post.comments, newComment] }
+            : post
+        ));
       }
     } catch (error) {
       console.error('Error adding comment:', error);
@@ -93,13 +94,13 @@ const Home = () => {
       <div className="home-header">
         <h1>Welcome back, {user?.name}!</h1>
         <div className="filter-tabs">
-          <button
+          <button 
             className={filter === 'trending' ? 'active' : ''}
             onClick={() => setFilter('trending')}
           >
             Trending Posts
           </button>
-          <button
+          <button 
             className={filter === 'following' ? 'active' : ''}
             onClick={() => setFilter('following')}
           >
@@ -115,9 +116,9 @@ const Home = () => {
           </div>
         ) : (
           posts.map(post => (
-            <PostCard
-              key={post._id}
-              post={post}
+            <PostCard 
+              key={post._id} 
+              post={post} 
               onLike={handleLike}
               onComment={handleComment}
             />

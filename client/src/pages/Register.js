@@ -11,7 +11,6 @@ const Register = () => {
     password: '',
     confirmPassword: ''
   });
-
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const { login } = useContext(AuthContext);
@@ -25,7 +24,6 @@ const Register = () => {
 
   const validateForm = () => {
     const newErrors = {};
-
     if (!formData.name) {
       newErrors.name = 'Name is required';
     } else if (formData.name.length < 2) {
@@ -60,13 +58,12 @@ const Register = () => {
 
     setLoading(true);
     try {
-      const userData = await registerUser({
+      const data = await registerUser({
         name: formData.name,
         email: formData.email,
-        password: formData.password,
+        password: formData.password
       });
-
-      login(userData); // Store user in context/localStorage
+      login(data); // save user data
       navigate('/dashboard');
     } catch (error) {
       setErrors({ general: error.message || 'Registration failed' });
@@ -85,7 +82,6 @@ const Register = () => {
 
         <form onSubmit={handleSubmit} className="auth-form">
           {errors.general && <div className="error-message">{errors.general}</div>}
-
           <div className="form-group">
             <label>Full Name</label>
             <input

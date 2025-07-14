@@ -2,63 +2,42 @@ const User = require('../models/user');
 const bcrypt = require('bcrypt');
 
 // User Registration
-function registerUser(name, email, password) {
-    const cleanEmail = email.trim().toLowerCase();
+const registerUser = async (name, email, password) => {
+    try {
+        const existingUser = await User.findOne({ email: email.trim().toLowerCase() });
+        if (existingUser) {
+            throw new Error('User already exists');
+        }
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const newUser = new User({ name, email, password: hashedPassword });
+        await newUser.save();
 
-    return User.findOne({ email: cleanEmail })
-        .then(existingUser => {
-            if (existingUser) {
-                return { error: 'User already exists' };
-            }
-            return bcrypt.hash(password, 10)
-                .then(hashedPassword => {
-                    const newUser = new User({
-                        name,
-                        email: cleanEmail,
-                        password: hashedPassword
-                    });
-
-                    return newUser.save().then(() => {
-                        return {
-                            message: 'User registered successfully',
-                            userId: newUser._id
-                        };
-                    });
-                });
-        })
-        .catch(error => {
-            return { error: error.message };
-        });
-}
+        return { message: 'User registered successfully', userId: newUser._id };
+    } catch (error) {
+        return { error: error.message };
+    }
+};
 
 // User Login
-function loginUser(email, password) {
-    return User.findOne({ email })
-        .then(user => {
-            if (!user) {
-                return { error: 'User not found' };
-            }
-
-            return bcrypt.compare(password, user.password)
-                .then(match => {
-                    if (!match) {
-                        return { error: 'Incorrect password' };
-                    }
-
-                    return {
-                        message: 'Login successful',
-                        userId: user._id,
-                        name: user.name,
-                        email: user.email
-                    };
-                });
-        })
-        .catch(error => {
-            return { error: error.message };
-        });
-}
-
-module.exports = {
-    registerUser,
-    loginUser
+const loginUser = async (email, password) => {
+    try {
+        const user = await User.findOne({ email });
+        if (!user) {
+            throw new Error('User not found');
+        }
+        const matchPassword = await bcrypt.compare(password, user.password);
+        if (!matchPassword) {
+            throw new Error('Incorrect password');
+        }
+        return {
+            message: 'Login successful',
+            userId: user._id,
+            name: user.name,
+            email: user.email,
+        };
+    } catch (error) {
+        return { error: error.message };
+    }
 };
+
+module.exports = { registerUser, loginUser };

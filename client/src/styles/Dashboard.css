@@ -1,18 +1,14 @@
-/* Container */
 .dashboard-container {
   max-width: 1100px;
   margin: 0 auto;
   padding: 2rem;
 }
 
-/* Header */
 .dashboard-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 2rem;
-  flex-wrap: wrap;
-  gap: 1rem;
 }
 
 .dashboard-header h1 {
@@ -20,7 +16,6 @@
   color: #333;
 }
 
-/* Actions */
 .dashboard-actions button,
 .dashboard-actions .settings-btn {
   background: #007bff;
@@ -28,6 +23,7 @@
   border: none;
   padding: 0.6rem 1.2rem;
   border-radius: 6px;
+  margin-left: 0.5rem;
   cursor: pointer;
   transition: background 0.3s ease;
   text-decoration: none;
@@ -38,22 +34,20 @@
   background: #0056b3;
 }
 
-/* Grid */
 .dashboard-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   gap: 1.5rem;
 }
 
-/* Card */
+/* Card styles */
 .dashboard-card {
   background: #fff;
   border-radius: 12px;
   padding: 1.5rem;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 0 10px rgba(0,0,0,0.08);
 }
 
-/* Card Header */
 .card-header {
   display: flex;
   justify-content: space-between;
@@ -63,7 +57,6 @@
 
 .card-header h3 {
   font-size: 1.2rem;
-  color: #222;
 }
 
 .edit-link,
@@ -78,11 +71,14 @@
   text-decoration: underline;
 }
 
-/* Profile Overview */
+/* Profile overview */
 .profile-overview {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.profile-info {
   text-align: center;
 }
 
@@ -122,14 +118,14 @@
 
 .skill-tag {
   background: #f0f0f0;
-  padding: 0.3rem 0.7rem;
+  padding: 0.3rem 0.6rem;
   border-radius: 15px;
   margin: 0.2rem;
   font-size: 0.8rem;
   display: inline-block;
 }
 
-/* Stats */
+/* Statistics */
 .stats-grid {
   display: flex;
   justify-content: space-between;
@@ -157,7 +153,7 @@
   color: #555;
 }
 
-/* Action Buttons */
+/* Quick actions */
 .action-buttons {
   display: flex;
   flex-direction: column;
@@ -179,7 +175,7 @@
   background: #0056b3;
 }
 
-/* Follow Requests */
+/* Follow requests */
 .follow-requests .requests-list {
   margin-top: 1rem;
 }
@@ -189,7 +185,6 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 0.8rem;
-  flex-wrap: wrap;
 }
 
 .request-info {
@@ -212,11 +207,6 @@
   color: #666;
 }
 
-.request-actions {
-  display: flex;
-  gap: 0.5rem;
-}
-
 .request-actions button {
   background: transparent;
   border: 2px solid #007bff;
@@ -225,6 +215,7 @@
   border-radius: 6px;
   cursor: pointer;
   transition: all 0.3s;
+  margin-left: 0.4rem;
 }
 
 .request-actions .accept-btn:hover {
@@ -242,7 +233,7 @@
   color: #fff;
 }
 
-/* Recent Posts */
+/* Recent posts */
 .recent-posts .posts-list {
   margin-top: 1rem;
 }
@@ -265,19 +256,19 @@
   color: #555;
 }
 
-/* Loading */
+/* Loading state */
 .loading {
   text-align: center;
   font-size: 1.2rem;
   color: #555;
 }
 
-/* Responsive */
+/* Responsive adjustments */
 @media (max-width: 600px) {
   .dashboard-header {
     flex-direction: column;
-    align-items: flex-start;
     gap: 1rem;
+    align-items: flex-start;
   }
 
   .stats-grid {
@@ -289,31 +280,4 @@
     align-items: flex-start;
     gap: 0.5rem;
   }
-}
-
-/* =======================
-   Dark Mode Support
-========================== */
-body.dark .dashboard-container {
-  color: #e4e4e7;
-}
-
-body.dark .dashboard-card,
-body.dark .stat-item,
-body.dark .post-item {
-  background: #1f2937;
-  color: #f3f4f6;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-}
-
-body.dark .stat-label,
-body.dark .post-meta,
-body.dark .profile-details p,
-body.dark .request-email {
-  color: #9ca3af;
-}
-
-body.dark .skill-tag {
-  background: #374151;
-  color: #d1d5db;
 }

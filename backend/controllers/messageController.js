@@ -1,38 +1,32 @@
 const Message = require('../models/message');
 
-// Send message
-function sendMessage(fromUserId, toUserId, text) {
-    return Message.create({
-        sender: fromUserId,
-        receiver: toUserId,
-        content: text
-    })
-    .then(message => {
+// Send msg
+const sendMessage = async (fromUserId, toUserId, text) => {
+    try {
+        const message = await Message.create({
+            sender: fromUserId,
+            receiver: toUserId,
+            content: text,
+        });
         return { data: message };
-    })
-    .catch(error => {
+    } catch (error) {
         return { error: error.message };
-    });
-}
-
-// Get/display messages between two users
-function getMessages(userId1, userId2) {
-    return Message.find({
-        $or: [
-            { sender: userId1, receiver: userId2 },
-            { sender: userId2, receiver: userId1 }
-        ]
-    })
-    .sort('createdAt')
-    .then(messages => {
-        return { data: messages };
-    })
-    .catch(error => {
-        return { error: error.message };
-    });
-}
-
-module.exports = {
-    sendMessage,
-    getMessages
+    }
 };
+
+// Return/display msg
+const getMessages = async (userId1, userId2) => {
+    try {
+        const messages = await Message.find({
+            $or: [
+                { from: userId1, to: userId2 },
+                { from: userId2, to: userId1 }
+            ]
+        }).sort('createdAt');
+        return { data: messages };
+    } catch (error) {
+        return { error: error.message };
+    }
+};
+
+module.exports = { sendMessage, getMessages };

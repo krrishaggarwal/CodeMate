@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 
 // Pages
@@ -8,12 +8,17 @@ import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import EditProfile from './pages/EditProfile';
 import DeveloperProfile from './pages/DeveloperProfile';
+
 import ManagePosts from './pages/managePosts';
+
+
+
 import Explore from './pages/Explore';
 import Messages from './pages/messages';
 import Settings from './pages/Settings';
 
-// Context
+// Optional: Private Route Wrapper
+import { useContext } from 'react';
 import { AuthContext } from './context/AuthContext';
 
 const PrivateRoute = ({ children }) => {
@@ -31,14 +36,49 @@ const AppRoutes = () => {
       <Route path="/explore" element={<Explore />} />
       <Route path="/developer/:id" element={<DeveloperProfile />} />
 
-      {/* Protected Routes */}
-      <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
-      <Route path="/edit-profile" element={<PrivateRoute><EditProfile /></PrivateRoute>} />
-      <Route path="/manage-posts" element={<PrivateRoute><ManagePosts /></PrivateRoute>} />
-      <Route path="/messages" element={<PrivateRoute><Messages /></PrivateRoute>} />
-      <Route path="/settings" element={<PrivateRoute><Settings /></PrivateRoute>} />
+      {/* Private Routes */}
+      <Route
+        path="/dashboard"
+        element={
+          <PrivateRoute>
+            <Dashboard />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/edit-profile"
+        element={
+          <PrivateRoute>
+            <EditProfile />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/manage-posts"
+        element={
+          <PrivateRoute>
+            <ManagePosts />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/messages"
+        element={
+          <PrivateRoute>
+            <Messages />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/settings"
+        element={
+          <PrivateRoute>
+            <Settings />
+          </PrivateRoute>
+        }
+      />
 
-      {/* Fallback Route */}
+      {/* Fallback */}
       <Route path="*" element={<Navigate to="/" />} />
     </Routes>
   );

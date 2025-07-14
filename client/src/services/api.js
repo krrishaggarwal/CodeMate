@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:5000"; // Backend URL
+const API_URL = "http://localhost:5000"; // direct backend URL daal de
 
 export const apiRequest = async (endpoint, method = 'GET', body = null) => {
   try {
@@ -6,25 +6,16 @@ export const apiRequest = async (endpoint, method = 'GET', body = null) => {
       'Content-Type': 'application/json',
     };
 
-    const config = {
+    const response = await fetch(`${API_URL}${endpoint}`, {
       method,
       headers,
-    };
+      body: body ? JSON.stringify(body) : null,
+    });
 
-    if (body && method !== 'GET') {
-      config.body = JSON.stringify(body);
-    }
-
-    const response = await fetch(`${API_URL}${endpoint}`, config);
     const data = await response.json();
-
-    if (!response.ok) {
-      throw new Error(data.message || 'Something went wrong');
-    }
-
+    if (!response.ok) throw new Error(data.message || 'Something went wrong');
     return data;
   } catch (error) {
-    console.error(`[apiRequest] ${method} ${endpoint} failed:`, error.message);
     throw error;
   }
 };

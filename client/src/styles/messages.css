@@ -1,3 +1,5 @@
+/* messages.css */
+
 .messages-container {
   display: flex;
   height: 85vh;
@@ -6,8 +8,7 @@
   border: 1px solid #ddd;
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
-  transition: background 0.3s, color 0.3s;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.06);
 }
 
 /* Sidebar */
@@ -17,7 +18,6 @@
   border-right: 1px solid #ddd;
   display: flex;
   flex-direction: column;
-  transition: background 0.3s;
 }
 
 .sidebar h2 {
@@ -26,7 +26,6 @@
   background: #eee;
   margin: 0;
   border-bottom: 1px solid #ddd;
-  color: #333;
 }
 
 .sidebar ul {
@@ -40,7 +39,7 @@
 .sidebar li {
   padding: 1rem;
   cursor: pointer;
-  transition: background 0.2s, color 0.2s;
+  transition: background 0.2s;
   border-bottom: 1px solid #eee;
 }
 
@@ -94,7 +93,6 @@
   border-radius: 18px;
   line-height: 1.4;
   word-wrap: break-word;
-  transition: background 0.3s, color 0.3s;
 }
 
 .message-bubble.sent {
@@ -117,7 +115,6 @@
   padding: 1rem;
   border-top: 1px solid #ddd;
   background: #fff;
-  transition: background 0.3s;
 }
 
 .chat-input input {
@@ -127,7 +124,6 @@
   border-radius: 20px;
   outline: none;
   font-size: 1rem;
-  transition: background 0.3s, border-color 0.3s, color 0.3s;
 }
 
 .chat-input button {
@@ -150,7 +146,6 @@
 .chat-messages::-webkit-scrollbar {
   width: 6px;
 }
-
 .sidebar ul::-webkit-scrollbar-thumb,
 .chat-messages::-webkit-scrollbar-thumb {
   background: #bbb;
@@ -159,13 +154,7 @@
 
 /* =====================
    DARK MODE SUPPORT
-===================== */
-body.dark .messages-container {
-  background: #121212;
-  color: #ddd;
-  border-color: #333;
-}
-
+======================= */
 body.dark .sidebar {
   background: #1e1e1e;
   border-right-color: #333;
@@ -209,10 +198,6 @@ body.dark .chat-input input {
   background: #2b2b2b;
   border-color: #444;
   color: #eee;
-}
-
-body.dark .chat-input button {
-  background: #6c63ff;
 }
 
 body.dark .chat-input button:hover {

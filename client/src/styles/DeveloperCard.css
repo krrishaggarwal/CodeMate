@@ -2,14 +2,14 @@
   background: #ffffff;
   border-radius: 16px;
   padding: 1.5rem;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.06);
   text-align: center;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  transition: transform 0.3s, box-shadow 0.3s;
 }
 
 .developer-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.12);
+  transform: translateY(-5px);
+  box-shadow: 0 12px 25px rgba(0,0,0,0.1);
 }
 
 .dev-image img {
@@ -22,9 +22,8 @@
 }
 
 .developer-card h3 {
-  margin: 0.4rem 0 0.3rem;
+  margin: 0.5rem 0;
   font-size: 1.2rem;
-  font-weight: 600;
   color: #111827;
 }
 
@@ -32,8 +31,6 @@
   font-size: 0.9rem;
   color: #6b7280;
   margin-bottom: 1rem;
-  line-height: 1.4;
-  min-height: 2.5rem;
 }
 
 .dev-skills {
@@ -48,13 +45,8 @@
   background: #f3f4f6;
   color: #374151;
   font-size: 0.75rem;
-  padding: 4px 10px;
-  border-radius: 999px;
-  transition: background 0.3s ease;
-}
-
-.skill-tag:hover {
-  background: #e5e7eb;
+  padding: 4px 8px;
+  border-radius: 12px;
 }
 
 .developer-card button {
@@ -62,27 +54,18 @@
   color: #fff;
   border: none;
   padding: 0.6rem 1.2rem;
-  font-size: 0.95rem;
-  font-weight: 500;
   border-radius: 8px;
   cursor: pointer;
-  transition: background 0.3s, transform 0.2s;
+  transition: background 0.3s;
 }
 
 .developer-card button:hover {
   background: #2563eb;
-  transform: scale(1.03);
 }
 
-.developer-card button:focus {
-  outline: 2px solid #93c5fd;
-  outline-offset: 2px;
-}
-
-/* ========== Dark mode ========== */
+/* Dark mode */
 body.dark .developer-card {
   background: #1f2937;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
 }
 
 body.dark .developer-card h3 {
@@ -95,11 +78,7 @@ body.dark .dev-bio {
 
 body.dark .skill-tag {
   background: #374151;
-  color: #e5e7eb;
-}
-
-body.dark .skill-tag:hover {
-  background: #4b5563;
+  color: #f9fafb;
 }
 
 body.dark .developer-card button {

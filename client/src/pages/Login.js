@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
-import { loginUser } from '../services/authService';
+import { loginUser } from "../services/authService";
 import '../styles/auth.css';
 
 const Login = () => {
@@ -41,8 +41,8 @@ const Login = () => {
 
     setLoading(true);
     try {
-      const userData = await loginUser(formData.email, formData.password);
-      login(userData); // Save user to context + localStorage
+      const data = await loginUser(formData.email, formData.password);
+      login(data); // save user data
       navigate('/dashboard');
     } catch (error) {
       setErrors({ general: error.message || 'Login failed' });
@@ -61,7 +61,6 @@ const Login = () => {
 
         <form onSubmit={handleSubmit} className="auth-form">
           {errors.general && <div className="error-message">{errors.general}</div>}
-
           <div className="form-group">
             <label>Email Address</label>
             <input

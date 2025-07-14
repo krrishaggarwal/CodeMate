@@ -3,45 +3,37 @@
   border: 1px solid #e5e7eb;
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  transition: transform 0.3s, box-shadow 0.3s;
   display: flex;
   flex-direction: column;
 }
 
 .post-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.1);
 }
 
 .post-card-image img {
   width: 100%;
   height: 200px;
   object-fit: cover;
-  display: block;
 }
 
-/* Content Section */
 .post-card-content {
   padding: 1rem;
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
 }
 
 .post-card-content h3 {
   font-size: 1.2rem;
-  font-weight: 600;
   color: #111827;
   margin-bottom: 0.5rem;
-  line-height: 1.4;
 }
 
 .post-snippet {
   font-size: 0.95rem;
   color: #4b5563;
   margin-bottom: 1rem;
-  flex-grow: 1;
 }
 
 .post-meta {
@@ -52,25 +44,21 @@
   margin-bottom: 1rem;
 }
 
-/* Button */
 .view-post-btn {
-  align-self: flex-start;
   padding: 0.5rem 1rem;
   background: #3b82f6;
   color: #fff;
-  font-size: 0.9rem;
-  font-weight: 500;
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  transition: background 0.3s ease;
+  transition: background 0.3s;
 }
 
 .view-post-btn:hover {
   background: #2563eb;
 }
 
-/* Dark Mode */
+/* Dark mode */
 body.dark .post-card {
   background: #1f2937;
   border: 1px solid #374151;
@@ -91,19 +79,4 @@ body.dark .view-post-btn {
 
 body.dark .view-post-btn:hover {
   background: #4f46e5;
-}
-
-/* Responsive tweaks */
-@media (max-width: 480px) {
-  .post-card-content h3 {
-    font-size: 1.05rem;
-  }
-
-  .post-snippet {
-    font-size: 0.88rem;
-  }
-
-  .view-post-btn {
-    font-size: 0.85rem;
-  }
 }

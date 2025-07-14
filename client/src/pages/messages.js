@@ -1,23 +1,23 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../context/AuthContext';
-import { useSocket } from '../context/socketContext';
 import '../styles/messages.css';
 
 const Messages = () => {
-  const { user } = useContext(AuthContext);
-  const socket = useSocket();
-
+  const { user, token } = useContext(AuthContext);
   const [conversations, setConversations] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
   const [error, setError] = useState('');
 
-  // Fetch list of conversations
   useEffect(() => {
     const fetchConversations = async () => {
       try {
-        const res = await fetch(`${process.env.REACT_APP_API_URL}/api/messages/conversations`);
+        const res = await fetch(`${process.env.REACT_APP_API_URL}/api/messages/conversations`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         const data = await res.json();
         if (res.ok) setConversations(data);
         else setError('Could not fetch conversations.');
@@ -27,55 +27,43 @@ const Messages = () => {
     };
 
     fetchConversations();
-  }, []);
+  }, [token]);
 
-  // Fetch chat history with selected user
   const fetchMessages = async (otherUserId) => {
     setSelectedUser(otherUserId);
     try {
-      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/messages/${otherUserId}`);
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/messages/${otherUserId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       const data = await res.json();
       if (res.ok) setMessages(data);
       else setMessages([]);
     } catch {
       setMessages([]);
     }
-
-    // Join socket room
-    if (socket) {
-      socket.emit('joinRoom', getRoomId(user._id, otherUserId));
-    }
   };
 
-  // Socket listener for real-time messages
-  useEffect(() => {
-    if (!socket) return;
+  const sendMessage = async () => {
+    if (!newMessage.trim()) return;
 
-    socket.on('receiveMessage', (msg) => {
-      if (msg.from === selectedUser || msg.to === selectedUser) {
-        setMessages(prev => [...prev, msg]);
+    try {
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/messages`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ to: selectedUser, content: newMessage })
+      });
+      const data = await res.json();
+
+      if (res.ok) {
+        setMessages(prev => [...prev, data]);
+        setNewMessage('');
       }
-    });
-
-    return () => socket.off('receiveMessage');
-  }, [socket, selectedUser]);
-
-  const sendMessage = () => {
-    if (!newMessage.trim() || !socket || !selectedUser) return;
-
-    const messageData = {
-      to: selectedUser,
-      from: user._id,
-      content: newMessage,
-    };
-
-    socket.emit('sendMessage', messageData);
-    setMessages(prev => [...prev, messageData]);
-    setNewMessage('');
-  };
-
-  const getRoomId = (id1, id2) => {
-    return [id1, id2].sort().join('-');
+    } catch {}
   };
 
   return (
@@ -116,7 +104,6 @@ const Messages = () => {
                 value={newMessage}
                 onChange={(e) => setNewMessage(e.target.value)}
                 placeholder="Type a message..."
-                onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
               />
               <button onClick={sendMessage}>Send</button>
             </div>

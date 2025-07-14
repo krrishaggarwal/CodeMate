@@ -9,5 +9,4 @@ export const store = configureStore({
     posts: postReducer,
     theme: themeReducer,
   },
-  devTools: process.env.NODE_ENV !== 'production',
 });

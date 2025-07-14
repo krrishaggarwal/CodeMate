@@ -17,12 +17,6 @@ const postSlice = createSlice({
     removePost: (state, action) => {
       state.posts = state.posts.filter(post => post._id !== action.payload);
     },
-    updatePost: (state, action) => {
-      const index = state.posts.findIndex(p => p._id === action.payload._id);
-      if (index !== -1) {
-        state.posts[index] = action.payload;
-      }
-    },
     setLoading: (state, action) => {
       state.loading = action.payload;
     },
@@ -32,5 +26,5 @@ const postSlice = createSlice({
   },
 });
 
-export const { setPosts, addPost, removePost, updatePost, setLoading, setError } = postSlice.actions;
+export const { setPosts, addPost, removePost, setLoading, setError } = postSlice.actions;
 export default postSlice.reducer;
