@@ -1,47 +1,56 @@
-/* Navbar.css */
-
+/* ============== Base Navbar ============== */
 .navbar {
-  background: #1f2937;
-  color: #fff;
+  background: #ffffff;
+  color: #1f2937;
   padding: 0.8rem 1.5rem;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+  border: 2px solid #1e88e5;
+  box-sizing: border-box;
   position: sticky;
   top: 0;
   z-index: 1000;
+  transition: background 0.3s ease, color 0.3s ease, border 0.3s ease;
+  font-weight: 600;
+  /* Make all navbar text semi-bold by default */
 }
 
 .navbar-container {
   max-width: 1200px;
-  margin: auto;
+  margin: 0 auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
+/* ============== Logo ============== */
 .navbar-logo {
   font-size: 1.6rem;
-  font-weight: bold;
-  color: #60a5fa;
+  font-weight: 700;
+  /* Extra bold logo */
+  color: #1e88e5;
   text-decoration: none;
 }
 
+/* ============== Navigation Links ============== */
 .nav-links {
   list-style: none;
   display: flex;
   gap: 2rem;
+  transition: all 0.3s ease;
 }
 
 .nav-links li a {
-  color: #f9fafb;
+  color: #1f2937;
   text-decoration: none;
-  transition: color 0.3s;
+  font-weight: 600;
+  /* Bold navigation links */
+  transition: color 0.3s ease;
 }
 
 .nav-links li a:hover {
-  color: #60a5fa;
+  color: #1e88e5;
 }
 
-/* Hamburger menu */
+/* ============== Hamburger Menu ============== */
 .menu-toggle {
   display: none;
   flex-direction: column;
@@ -51,34 +60,37 @@
 .menu-toggle div {
   width: 25px;
   height: 3px;
-  background: #f9fafb;
+  background: #1f2937;
   margin: 4px 0;
-  transition: all 0.3s;
+  transition: all 0.3s ease;
 }
 
 .menu-toggle.open div:nth-child(1) {
   transform: rotate(45deg) translate(5px, 5px);
 }
+
 .menu-toggle.open div:nth-child(2) {
   opacity: 0;
 }
+
 .menu-toggle.open div:nth-child(3) {
   transform: rotate(-45deg) translate(5px, -5px);
 }
 
-/* Responsive */
+/* ============== Responsive Styles ============== */
 @media (max-width: 768px) {
   .nav-links {
     position: absolute;
     top: 60px;
-    right: -200px;
+    right: -220px;
     width: 200px;
     flex-direction: column;
-    background: #1f2937;
+    background: #ffffff;
     padding: 1rem;
     border-radius: 8px;
-    box-shadow: 0 6px 16px rgba(0,0,0,0.3);
-    transition: right 0.3s;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+    transition: right 0.3s ease;
+    z-index: 999;
   }
 
   .nav-links.show {
@@ -90,11 +102,31 @@
   }
 }
 
-/* Dark mode */
+/* ============== Dark Mode Support ============== */
 body.dark .navbar {
-  background: #111827;
+  background: #000000;
+  color: #f3f4f6;
+  border: 2px solid #1e88e5;
+}
+
+body.dark .navbar-logo {
+  color: #1e88e5;
+}
+
+body.dark .nav-links {
+  background: #000000;
+}
+
+body.dark .nav-links li a {
+  color: #d1d5db;
+  font-weight: 600;
+  /* Bold in dark mode too */
 }
 
 body.dark .nav-links li a:hover {
-  color: #7dd3fc;
+  color: #1e88e5;
+}
+
+body.dark .menu-toggle div {
+  background: #f3f4f6;
 }

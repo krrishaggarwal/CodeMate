@@ -6,6 +6,9 @@
   padding: 1rem;
 }
 
+/* ====================
+   Text States
+==================== */
 .loading,
 .error,
 .no-posts,
@@ -16,8 +19,11 @@
   font-size: 1rem;
 }
 
+/* ====================
+   Header Section
+==================== */
 .profile-header {
-  background: #fff;
+  background: #ffffff;
   border-radius: 12px;
   padding: 1.5rem;
   display: flex;
@@ -52,6 +58,7 @@
 .profile-details h1 {
   margin: 0;
   font-size: 1.8rem;
+  color: #1f2937;
 }
 
 .profile-bio {
@@ -83,6 +90,9 @@
   color: #888;
 }
 
+/* ====================
+   Action Buttons
+==================== */
 .profile-actions {
   display: flex;
   flex-direction: column;
@@ -107,32 +117,29 @@
   border-radius: 6px;
   cursor: pointer;
   transition: all 0.2s;
+  font-weight: 600;
+  color: #fff;
 }
 
 .follow-btn {
-  background: #007bff;
-  color: #fff;
+  background: #6c63ff;
 }
 
 .unfollow-btn {
   background: #dc3545;
-  color: #fff;
 }
 
 .message-btn {
   background: #28a745;
-  color: #fff;
 }
 
 .pending-btn {
   background: #6c757d;
-  color: #fff;
 }
 
 .download-btn,
 .edit-profile-btn {
   background: #17a2b8;
-  color: #fff;
 }
 
 .follow-btn:hover,
@@ -143,6 +150,9 @@
   opacity: 0.9;
 }
 
+/* ====================
+   Profile Tabs
+==================== */
 .profile-nav {
   display: flex;
   justify-content: center;
@@ -153,20 +163,24 @@
 .profile-nav button {
   padding: 0.4rem 1rem;
   background: none;
-  border: 2px solid #007bff;
-  color: #007bff;
+  border: 2px solid #6c63ff;
+  color: #6c63ff;
   border-radius: 6px;
   cursor: pointer;
   transition: all 0.2s;
   font-family: 'Fira Code', monospace;
+  font-weight: 600;
 }
 
 .profile-nav button.active,
 .profile-nav button:hover {
-  background: #007bff;
+  background: #6c63ff;
   color: #fff;
 }
 
+/* ====================
+   About Section
+==================== */
 .profile-content .about-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -174,12 +188,15 @@
 }
 
 .about-card {
-  background: #fff;
+  background: #ffffff;
   border-radius: 10px;
   padding: 1rem;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
+/* ====================
+   Tags & Links
+==================== */
 .skills-list,
 .social-links,
 .project-technologies {
@@ -191,23 +208,27 @@
 
 .skill-tag,
 .tech-tag {
-  background: #007bff;
+  background: #6c63ff;
   color: #fff;
   padding: 0.3rem 0.6rem;
   border-radius: 4px;
   font-size: 0.8rem;
+  font-weight: 500;
 }
 
 .social-link {
   text-decoration: none;
-  color: #007bff;
-  font-weight: bold;
+  color: #6c63ff;
+  font-weight: 600;
 }
 
 .social-link:hover {
   text-decoration: underline;
 }
 
+/* ====================
+   Post & Project Cards
+==================== */
 .posts-grid,
 .projects-grid {
   display: grid;
@@ -217,7 +238,7 @@
 
 .post-card,
 .project-card {
-  background: #fff;
+  background: #ffffff;
   border-radius: 10px;
   padding: 1rem;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
@@ -240,15 +261,16 @@
   margin-right: 0.6rem;
   text-decoration: none;
   color: #28a745;
+  font-weight: 600;
 }
 
 .project-links a:hover {
   text-decoration: underline;
 }
 
-/* =====================
-   Dark Mode Support 
-===================== */
+/* ====================
+   Dark Mode Support
+==================== */
 body.dark .profile-header,
 body.dark .about-card,
 body.dark .post-card,
@@ -256,6 +278,10 @@ body.dark .project-card {
   background: #1e1e1e;
   color: #ccc;
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.4);
+}
+
+body.dark .profile-details h1 {
+  color: #f3f4f6;
 }
 
 body.dark .profile-meta,
@@ -282,6 +308,7 @@ body.dark .profile-nav button:hover {
 body.dark .skill-tag,
 body.dark .tech-tag {
   background: #2c2c2c;
+  color: #eee;
 }
 
 body.dark .social-link {

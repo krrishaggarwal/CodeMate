@@ -20,13 +20,14 @@
   object-fit: cover;
   border-radius: 50%;
   margin-bottom: 0.8rem;
-  border: 3px solid #3b82f6;
+  border: 3px solid #6c63ff;
 }
 
 .developer-card h3 {
   margin: 0.5rem 0;
   font-size: 1.2rem;
-  color: #111827;
+  color: #1f2937;
+  font-weight: 600;
 }
 
 .dev-bio {
@@ -44,34 +45,40 @@
 }
 
 .skill-tag {
-  background: #f3f4f6;
-  color: #374151;
+  background: #ede9ff;
+  color: #4437aa;
   font-size: 0.75rem;
-  padding: 4px 8px;
+  padding: 4px 10px;
   border-radius: 12px;
+  font-weight: 500;
 }
 
 .developer-card button {
-  background: #3b82f6;
+  background: #6c63ff;
   color: #fff;
   border: none;
   padding: 0.6rem 1.2rem;
   border-radius: 8px;
   cursor: pointer;
-  transition: background 0.3s;
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+  font-weight: 600;
 }
 
 .developer-card button:hover {
-  background: #2563eb;
+  background: #5848d6;
+  box-shadow: 0 0 8px rgba(108, 99, 255, 0.4);
 }
 
-/* Dark mode */
+/* ==========================
+   Dark Mode
+========================== */
 body.dark .developer-card {
   background: #1f2937;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
 }
 
 body.dark .developer-card h3 {
-  color: #f9fafb;
+  color: #e5e7eb;
 }
 
 body.dark .dev-bio {
@@ -79,14 +86,15 @@ body.dark .dev-bio {
 }
 
 body.dark .skill-tag {
-  background: #374151;
-  color: #f9fafb;
+  background: #3b3b4f;
+  color: #ddd;
 }
 
 body.dark .developer-card button {
-  background: #60a5fa;
+  background: #7a70ff;
 }
 
 body.dark .developer-card button:hover {
-  background: #3b82f6;
+  background: #9d94ff;
+  box-shadow: 0 0 10px #6c63ff;
 }

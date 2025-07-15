@@ -6,6 +6,7 @@
   padding: 2rem;
 }
 
+/* ========== Header ========== */
 .home-header {
   text-align: center;
   margin-bottom: 2rem;
@@ -13,37 +14,42 @@
 
 .home-header h1 {
   font-size: 2rem;
-  color: #333;
+  color: #1f2937;
+  font-weight: 600;
   margin-bottom: 1rem;
 }
 
+/* ========== Filter Tabs ========== */
 .filter-tabs {
   display: flex;
   justify-content: center;
   gap: 1rem;
+  flex-wrap: wrap;
 }
 
 .filter-tabs button {
   padding: 0.5rem 1.5rem;
   font-size: 1rem;
-  border: 2px solid #007bff;
+  border: 2px solid #1e88e5;
   background: transparent;
-  color: #007bff;
+  color: #1e88e5;
+  font-weight: 600;
   border-radius: 25px;
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
 .filter-tabs button:hover {
-  background: #007bff;
-  color: #fff;
+  background: #1e88e5;
+  color: #ffffff;
 }
 
 .filter-tabs .active {
-  background: #007bff;
-  color: #fff;
+  background: #1e88e5;
+  color: #ffffff;
 }
 
+/* ========== Posts Feed ========== */
 .posts-feed {
   display: flex;
   flex-direction: column;
@@ -54,11 +60,11 @@
 .no-posts {
   text-align: center;
   font-size: 1.2rem;
-  color: #777;
+  color: #6b7280;
   margin-top: 2rem;
 }
 
-/* Responsive */
+/* ========== Responsive ========== */
 @media (max-width: 600px) {
   .home-header h1 {
     font-size: 1.5rem;
@@ -72,4 +78,26 @@
   .filter-tabs button {
     width: 100%;
   }
+}
+
+/* ========== Dark Mode Support ========== */
+body.dark .home-header h1 {
+  color: #f3f4f6;
+}
+
+body.dark .filter-tabs button {
+  border-color: #1e88e5;
+  color: #1e88e5;
+  background: transparent;
+}
+
+body.dark .filter-tabs button:hover,
+body.dark .filter-tabs .active {
+  background: #1e88e5;
+  color: #ffffff;
+}
+
+body.dark .loading,
+body.dark .no-posts {
+  color: #d1d5db;
 }

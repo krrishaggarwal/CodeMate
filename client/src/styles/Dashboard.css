@@ -1,11 +1,11 @@
-/* Dashboard.css */
-
+/* ======= Dashboard Container ======= */
 .dashboard-container {
   max-width: 1100px;
   margin: 0 auto;
   padding: 2rem;
 }
 
+/* ======= Header Section ======= */
 .dashboard-header {
   display: flex;
   justify-content: space-between;
@@ -15,12 +15,13 @@
 
 .dashboard-header h1 {
   font-size: 2rem;
-  color: #333;
+  color: #1f2937;
+  font-weight: 700;
 }
 
 .dashboard-actions button,
 .dashboard-actions .settings-btn {
-  background: #007bff;
+  background: #1e88e5;
   color: #fff;
   border: none;
   padding: 0.6rem 1.2rem;
@@ -29,27 +30,30 @@
   cursor: pointer;
   transition: background 0.3s ease;
   text-decoration: none;
+  font-weight: 600;
 }
 
 .dashboard-actions button:hover,
 .dashboard-actions .settings-btn:hover {
-  background: #0056b3;
+  background: #1565c0;
 }
 
+/* ======= Grid Layout ======= */
 .dashboard-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   gap: 1.5rem;
 }
 
-/* Card styles */
+/* ======= Dashboard Card ======= */
 .dashboard-card {
-  background: #fff;
+  background: #ffffff;
   border-radius: 12px;
   padding: 1.5rem;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.08);
 }
 
+/* ======= Card Header ======= */
 .card-header {
   display: flex;
   justify-content: space-between;
@@ -59,13 +63,15 @@
 
 .card-header h3 {
   font-size: 1.2rem;
+  font-weight: 600;
 }
 
 .edit-link,
 .view-all-link {
-  color: #007bff;
+  color: #1e88e5;
   text-decoration: none;
   font-size: 0.9rem;
+  font-weight: 600;
 }
 
 .edit-link:hover,
@@ -73,7 +79,7 @@
   text-decoration: underline;
 }
 
-/* Profile overview */
+/* ======= Profile Overview ======= */
 .profile-overview {
   display: flex;
   flex-direction: column;
@@ -95,7 +101,7 @@
 .avatar-placeholder {
   width: 80px;
   height: 80px;
-  background: #007bff;
+  background: #1e88e5;
   color: #fff;
   font-size: 2rem;
   border-radius: 50%;
@@ -107,11 +113,13 @@
 .profile-details h4 {
   margin-top: 0.5rem;
   font-size: 1.2rem;
+  font-weight: 600;
 }
 
 .profile-details p {
   font-size: 0.9rem;
   color: #555;
+  font-weight: 500;
 }
 
 .skills {
@@ -125,9 +133,10 @@
   margin: 0.2rem;
   font-size: 0.8rem;
   display: inline-block;
+  font-weight: 600;
 }
 
-/* Statistics */
+/* ======= Statistics ======= */
 .stats-grid {
   display: flex;
   justify-content: space-between;
@@ -147,15 +156,17 @@
 
 .stat-number {
   font-size: 1.5rem;
-  color: #007bff;
+  color: #1e88e5;
+  font-weight: 700;
 }
 
 .stat-label {
   font-size: 0.85rem;
   color: #555;
+  font-weight: 600;
 }
 
-/* Quick actions */
+/* ======= Quick Actions ======= */
 .action-buttons {
   display: flex;
   flex-direction: column;
@@ -164,20 +175,21 @@
 }
 
 .action-btn {
-  background: #007bff;
+  background: #1e88e5;
   color: #fff;
   padding: 0.6rem 1rem;
   text-align: center;
   border-radius: 6px;
   text-decoration: none;
   transition: background 0.3s;
+  font-weight: 600;
 }
 
 .action-btn:hover {
-  background: #0056b3;
+  background: #1565c0;
 }
 
-/* Follow requests */
+/* ======= Follow Requests ======= */
 .follow-requests .requests-list {
   margin-top: 1rem;
 }
@@ -201,27 +213,29 @@
 }
 
 .request-name {
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .request-email {
   font-size: 0.8rem;
   color: #666;
+  font-weight: 500;
 }
 
 .request-actions button {
   background: transparent;
-  border: 2px solid #007bff;
-  color: #007bff;
+  border: 2px solid #1e88e5;
+  color: #1e88e5;
   padding: 0.4rem 0.8rem;
   border-radius: 6px;
   cursor: pointer;
   transition: all 0.3s;
   margin-left: 0.4rem;
+  font-weight: 600;
 }
 
 .request-actions .accept-btn:hover {
-  background: #007bff;
+  background: #1e88e5;
   color: #fff;
 }
 
@@ -235,7 +249,7 @@
   color: #fff;
 }
 
-/* Recent posts */
+/* ======= Recent Posts ======= */
 .recent-posts .posts-list {
   margin-top: 1rem;
 }
@@ -251,21 +265,24 @@
   font-size: 0.8rem;
   color: #666;
   margin-top: 0.4rem;
+  font-weight: 500;
 }
 
 .no-posts {
   font-size: 0.9rem;
   color: #555;
+  font-weight: 500;
 }
 
-/* Loading state */
+/* ======= Loading State ======= */
 .loading {
   text-align: center;
   font-size: 1.2rem;
   color: #555;
+  font-weight: 600;
 }
 
-/* Responsive adjustments */
+/* ======= Responsive Adjustments ======= */
 @media (max-width: 600px) {
   .dashboard-header {
     flex-direction: column;
@@ -282,4 +299,75 @@
     align-items: flex-start;
     gap: 0.5rem;
   }
+}
+
+/* ======= Dark Mode Support ======= */
+body.dark .dashboard-header h1,
+body.dark .card-header h3,
+body.dark .profile-details h4,
+body.dark .request-name {
+  color: #f9fafb;
+}
+
+body.dark .dashboard-card,
+body.dark .stat-item,
+body.dark .post-item {
+  background: #1f2937;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+body.dark .dashboard-actions button,
+body.dark .dashboard-actions .settings-btn,
+body.dark .action-btn {
+  background: #1e88e5;
+}
+
+body.dark .dashboard-actions button:hover,
+body.dark .dashboard-actions .settings-btn:hover,
+body.dark .action-btn:hover {
+  background: #1565c0;
+}
+
+body.dark .profile-details p,
+body.dark .stat-label,
+body.dark .request-email,
+body.dark .post-meta,
+body.dark .no-posts,
+body.dark .loading {
+  color: #d1d5db;
+}
+
+body.dark .skill-tag {
+  background: #374151;
+  color: #e5e7eb;
+}
+
+body.dark .edit-link,
+body.dark .view-all-link {
+  color: #1e88e5;
+}
+
+body.dark .edit-link:hover,
+body.dark .view-all-link:hover {
+  text-decoration: underline;
+}
+
+body.dark .request-actions button {
+  border-color: #1e88e5;
+  color: #1e88e5;
+}
+
+body.dark .request-actions .accept-btn:hover {
+  background: #1e88e5;
+  color: #fff;
+}
+
+body.dark .request-actions .decline-btn {
+  border-color: #ef4444;
+  color: #ef4444;
+}
+
+body.dark .request-actions .decline-btn:hover {
+  background: #ef4444;
+  color: #fff;
 }

@@ -11,7 +11,7 @@
   margin-bottom: 2rem;
   font-size: 2.3rem;
   font-weight: 700;
-  color: #222;
+  color: #1f2937;
 }
 
 /* Message box */
@@ -19,10 +19,11 @@
   text-align: center;
   margin-bottom: 1rem;
   padding: 0.8rem 1rem;
-  background: #e0f7fa;
-  border-left: 4px solid #00bcd4;
+  background: #ede9ff;
+  border-left: 4px solid #6c63ff;
   border-radius: 6px;
-  color: #007c91;
+  color: #4437aa;
+  font-weight: 500;
 }
 
 /* Posts grid */
@@ -51,15 +52,16 @@
 .post-item h3 {
   margin: 0 0 0.8rem;
   font-size: 1.3rem;
-  color: #333;
+  color: #1f2937;
 }
 
 .post-item p {
-  color: #555;
+  color: #444;
   margin-bottom: 1rem;
-  line-height: 1.4;
+  line-height: 1.5;
 }
 
+/* Image */
 .post-img {
   width: 100%;
   max-height: 180px;
@@ -83,7 +85,7 @@
   border-radius: 8px;
   font-size: 0.95rem;
   cursor: pointer;
-  transition: all 0.25s;
+  transition: all 0.25s ease;
 }
 
 .post-actions button:hover {
@@ -92,12 +94,12 @@
 }
 
 .post-actions button:last-child {
-  background: #f44336;
+  background: #d32f2f;
 }
 
 .post-actions button:last-child:hover {
-  background: #ff4b3e;
-  box-shadow: 0 0 10px #f44336;
+  background: #b71c1c;
+  box-shadow: 0 0 10px #d32f2f;
 }
 
 /* Loading & empty states */
@@ -107,13 +109,11 @@
   margin-top: 2rem;
 }
 
-/* ===========================
+/* ==========================
    DARK MODE SUPPORT
-============================= */
-body.dark .manage-posts-container h1,
-body.dark .post-item h3,
-body.dark .post-item p {
-  color: #eee;
+========================== */
+body.dark .manage-posts-container h1 {
+  color: #e2e2e2;
 }
 
 body.dark .post-item {
@@ -122,17 +122,34 @@ body.dark .post-item {
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
 }
 
+body.dark .post-item h3 {
+  color: #f3f3f3;
+}
+
+body.dark .post-item p {
+  color: #ccc;
+}
+
 body.dark .message {
-  background: #173344;
-  border-left-color: #00bcd4;
-  color: #aeefff;
+  background: #2a2e43;
+  border-left-color: #6c63ff;
+  color: #c3bfff;
+}
+
+body.dark .post-actions button {
+  background: #7a70ff;
+}
+
+body.dark .post-actions button:hover {
+  background: #9d94ff;
+  box-shadow: 0 0 10px #6c63ff;
 }
 
 body.dark .post-actions button:last-child {
-  background: #d32f2f;
+  background: #ef5350;
 }
 
 body.dark .post-actions button:last-child:hover {
-  background: #b71c1c;
-  box-shadow: 0 0 10px #d32f2f;
+  background: #e53935;
+  box-shadow: 0 0 10px #ef5350;
 }

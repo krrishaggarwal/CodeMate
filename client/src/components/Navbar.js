@@ -1,20 +1,32 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext';
 import '../styles/NavBar.css';
+import logo from '../assets/logo.svg';
+import logo_light from '../assets/logo_light.svg';
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const { theme } = useContext(AuthContext); // ✅ Get theme from context
 
   return (
     <nav className="navbar">
       <div className="navbar-container">
-        <Link to="/" className="navbar-logo">🚀 CodeMate</Link>
-        
-        <div 
-          className={`menu-toggle ${menuOpen ? 'open' : ''}`} 
+        <Link to="/" className="navbar-logo">
+          <img
+            src={theme === 'dark' ? logo_light : logo}
+            alt="CodeMate"
+            className="navbar-logo-img"
+          />
+        </Link>
+
+        <div
+          className={`menu-toggle ${menuOpen ? 'open' : ''}`}
           onClick={() => setMenuOpen(!menuOpen)}
         >
-          <div></div><div></div><div></div>
+          <div></div>
+          <div></div>
+          <div></div>
         </div>
 
         <ul className={`nav-links ${menuOpen ? 'show' : ''}`}>

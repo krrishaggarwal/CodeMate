@@ -1,8 +1,9 @@
 /* global.css */
 
-/* Fonts */
+/* ====== Fonts ====== */
 @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@400;500;600&display=swap');
 
+/* ====== Base ====== */
 body {
   margin: 0;
   font-family: 'Inter', sans-serif;
@@ -11,7 +12,7 @@ body {
   transition: background 0.3s, color 0.3s;
 }
 
-/* Developer font */
+/* Developer monospace fonts */
 .code-text,
 .skill-tag,
 .stat-number,
@@ -24,13 +25,13 @@ button {
   font-family: inherit;
 }
 
-/* Dark Mode */
+/* ====== Dark Mode ====== */
 body.dark {
   background: #121212;
   color: #ddd;
 }
 
-/* Common containers */
+/* ====== Common Containers (transition support) ====== */
 .dashboard-container,
 .profile-container,
 .edit-profile-container,
@@ -42,7 +43,7 @@ body.dark {
   transition: background 0.3s, color 0.3s;
 }
 
-/* Input & form elements */
+/* ====== Inputs & Form Elements ====== */
 input,
 textarea,
 select,
@@ -50,16 +51,16 @@ button {
   transition: background 0.3s, color 0.3s, border-color 0.3s;
 }
 
-/* Dark Mode: Inputs */
+/* ====== Dark Mode: Input Fields ====== */
 body.dark input,
 body.dark textarea,
 body.dark select {
   background: #1e1e1e;
   color: #ddd;
-  border-color: #333;
+  border: 1px solid #333;
 }
 
-/* Dark Mode: Cards & sections */
+/* ====== Dark Mode: Cards & Sections ====== */
 body.dark .dashboard-card,
 body.dark .about-card,
 body.dark .post-card,
@@ -70,11 +71,11 @@ body.dark .post-item,
 body.dark .developer-card {
   background: #1e1e1e;
   color: #ddd;
+  border: 1px solid #333;
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.4);
-  border-color: #333;
 }
 
-/* Dark Mode: Buttons */
+/* ====== Dark Mode: Buttons (slight brightness boost) ====== */
 body.dark .auth-button,
 body.dark .theme-btn,
 body.dark .edit-profile-btn,
@@ -86,7 +87,7 @@ body.dark .delete-btn {
   filter: brightness(1.1);
 }
 
-/* Dark Mode: Links */
+/* ====== Dark Mode: Primary Links ====== */
 body.dark a,
 body.dark .social-link,
 body.dark .auth-link,
@@ -95,7 +96,11 @@ body.dark .view-all-link {
   color: #82aaff;
 }
 
-/* Scrollbars */
+/* ====== Scrollbars for Dark Mode ====== */
 body.dark ::-webkit-scrollbar {
   background: #121212;
+}
+
+body.dark ::-webkit-scrollbar-thumb {
+  background: #333;
 }
