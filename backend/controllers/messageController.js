@@ -1,29 +1,55 @@
 const Message = require('../models/message');
 
-// Send msg
-const sendMessage = async (fromUserId, toUserId, text) => {
+const sendMessage = async (senderId, receiverId, content) => {
     try {
-        const message = await Message.create({
-            sender: fromUserId,
-            receiver: toUserId,
-            content: text,
+        const message = new Message({
+            sender: senderId,
+            receiver: receiverId,
+            content: content
         });
-        return { data: message };
+
+        await message.save();
+        await message.populate('sender', '_id name');
+
+        return {
+            success: true,
+            data: {
+                _id: message._id,
+                content: message.content,
+                sender: message.sender,
+                timestamp: message.timestamp.toISOString()
+            }
+        };
     } catch (error) {
-        return { error: error.message };
+        console.error('Error in sendMessage:', error);
+        return {
+            success: false,
+            error: 'Failed to send message',
+            details: error.message
+        };
     }
 };
 
-// Return/display msg
+
+
 const getMessages = async (userId1, userId2) => {
     try {
         const messages = await Message.find({
             $or: [
-                { from: userId1, to: userId2 },
-                { from: userId2, to: userId1 }
+                { sender: userId1, receiver: userId2 },
+                { sender: userId2, receiver: userId1 }
             ]
-        }).sort('createdAt');
-        return { data: messages };
+        })
+            .populate("sender", "_id name")
+            .sort({ timestamp: 1 }); // Sort by createdAt ascending
+
+        // Format dates consistently
+        const formattedMessages = messages.map(msg => ({
+            ...msg.toObject(),
+            timestamp: msg.timestamp.toISOString()
+        }));
+
+        return { data: formattedMessages };
     } catch (error) {
         return { error: error.message };
     }

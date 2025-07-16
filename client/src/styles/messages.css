@@ -64,7 +64,7 @@ body.dark .messages-container {
 }
 
 .sidebar li.active {
-  background: #6c63ff;
+  background: #1e88e5;
   color: #fff;
   font-weight: 600;
 }
@@ -91,7 +91,7 @@ body.dark .sidebar li:hover {
 }
 
 body.dark .sidebar li.active {
-  background: #6c63ff;
+  background: #1e88e5;
   color: #fff;
 }
 
@@ -107,6 +107,29 @@ body.dark .sidebar li.active {
 
 body.dark .chat-window {
   background: #121212;
+}
+
+/* =============== Chat Header =============== */
+.chat-header {
+  padding: 1rem;
+  border-bottom: 1px solid #ddd;
+  text-align: center;
+  background: #f0f0f0;
+}
+
+.chat-header h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+body.dark .chat-header {
+  background: #1e1e1e;
+  border-bottom-color: #333;
+}
+
+body.dark .chat-header h3 {
+  color: #eee;
 }
 
 /* No chat selected state */
@@ -125,6 +148,7 @@ body.dark .chat-window {
   display: flex;
   flex-direction: column;
   gap: 0.8rem;
+  margin-bottom: 70px; /* space for input area */
 }
 
 /* Individual message bubble */
@@ -138,7 +162,7 @@ body.dark .chat-window {
 
 .message-bubble.sent {
   align-self: flex-end;
-  background: #6c63ff;
+  background: #1e88e5;
   color: #fff;
   border-bottom-right-radius: 4px;
 }
@@ -156,8 +180,24 @@ body.dark .message-bubble.received {
   color: #ddd;
 }
 
+/* =============== Time Style =============== */
+.message-time {
+  font-size: 0.7rem;
+  color: #fff;
+  margin-top: 4px;
+  text-align: right;
+}
+
+body.dark .message-time {
+  color: #fff;
+}
+
 /* =============== Chat Input =============== */
 .chat-input {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
   display: flex;
   padding: 1rem;
   border-top: 1px solid #ddd;
@@ -177,7 +217,7 @@ body.dark .message-bubble.received {
 
 .chat-input button {
   margin-left: 0.8rem;
-  background: #6c63ff;
+  background: #1e88e5;
   border: none;
   color: #fff;
   padding: 0 1.4rem;
@@ -188,7 +228,7 @@ body.dark .message-bubble.received {
 }
 
 .chat-input button:hover {
-  background: #7a70ff;
+  background: #1565c0;
 }
 
 /* Dark mode input */
@@ -204,11 +244,11 @@ body.dark .chat-input input {
 }
 
 body.dark .chat-input button {
-  background: #8b82ff;
+  background: #1e88e5;
 }
 
 body.dark .chat-input button:hover {
-  background: #a399ff;
+  background: #1565c0;
 }
 
 /* =============== Scrollbars =============== */

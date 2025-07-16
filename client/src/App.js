@@ -3,30 +3,32 @@ import { BrowserRouter, useLocation } from 'react-router-dom';
 import AppRoutes from './routes';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import { AuthContext } from './context/AuthContext';
+import { SocketProvider } from './context/socketContext';
 
 const AppContent = () => {
   const location = useLocation();
+  const { user } = React.useContext(AuthContext);
 
-  // List of routes where footer should not appear
   const hideFooterRoutes = ['/dashboard', '/messages', '/edit-profile'];
 
   return (
-    <div className="app">
-      <Navbar />
-      <main>
-        <AppRoutes />
-      </main>
-      {!hideFooterRoutes.includes(location.pathname) && <Footer />}
-    </div>
+    <SocketProvider user={user}>
+      <div className="app">
+        <Navbar />
+        <main>
+          <AppRoutes />
+        </main>
+        {!hideFooterRoutes.includes(location.pathname) && <Footer />}
+      </div>
+    </SocketProvider>
   );
 };
 
-function App() {
-  return (
-    <BrowserRouter>
-      <AppContent />
-    </BrowserRouter>
-  );
-}
+const App = () => (
+  <BrowserRouter>
+    <AppContent />
+  </BrowserRouter>
+);
 
 export default App;
