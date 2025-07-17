@@ -1,16 +1,11 @@
-/* ============== Base Navbar ============== */
+/* ====== Navbar Base ====== */
 .navbar {
   background: #ffffff;
-  color: #1f2937;
-  padding: 0.8rem 1.5rem;
-  border: 2px solid #1e88e5;
-  box-sizing: border-box;
+  border-bottom: 1px solid #e5e7eb;
+  padding: 0.75rem 1.5rem;
   position: sticky;
   top: 0;
-  z-index: 1000;
-  transition: background 0.3s ease, color 0.3s ease, border 0.3s ease;
-  font-weight: 600;
-  /* Make all navbar text semi-bold by default */
+  z-index: 100;
 }
 
 .navbar-container {
@@ -21,110 +16,90 @@
   justify-content: space-between;
 }
 
-/* ============== Logo ============== */
-.navbar-logo {
-  font-size: 1.6rem;
-  font-weight: 700;
-  /* Extra bold logo */
-  color: #1e88e5;
-  text-decoration: none;
+/* ====== Logo ====== */
+.navbar-logo-img {
+  height: 50;
+  width: 120px;
 }
 
-/* ============== Navigation Links ============== */
-.nav-links {
-  list-style: none;
-  display: flex;
-  gap: 2rem;
-  transition: all 0.3s ease;
-}
-
-.nav-links li a {
-  color: #1f2937;
-  text-decoration: none;
-  font-weight: 600;
-  /* Bold navigation links */
-  transition: color 0.3s ease;
-}
-
-.nav-links li a:hover {
-  color: #1e88e5;
-}
-
-/* ============== Hamburger Menu ============== */
+/* ====== Menu Toggle (Hamburger) ====== */
 .menu-toggle {
   display: none;
   flex-direction: column;
+  gap: 5px;
   cursor: pointer;
 }
 
 .menu-toggle div {
   width: 25px;
   height: 3px;
-  background: #1f2937;
-  margin: 4px 0;
-  transition: all 0.3s ease;
+  background: #333;
+  border-radius: 4px;
 }
 
-.menu-toggle.open div:nth-child(1) {
-  transform: rotate(45deg) translate(5px, 5px);
+/* ====== Nav Links ====== */
+.nav-links {
+  display: flex;
+  gap: 2rem;
+  list-style: none;
 }
 
-.menu-toggle.open div:nth-child(2) {
-  opacity: 0;
+.nav-links a {
+  text-decoration: none;
+  color: #1f2937;
+  font-weight: 600;
+  transition: color 0.2s;
 }
 
-.menu-toggle.open div:nth-child(3) {
-  transform: rotate(-45deg) translate(5px, -5px);
+.nav-links a:hover {
+  color: #1e88e5;
 }
 
-/* ============== Responsive Styles ============== */
+/* ====== Mobile Responsive ====== */
 @media (max-width: 768px) {
-  .nav-links {
-    position: absolute;
-    top: 60px;
-    right: -220px;
-    width: 200px;
-    flex-direction: column;
-    background: #ffffff;
-    padding: 1rem;
-    border-radius: 8px;
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
-    transition: right 0.3s ease;
-    z-index: 999;
-  }
-
-  .nav-links.show {
-    right: 10px;
-  }
-
   .menu-toggle {
     display: flex;
   }
+
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 65px;
+    right: 20px;
+    background: white;
+    padding: 1rem;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    z-index: 99;
+    min-width: 160px;
+  }
+
+  .nav-links.show {
+    display: flex;
+  }
+
+  .nav-links li {
+    margin: 0.5rem 0;
+  }
 }
 
-/* ============== Dark Mode Support ============== */
+/* ====== Dark Mode Support ====== */
 body.dark .navbar {
-  background: #000000;
+  background: #1f2937;
+  border-color: #374151;
+}
+
+body.dark .navbar-logo-img {
+  filter: brightness(1.2);
+}
+
+body.dark .nav-links a {
   color: #f3f4f6;
-  border: 2px solid #1e88e5;
 }
 
-body.dark .navbar-logo {
-  color: #1e88e5;
-}
-
-body.dark .nav-links {
-  background: #000000;
-}
-
-body.dark .nav-links li a {
-  color: #d1d5db;
-  font-weight: 600;
-  /* Bold in dark mode too */
-}
-
-body.dark .nav-links li a:hover {
-  color: #1e88e5;
+body.dark .nav-links a:hover {
+  color: #60a5fa;
 }
 
 body.dark .menu-toggle div {

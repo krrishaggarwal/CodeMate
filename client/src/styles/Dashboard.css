@@ -1,56 +1,61 @@
-/* ======= Dashboard Container ======= */
+/* ======= Container ======= */
 .dashboard-container {
-  max-width: 1100px;
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 2rem 1rem;
 }
 
-/* ======= Header Section ======= */
+/* ======= Header ======= */
 .dashboard-header {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
+  /* Center content horizontally */
   align-items: center;
   margin-bottom: 2rem;
+  flex-wrap: wrap;
+  text-align: center;
+  /* Optional: aligns multi-line text */
 }
 
 .dashboard-header h1 {
-  font-size: 2rem;
+  font-size: 2.2rem;
   color: #1f2937;
-  font-weight: 700;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  width: 100%;
+  /* Makes sure heading spans full width */
 }
 
-.dashboard-actions button,
-.dashboard-actions .settings-btn {
-  background: #1e88e5;
-  color: #fff;
-  border: none;
-  padding: 0.6rem 1.2rem;
-  border-radius: 6px;
-  margin-left: 0.5rem;
-  cursor: pointer;
-  transition: background 0.3s ease;
-  text-decoration: none;
-  font-weight: 600;
+
+/* ======= Two-Column Layout ======= */
+.modern-layout {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+  flex-wrap: wrap;
 }
 
-.dashboard-actions button:hover,
-.dashboard-actions .settings-btn:hover {
-  background: #1565c0;
+.left-column,
+.right-column {
+  flex: 1;
+  min-width: 320px;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 }
 
-/* ======= Grid Layout ======= */
-.dashboard-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 1.5rem;
-}
-
-/* ======= Dashboard Card ======= */
+/* ======= Card ======= */
 .dashboard-card {
-  background: #ffffff;
-  border-radius: 12px;
-  padding: 1.5rem;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.08);
+  background: #fff;
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.dashboard-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.1);
 }
 
 /* ======= Card Header ======= */
@@ -62,21 +67,23 @@
 }
 
 .card-header h3 {
-  font-size: 1.2rem;
-  font-weight: 600;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #1f2937;
 }
 
 .edit-link,
 .view-all-link {
   color: #1e88e5;
-  text-decoration: none;
-  font-size: 0.9rem;
   font-weight: 600;
+  font-size: 0.9rem;
+  transition: color 0.2s ease;
 }
 
 .edit-link:hover,
 .view-all-link:hover {
   text-decoration: underline;
+  color: #1565c0;
 }
 
 /* ======= Profile Overview ======= */
@@ -84,26 +91,25 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-
-.profile-info {
   text-align: center;
+  padding-top: 1rem;
 }
 
 .profile-avatar img,
 .request-avatar img {
-  width: 80px;
-  height: 80px;
+  width: 90px;
+  height: 90px;
   border-radius: 50%;
   object-fit: cover;
+  border: 3px solid #1e88e5;
 }
 
 .avatar-placeholder {
-  width: 80px;
-  height: 80px;
+  width: 90px;
+  height: 90px;
   background: #1e88e5;
   color: #fff;
-  font-size: 2rem;
+  font-size: 2.5rem;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -111,78 +117,79 @@
 }
 
 .profile-details h4 {
-  margin-top: 0.5rem;
-  font-size: 1.2rem;
-  font-weight: 600;
+  margin-top: 0.7rem;
+  font-size: 1.3rem;
+  font-weight: 700;
 }
 
 .profile-details p {
-  font-size: 0.9rem;
-  color: #555;
+  font-size: 0.95rem;
+  color: #666;
   font-weight: 500;
 }
 
+/* ======= Skills ======= */
 .skills {
-  margin-top: 0.5rem;
+  margin-top: 0.8rem;
 }
 
 .skill-tag {
-  background: #f0f0f0;
-  padding: 0.3rem 0.6rem;
-  border-radius: 15px;
-  margin: 0.2rem;
+  background: #e0e7ff;
+  color: #1e40af;
+  padding: 0.4rem 0.7rem;
+  border-radius: 999px;
+  margin: 0.3rem;
   font-size: 0.8rem;
-  display: inline-block;
   font-weight: 600;
 }
 
 /* ======= Statistics ======= */
+/* ======= Statistics ======= */
 .stats-grid {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 0.8rem;
-  margin-top: 1rem;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-top: 1.5rem;
 }
 
 .stat-item {
-  flex: 1;
-  min-width: 80px;
+  background: #f1f5f9;
+  border-radius: 10px;
+  padding: 1rem;
   text-align: center;
-  background: #f8f9fa;
-  padding: 0.8rem;
-  border-radius: 8px;
 }
 
 .stat-number {
-  font-size: 1.5rem;
+  font-size: 1.8rem;
+  font-weight: 800;
   color: #1e88e5;
-  font-weight: 700;
 }
 
 .stat-label {
   font-size: 0.85rem;
-  color: #555;
   font-weight: 600;
+  color: #555;
 }
 
-/* ======= Quick Actions ======= */
+/* ======= Action Buttons ======= */
 .action-buttons {
   display: flex;
   flex-direction: column;
-  gap: 0.8rem;
-  margin-top: 1rem;
+  gap: 1rem;
+  margin-top: 1.5rem;
 }
 
 .action-btn {
   background: #1e88e5;
   color: #fff;
-  padding: 0.6rem 1rem;
+  padding: 0.7rem 1.2rem;
+  border-radius: 10px;
   text-align: center;
-  border-radius: 6px;
-  text-decoration: none;
-  transition: background 0.3s;
   font-weight: 600;
+  font-size: 0.95rem;
+  transition: background 0.3s;
+  border: none;
+  cursor: pointer;
 }
 
 .action-btn:hover {
@@ -198,7 +205,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 0.8rem;
+  margin-bottom: 1rem;
+  gap: 0.8rem;
 }
 
 .request-info {
@@ -208,8 +216,8 @@
 }
 
 .request-avatar img {
-  width: 50px;
-  height: 50px;
+  width: 55px;
+  height: 55px;
 }
 
 .request-name {
@@ -223,71 +231,85 @@
 }
 
 .request-actions button {
-  background: transparent;
-  border: 2px solid #1e88e5;
-  color: #1e88e5;
-  padding: 0.4rem 0.8rem;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: all 0.3s;
-  margin-left: 0.4rem;
+  border-radius: 8px;
+  padding: 0.5rem 0.9rem;
   font-weight: 600;
+  border: 2px solid transparent;
+  background: transparent;
+  cursor: pointer;
+  transition: 0.3s;
 }
 
-.request-actions .accept-btn:hover {
+.accept-btn {
+  border-color: #1e88e5;
+  color: #1e88e5;
+}
+
+.accept-btn:hover {
   background: #1e88e5;
-  color: #fff;
+  color: white;
 }
 
-.request-actions .decline-btn {
+.decline-btn {
   border-color: #dc3545;
   color: #dc3545;
 }
 
-.request-actions .decline-btn:hover {
+.decline-btn:hover {
   background: #dc3545;
-  color: #fff;
+  color: white;
 }
 
-/* ======= Recent Posts ======= */
+/* ======= Posts ======= */
 .recent-posts .posts-list {
   margin-top: 1rem;
 }
 
 .post-item {
-  background: #f8f9fa;
-  padding: 0.8rem;
-  border-radius: 6px;
-  margin-bottom: 0.8rem;
+  background: #f1f5f9;
+  padding: 1rem;
+  border-radius: 10px;
+  margin-bottom: 1rem;
 }
 
 .post-meta {
   font-size: 0.8rem;
   color: #666;
-  margin-top: 0.4rem;
   font-weight: 500;
+  margin-top: 0.5rem;
 }
 
 .no-posts {
+  color: #777;
   font-size: 0.9rem;
-  color: #555;
   font-weight: 500;
+  text-align: center;
 }
 
-/* ======= Loading State ======= */
+/* ======= Loading ======= */
 .loading {
   text-align: center;
-  font-size: 1.2rem;
-  color: #555;
+  font-size: 1.3rem;
   font-weight: 600;
+  color: #555;
 }
 
-/* ======= Responsive Adjustments ======= */
-@media (max-width: 600px) {
+/* ======= Responsive ======= */
+@media (max-width: 768px) {
+  .modern-layout {
+    flex-direction: column;
+  }
+
+  .left-column,
+  .right-column {
+    width: 100%;
+  }
+
   .dashboard-header {
     flex-direction: column;
+    align-items: center;
+    text-align: center;
     gap: 1rem;
-    align-items: flex-start;
   }
 
   .stats-grid {
@@ -297,41 +319,28 @@
   .request-item {
     flex-direction: column;
     align-items: flex-start;
-    gap: 0.5rem;
   }
 }
 
-/* ======= Dark Mode Support ======= */
-body.dark .dashboard-header h1,
-body.dark .card-header h3,
-body.dark .profile-details h4,
-body.dark .request-name {
-  color: #f9fafb;
-}
-
+/* ======= Dark Mode ======= */
 body.dark .dashboard-card,
 body.dark .stat-item,
 body.dark .post-item {
   background: #1f2937;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
 
-body.dark .dashboard-actions button,
-body.dark .dashboard-actions .settings-btn,
-body.dark .action-btn {
-  background: #1e88e5;
-}
-
-body.dark .dashboard-actions button:hover,
-body.dark .dashboard-actions .settings-btn:hover,
-body.dark .action-btn:hover {
-  background: #1565c0;
+body.dark .dashboard-header h1,
+body.dark .card-header h3,
+body.dark .profile-details h4,
+body.dark .stat-number,
+body.dark .request-name {
+  color: #f9fafb;
 }
 
 body.dark .profile-details p,
 body.dark .stat-label,
-body.dark .request-email,
 body.dark .post-meta,
+body.dark .request-email,
 body.dark .no-posts,
 body.dark .loading {
   color: #d1d5db;
@@ -343,31 +352,24 @@ body.dark .skill-tag {
 }
 
 body.dark .edit-link,
-body.dark .view-all-link {
+body.dark .view-all-link,
+body.dark .accept-btn,
+body.dark .decline-btn {
   color: #1e88e5;
 }
 
-body.dark .edit-link:hover,
-body.dark .view-all-link:hover {
-  text-decoration: underline;
-}
-
-body.dark .request-actions button {
-  border-color: #1e88e5;
-  color: #1e88e5;
-}
-
-body.dark .request-actions .accept-btn:hover {
+body.dark .accept-btn:hover,
+body.dark .action-btn:hover {
   background: #1e88e5;
-  color: #fff;
+  color: white;
 }
 
-body.dark .request-actions .decline-btn {
+body.dark .decline-btn {
   border-color: #ef4444;
   color: #ef4444;
 }
 
-body.dark .request-actions .decline-btn:hover {
+body.dark .decline-btn:hover {
   background: #ef4444;
-  color: #fff;
+  color: white;
 }

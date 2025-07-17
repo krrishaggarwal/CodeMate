@@ -22,6 +22,9 @@ const updateProfile = async (userId, updates) => {
         user.bio = updates.bio || user.bio;
         user.github = updates.github || user.github;
         user.linkedin = updates.linkedin || user.linkedin;
+        user.website = updates.website || user.website;
+        user.location = updates.location || user.location;
+        user.projects = updates.projects || user.projects; // <--- Add this too
 
         const updatedUser = await user.save();
         return { data: updatedUser };

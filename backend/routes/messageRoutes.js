@@ -46,6 +46,7 @@ router.get('/:userId1/:userId2', async (req, res) => {
 // GET /api/messages/conversations
 router.get('/conversations', async (req, res) => {
   const userId = req.query.userId;
+  console.log(userId)
   try {
     const users = await Message.aggregate([
       {

@@ -60,7 +60,30 @@ const UserSchema = new mongoose.Schema({
     createdAt: {
         type: Date,
         default: Date.now // Set current time automatically
-    }
+    },
+
+    // Personal website
+    website: {
+        type: String
+    },
+
+    // Current location
+    location: {
+        type: String
+    },
+
+    // List of projects
+    projects: [
+        {
+            id: Number,
+            title: String,
+            description: String,
+            technologies: [String],
+            github: String,
+            live: String
+        }
+    ]
+
 });
 
 // Export the model to use in other files

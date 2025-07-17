@@ -7,12 +7,12 @@ import logo_light from '../assets/logo_light.svg';
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
-  const { theme } = useContext(AuthContext); // ✅ Get theme from context
+  const { theme } = useContext(AuthContext); // Get theme from context
 
   return (
     <nav className="navbar">
       <div className="navbar-container">
-        <Link to="/" className="navbar-logo">
+        <Link to="/" className="navbar-logo" onClick={() => setMenuOpen(false)}>
           <img
             src={theme === 'dark' ? logo_light : logo}
             alt="CodeMate"
@@ -20,6 +20,7 @@ const Navbar = () => {
           />
         </Link>
 
+        {/* Hamburger */}
         <div
           className={`menu-toggle ${menuOpen ? 'open' : ''}`}
           onClick={() => setMenuOpen(!menuOpen)}
@@ -29,6 +30,7 @@ const Navbar = () => {
           <div></div>
         </div>
 
+        {/* Nav Links */}
         <ul className={`nav-links ${menuOpen ? 'show' : ''}`}>
           <li><Link to="/explore" onClick={() => setMenuOpen(false)}>Explore</Link></li>
           <li><Link to="/dashboard" onClick={() => setMenuOpen(false)}>Dashboard</Link></li>

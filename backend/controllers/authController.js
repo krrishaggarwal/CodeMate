@@ -25,19 +25,27 @@ const loginUser = async (email, password) => {
         if (!user) {
             throw new Error('User not found');
         }
+
         const matchPassword = await bcrypt.compare(password, user.password);
         if (!matchPassword) {
             throw new Error('Incorrect password');
         }
+
         return {
             message: 'Login successful',
-            userId: user._id,
-            name: user.name,
-            email: user.email,
+            user: {
+                _id: user._id,
+                name: user.name,
+                email: user.email,
+                avatar: user.avatar || null,
+                bio: user.bio || '',
+                skills: user.skills || []
+            }
         };
     } catch (error) {
         return { error: error.message };
     }
 };
+
 
 module.exports = { registerUser, loginUser };

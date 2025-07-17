@@ -11,11 +11,12 @@ const AppContent = () => {
   const { user } = React.useContext(AuthContext);
 
   const hideFooterRoutes = ['/dashboard', '/messages', '/edit-profile'];
+  const hideNavBarRoutes = ['/login'];
 
   return (
     <SocketProvider user={user}>
       <div className="app">
-        <Navbar />
+        {!hideNavBarRoutes.includes(location.pathname) && <Navbar />}
         <main>
           <AppRoutes />
         </main>

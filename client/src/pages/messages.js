@@ -36,9 +36,9 @@ const Messages = () => {
       }
     };
 
-    if (user?.userId) {
+    //if (user?.userId) {
       fetchConversations();
-    }
+    //}
   }, [user]);
 
   // Fetch messages when a user is selected

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import '../styles/DeveloperProfile.css';
@@ -9,164 +9,261 @@ const DeveloperProfile = () => {
   const [profile, setProfile] = useState(null);
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [actionLoading, setActionLoading] = useState(false);
   const [followStatus, setFollowStatus] = useState('none'); // 'none', 'following', 'pending'
   const [activeTab, setActiveTab] = useState('about');
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
   const isOwnProfile = !userId || userId === currentUser?._id;
 
-  useEffect(() => {
-    fetchProfile();
-    if (!isOwnProfile) {
-      checkFollowStatus();
-    }
-  }, [userId]);
+  // API Configuration
+  const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001';
 
-  const fetchProfile = async () => {
+  // Generic API call function with error handling
+  const apiCall = useCallback(async (endpoint, options = {}) => {
     try {
-      setLoading(true);
-      const targetUserId = userId || currentUser._id;
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/users/profile/${targetUserId}`, {
+      const response = await fetch(`${API_BASE_URL}${endpoint}`, {
         headers: {
           'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
+          'Content-Type': 'application/json',
+          ...options.headers
+        },
+        ...options
       });
 
-      if (response.ok) {
-        const data = await response.json();
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error(`API call failed for ${endpoint}:`, error);
+      throw error;
+    }
+  }, [token, API_BASE_URL]);
+
+  // Fetch user profile and posts
+  const fetchProfile = useCallback(async () => {
+    if (!currentUser && !userId) {
+      setError('User not authenticated');
+      setLoading(false);
+      return;
+    }
+
+    try {
+      setLoading(true);
+      setError(null);
+
+      const targetUserId = userId || currentUser._id;
+      const data = await apiCall(`/api/users/profile/${targetUserId}`);
+
+      if (data.user) {
         setProfile(data.user);
         setPosts(data.posts || []);
+      } else {
+        throw new Error('Profile data not found');
       }
     } catch (error) {
+      setError('Failed to load profile. Please try again.');
       console.error('Error fetching profile:', error);
     } finally {
       setLoading(false);
     }
-  };
+  }, [userId, currentUser, apiCall]);
 
-  const checkFollowStatus = async () => {
+  // Check follow status for other users
+  const checkFollowStatus = useCallback(async () => {
+    if (!userId || isOwnProfile) return;
+
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/follow/status/${userId}`, {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        setFollowStatus(data.status);
-      }
+      const data = await apiCall(`/api/follow/status/${userId}`);
+      setFollowStatus(data.status || 'none');
     } catch (error) {
       console.error('Error checking follow status:', error);
+      // Don't set error state for follow status as it's not critical
     }
-  };
+  }, [userId, isOwnProfile, apiCall]);
 
+  // Handle follow action
   const handleFollow = async () => {
+    if (!profile?._id || actionLoading) return;
+
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/follow/request`, {
+      setActionLoading(true);
+      await apiCall('/api/follow/request', {
         method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        },
         body: JSON.stringify({ userId: profile._id })
       });
 
-      if (response.ok) {
-        setFollowStatus('pending');
-      }
+      setFollowStatus('pending');
     } catch (error) {
+      setError('Failed to send follow request. Please try again.');
       console.error('Error sending follow request:', error);
+    } finally {
+      setActionLoading(false);
     }
   };
 
+  // Handle unfollow action
   const handleUnfollow = async () => {
+    if (!profile?._id || actionLoading) return;
+
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/follow/unfollow`, {
+      setActionLoading(true);
+      await apiCall('/api/follow/unfollow', {
         method: 'DELETE',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        },
         body: JSON.stringify({ userId: profile._id })
       });
 
-      if (response.ok) {
-        setFollowStatus('none');
-      }
+      setFollowStatus('none');
     } catch (error) {
+      setError('Failed to unfollow user. Please try again.');
       console.error('Error unfollowing user:', error);
+    } finally {
+      setActionLoading(false);
     }
   };
 
+  // Handle message navigation
   const handleMessage = () => {
+    if (!profile?._id) return;
     navigate(`/messages?user=${profile._id}`);
   };
 
+  // Download portfolio
   const downloadPortfolio = async () => {
+    if (!profile?._id || actionLoading) return;
+
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/users/portfolio/download/${profile._id}`, {
+      setActionLoading(true);
+      const response = await fetch(`${API_BASE_URL}/api/users/portfolio/download/${profile._id}`, {
         headers: {
           'Authorization': `Bearer ${token}`,
         }
       });
 
-      if (response.ok) {
-        const blob = await response.blob();
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `${profile.name}_Portfolio.pdf`;
-        a.click();
-        window.URL.revokeObjectURL(url);
+      if (!response.ok) {
+        throw new Error('Failed to download portfolio');
       }
+
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${profile.name || 'Portfolio'}_Portfolio.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
     } catch (error) {
+      setError('Failed to download portfolio. Please try again.');
       console.error('Error downloading portfolio:', error);
+    } finally {
+      setActionLoading(false);
     }
   };
 
+  // Format date safely
+  const formatDate = (dateString) => {
+    try {
+      return new Date(dateString).toLocaleDateString();
+    } catch {
+      return 'Unknown date';
+    }
+  };
+
+  // Effects
+  useEffect(() => {
+    fetchProfile();
+  }, [fetchProfile]);
+
+  useEffect(() => {
+    if (!isOwnProfile) {
+      checkFollowStatus();
+    }
+  }, [checkFollowStatus, isOwnProfile]);
+
+  // Loading state
   if (loading) {
     return (
       <div className="profile-container">
-        <div className="loading">Loading profile...</div>
+        <div className="loading" role="status" aria-label="Loading profile">
+          <div className="spinner"></div>
+          <p>Loading profile...</p>
+        </div>
       </div>
     );
   }
 
+  // Error state
+  if (error && !profile) {
+    return (
+      <div className="profile-container">
+        <div className="error" role="alert">
+          <h2>Error</h2>
+          <p>{error}</p>
+          <button onClick={fetchProfile} className="retry-btn">
+            Try Again
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // Profile not found
   if (!profile) {
     return (
       <div className="profile-container">
-        <div className="error">Profile not found</div>
+        <div className="error" role="alert">
+          <h2>Profile Not Found</h2>
+          <p>The profile you're looking for doesn't exist or has been removed.</p>
+          <button onClick={() => navigate(-1)} className="back-btn">
+            Go Back
+          </button>
+        </div>
       </div>
     );
   }
 
   return (
     <div className="profile-container">
+      {/* Error Banner */}
+      {error && (
+        <div className="error-banner" role="alert">
+          <p>{error}</p>
+          <button onClick={() => setError(null)} className="close-error">×</button>
+        </div>
+      )}
+
       {/* Profile Header */}
       <div className="profile-header">
         <div className="profile-cover">
           <div className="profile-info">
             <div className="profile-avatar">
               {profile.avatar ? (
-                <img src={profile.avatar} alt={profile.name} />
-              ) : (
-                <div className="avatar-placeholder">
-                  {profile.name.charAt(0).toUpperCase()}
-                </div>
-              )}
+                <img
+                  src={profile.avatar}
+                  alt={`${profile.name || 'User'}'s avatar`}
+                  onError={(e) => {
+                    e.target.style.display = 'none';
+                    e.target.nextSibling.style.display = 'flex';
+                  }}
+                />
+              ) : null}
+              <div className="avatar-placeholder" style={{ display: profile.avatar ? 'none' : 'flex' }}>
+                {(profile.name || 'U').charAt(0).toUpperCase()}
+              </div>
             </div>
             <div className="profile-details">
-              <h1>{profile.name}</h1>
+              <h1>{profile.name || 'Anonymous User'}</h1>
               <p className="profile-bio">{profile.bio || 'No bio available'}</p>
               <div className="profile-meta">
                 {profile.location && (
                   <span className="location">📍 {profile.location}</span>
                 )}
                 <span className="joined">
-                  Joined {new Date(profile.createdAt).toLocaleDateString()}
+                  Joined {formatDate(profile.createdAt)}
                 </span>
               </div>
               <div className="profile-stats">
@@ -187,17 +284,22 @@ const DeveloperProfile = () => {
           </div>
           <div className="profile-actions">
             {isOwnProfile ? (
-              <button 
+              <button
                 onClick={() => navigate('/edit-profile')}
                 className="edit-profile-btn"
+                disabled={actionLoading}
               >
                 Edit Profile
               </button>
             ) : (
               <div className="action-buttons">
                 {followStatus === 'none' && (
-                  <button onClick={handleFollow} className="follow-btn">
-                    Follow
+                  <button
+                    onClick={handleFollow}
+                    className="follow-btn"
+                    disabled={actionLoading}
+                  >
+                    {actionLoading ? 'Following...' : 'Follow'}
                   </button>
                 )}
                 {followStatus === 'pending' && (
@@ -206,39 +308,60 @@ const DeveloperProfile = () => {
                   </button>
                 )}
                 {followStatus === 'following' && (
-                  <button onClick={handleUnfollow} className="unfollow-btn">
-                    Unfollow
+                  <button
+                    onClick={handleUnfollow}
+                    className="unfollow-btn"
+                    disabled={actionLoading}
+                  >
+                    {actionLoading ? 'Unfollowing...' : 'Unfollow'}
                   </button>
                 )}
-                <button onClick={handleMessage} className="message-btn">
+                <button
+                  onClick={handleMessage}
+                  className="message-btn"
+                  disabled={actionLoading}
+                >
                   Message
                 </button>
               </div>
             )}
-            <button onClick={downloadPortfolio} className="download-btn">
-              Download Portfolio
+            <button
+              onClick={downloadPortfolio}
+              className="download-btn"
+              disabled={actionLoading}
+            >
+              {actionLoading ? 'Downloading...' : 'Download Portfolio'}
             </button>
           </div>
         </div>
       </div>
 
       {/* Profile Navigation */}
-      <div className="profile-nav">
-        <button 
+      <div className="profile-nav" role="tablist">
+        <button
           className={activeTab === 'about' ? 'active' : ''}
           onClick={() => setActiveTab('about')}
+          role="tab"
+          aria-selected={activeTab === 'about'}
+          aria-controls="about-panel"
         >
           About
         </button>
-        <button 
+        <button
           className={activeTab === 'posts' ? 'active' : ''}
           onClick={() => setActiveTab('posts')}
+          role="tab"
+          aria-selected={activeTab === 'posts'}
+          aria-controls="posts-panel"
         >
           Posts ({posts.length})
         </button>
-        <button 
+        <button
           className={activeTab === 'projects' ? 'active' : ''}
           onClick={() => setActiveTab('projects')}
+          role="tab"
+          aria-selected={activeTab === 'projects'}
+          aria-controls="projects-panel"
         >
           Projects ({profile.projects?.length || 0})
         </button>
@@ -247,7 +370,12 @@ const DeveloperProfile = () => {
       {/* Profile Content */}
       <div className="profile-content">
         {activeTab === 'about' && (
-          <div className="about-section">
+          <div
+            className="about-section"
+            role="tabpanel"
+            id="about-panel"
+            aria-labelledby="about-tab"
+          >
             <div className="about-grid">
               {/* Skills */}
               <div className="about-card">
@@ -255,7 +383,9 @@ const DeveloperProfile = () => {
                 <div className="skills-list">
                   {profile.skills?.length > 0 ? (
                     profile.skills.map((skill, index) => (
-                      <span key={index} className="skill-tag">{skill}</span>
+                      <span key={index} className="skill-tag">
+                        {skill}
+                      </span>
                     ))
                   ) : (
                     <p className="no-content">No skills added yet</p>
@@ -268,17 +398,35 @@ const DeveloperProfile = () => {
                 <h3>Connect</h3>
                 <div className="social-links">
                   {profile.github && (
-                    <a href={profile.github} target="_blank" rel="noopener noreferrer" className="social-link">
+                    <a
+                      href={profile.github}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="social-link"
+                      aria-label="GitHub profile"
+                    >
                       GitHub
                     </a>
                   )}
                   {profile.linkedin && (
-                    <a href={profile.linkedin} target="_blank" rel="noopener noreferrer" className="social-link">
+                    <a
+                      href={profile.linkedin}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="social-link"
+                      aria-label="LinkedIn profile"
+                    >
                       LinkedIn
                     </a>
                   )}
                   {profile.website && (
-                    <a href={profile.website} target="_blank" rel="noopener noreferrer" className="social-link">
+                    <a
+                      href={profile.website}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="social-link"
+                      aria-label="Personal website"
+                    >
                       Website
                     </a>
                   )}
@@ -292,27 +440,40 @@ const DeveloperProfile = () => {
         )}
 
         {activeTab === 'posts' && (
-          <div className="posts-section">
+          <div
+            className="posts-section"
+            role="tabpanel"
+            id="posts-panel"
+            aria-labelledby="posts-tab"
+          >
             {posts.length > 0 ? (
               <div className="posts-grid">
                 {posts.map(post => (
-                  <div key={post._id} className="post-card">
+                  <article key={post._id} className="post-card">
                     <div className="post-content">
                       <p>{post.content}</p>
                       {post.image && (
-                        <img src={post.image} alt="Post" className="post-image" />
+                        <img
+                          src={post.image}
+                          alt="Post content"
+                          className="post-image"
+                          loading="lazy"
+                          onError={(e) => {
+                            e.target.style.display = 'none';
+                          }}
+                        />
                       )}
                     </div>
                     <div className="post-meta">
                       <span className="post-date">
-                        {new Date(post.createdAt).toLocaleDateString()}
+                        {formatDate(post.createdAt)}
                       </span>
                       <div className="post-stats">
                         <span>{post.likes || 0} likes</span>
                         <span>{post.comments?.length || 0} comments</span>
                       </div>
                     </div>
-                  </div>
+                  </article>
                 ))}
               </div>
             ) : (
@@ -324,33 +485,54 @@ const DeveloperProfile = () => {
         )}
 
         {activeTab === 'projects' && (
-          <div className="projects-section">
+          <div
+            className="projects-section"
+            role="tabpanel"
+            id="projects-panel"
+            aria-labelledby="projects-tab"
+          >
             {profile.projects?.length > 0 ? (
               <div className="projects-grid">
                 {profile.projects.map((project, index) => (
-                  <div key={project.id || index} className="project-card">
+                  <article key={project.id || index} className="project-card">
                     <div className="project-header">
-                      <h4>{project.title}</h4>
+                      <h4>{project.title || 'Untitled Project'}</h4>
                       <div className="project-links">
                         {project.github && (
-                          <a href={project.github} target="_blank" rel="noopener noreferrer">
+                          <a
+                            href={project.github}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label="View project on GitHub"
+                          >
                             GitHub
                           </a>
                         )}
                         {project.live && (
-                          <a href={project.live} target="_blank" rel="noopener noreferrer">
+                          <a
+                            href={project.live}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label="View live demo"
+                          >
                             Live Demo
                           </a>
                         )}
                       </div>
                     </div>
-                    <p className="project-description">{project.description}</p>
-                    <div className="project-technologies">
-                      {project.technologies?.map((tech, techIndex) => (
-                        <span key={techIndex} className="tech-tag">{tech}</span>
-                      ))}
-                    </div>
-                  </div>
+                    <p className="project-description">
+                      {project.description || 'No description available'}
+                    </p>
+                    {project.technologies?.length > 0 && (
+                      <div className="project-technologies">
+                        {project.technologies.map((tech, techIndex) => (
+                          <span key={techIndex} className="tech-tag">
+                            {tech}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                  </article>
                 ))}
               </div>
             ) : (

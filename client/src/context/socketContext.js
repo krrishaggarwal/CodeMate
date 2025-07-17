@@ -8,7 +8,7 @@ export const SocketProvider = ({ children, user }) => {
   const socket = useRef(null);
 
   useEffect(() => {
-    if (!user?._id) return;
+    if (!user?.userId) return;
 
     // ✅ Connect to backend socket server
     socket.current = io('http://localhost:5000', {
