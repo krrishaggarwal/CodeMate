@@ -209,7 +209,6 @@ const Dashboard = () => {
             <div className="action-buttons">
               <button onClick={() => navigate('/manage-posts')} className="action-btn">Manage Posts</button>
               <button onClick={() => navigate('/explore')} className="action-btn">Explore Developers</button>
-              <button onClick={() => navigate('/messages')} className="action-btn">Messages</button>
               <button onClick={downloadPortfolio} className="action-btn">Download Portfolio</button>
               <button onClick={handleLogout} className="action-btn">Logout</button>
             </div>
