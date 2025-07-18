@@ -1,4 +1,4 @@
-/* ====== Navbar Base ====== */
+/* ======= NAVBAR BASE ======= */
 .navbar {
   background: #ffffff;
   border-bottom: 1px solid #e5e7eb;
@@ -13,16 +13,65 @@
   margin: 0 auto;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1.5rem;
 }
 
-/* ====== Logo ====== */
+/* ======= Logo ======= */
+.navbar-logo {
+  flex-shrink: 0;
+}
+
 .navbar-logo-img {
-  height: 50;
+  height: 50px;
   width: 120px;
 }
 
-/* ====== Menu Toggle (Hamburger) ====== */
+/* ======= Search Form ======= */
+.navbar-search-form {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  margin-left: 15%;
+}
+
+.navbar-search-input {
+  width: 90%;
+  max-width: 500px;
+  padding: 0.75rem 1.2rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 1.1rem;
+  transition: border 0.2s, box-shadow 0.2s;
+}
+
+.navbar-search-input:focus {
+  border-color: #1e88e5;
+  box-shadow: 0 0 0 3px rgba(30, 136, 229, 0.2);
+  outline: none;
+}
+
+/* ======= Nav Links ======= */
+.nav-links {
+  display: flex;
+  gap: 2rem;
+  list-style: none;
+  flex-shrink: 0;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: #1f2937;
+  font-weight: 600;
+  transition: color 0.2s;
+}
+
+.nav-links a:hover {
+  color: #1e88e5;
+}
+
+/* ======= Hamburger ======= */
 .menu-toggle {
   display: none;
   flex-direction: column;
@@ -37,26 +86,13 @@
   border-radius: 4px;
 }
 
-/* ====== Nav Links ====== */
-.nav-links {
-  display: flex;
-  gap: 2rem;
-  list-style: none;
-}
-
-.nav-links a {
-  text-decoration: none;
-  color: #1f2937;
-  font-weight: 600;
-  transition: color 0.2s;
-}
-
-.nav-links a:hover {
-  color: #1e88e5;
-}
-
-/* ====== Mobile Responsive ====== */
+/* ======= Mobile ======= */
 @media (max-width: 768px) {
+  .navbar-container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
   .menu-toggle {
     display: flex;
   }
@@ -82,9 +118,18 @@
   .nav-links li {
     margin: 0.5rem 0;
   }
+
+  .navbar-search-form {
+    width: 100%;
+    margin-top: 0.5rem;
+  }
+
+  .navbar-search-input {
+    width: 100%;
+  }
 }
 
-/* ====== Dark Mode Support ====== */
+/* ======= Dark Mode ======= */
 body.dark .navbar {
   background: #1f2937;
   border-color: #374151;
@@ -104,4 +149,15 @@ body.dark .nav-links a:hover {
 
 body.dark .menu-toggle div {
   background: #f3f4f6;
+}
+
+body.dark .navbar-search-input {
+  background: #121212;
+  color: #ddd;
+  border: 1px solid #333;
+}
+
+body.dark .navbar-search-input:focus {
+  border-color: #82aaff;
+  box-shadow: 0 0 0 3px rgba(130, 170, 255, 0.2);
 }

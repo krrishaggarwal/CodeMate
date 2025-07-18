@@ -1,22 +1,24 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import '../styles/Explore.css';
 
 const Explore = () => {
-  const [developers, setDevelopers] = useState([]);
-  const [search, setSearch] = useState('');
-  const [filtered, setFiltered] = useState([]);
-  const [message, setMessage] = useState('');
+  const location = useLocation();
   const navigate = useNavigate();
+  const queryParams = new URLSearchParams(location.search);
+  const initialSearch = queryParams.get('search') || '';
+
+  const [search] = useState(initialSearch); // Static from URL
+  const [developers, setDevelopers] = useState([]);
+  const [message, setMessage] = useState('');
 
   useEffect(() => {
     const fetchDevelopers = async () => {
       try {
-        const res = await fetch(`${process.env.REACT_APP_API_URL}/api/users/all`);
+        const res = await fetch(`http://localhost:5000/api/users/search?keyword=${search}`);
         const data = await res.json();
         if (res.ok) {
-          setDevelopers(data.users);
-          setFiltered(data.users);
+          setDevelopers(data);
         } else {
           setMessage(data.message || 'Failed to load developers.');
         }
@@ -25,15 +27,12 @@ const Explore = () => {
       }
     };
 
-    fetchDevelopers();
-  }, []);
-
-  useEffect(() => {
-    const filteredList = developers.filter(dev =>
-      dev.name.toLowerCase().includes(search.toLowerCase())
-    );
-    setFiltered(filteredList);
-  }, [search, developers]);
+    if (search.trim()) {
+      fetchDevelopers();
+    } else {
+      setDevelopers([]);
+    }
+  }, [search]);
 
   return (
     <div className="explore-container">
@@ -41,19 +40,11 @@ const Explore = () => {
 
       {message && <p className="message">{message}</p>}
 
-      <input
-        type="text"
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-        placeholder="Search developers by name..."
-        className="search-bar"
-      />
-
-      {filtered.length === 0 ? (
+      {developers.length === 0 ? (
         <p>No developers found.</p>
       ) : (
         <div className="developer-grid">
-          {filtered.map((dev) => (
+          {developers.map((dev) => (
             <div key={dev._id} className="developer-card">
               <h3>{dev.name}</h3>
               <p>{dev.bio?.substring(0, 80)}...</p>

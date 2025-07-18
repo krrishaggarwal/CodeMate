@@ -69,4 +69,27 @@ const getMyFollowRequests = async (userId) => {
     }
 };
 
-module.exports = { sendFollowRequest, respondFollowRequest, getMyFollowRequests };
+// Check if current user follows target user
+const checkFollowStatus = async (req, res) => {
+    try {
+        const fromUserId = req.query.from; // e.g. logged-in user
+        const toUserId = req.params.id;    // profile user being viewed
+
+        const existingRequest = await FollowRequest.findOne({
+            from: fromUserId,
+            to: toUserId,
+            status: 'accepted',
+        });
+
+        res.status(200).json({ isFollowing: !!existingRequest });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+module.exports = {
+    sendFollowRequest,
+    respondFollowRequest,
+    getMyFollowRequests,
+    checkFollowStatus, // ✅ add here
+};

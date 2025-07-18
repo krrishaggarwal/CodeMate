@@ -5,27 +5,24 @@ import '../styles/DeveloperProfile.css';
 
 const DeveloperProfile = () => {
   const { userId } = useParams();
-  const { user: currentUser, token } = useContext(AuthContext);
+  const { user: currentUser } = useContext(AuthContext);
   const [profile, setProfile] = useState(null);
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [actionLoading, setActionLoading] = useState(false);
-  const [followStatus, setFollowStatus] = useState('none'); // 'none', 'following', 'pending'
+  const [followStatus, setFollowStatus] = useState('none');
   const [activeTab, setActiveTab] = useState('about');
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
   const isOwnProfile = !userId || userId === currentUser?._id;
 
-  // API Configuration
-  const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001';
+  const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
 
-  // Generic API call function with error handling
   const apiCall = useCallback(async (endpoint, options = {}) => {
     try {
       const response = await fetch(`${API_BASE_URL}${endpoint}`, {
         headers: {
-          'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
           ...options.headers
         },
@@ -41,11 +38,12 @@ const DeveloperProfile = () => {
       console.error(`API call failed for ${endpoint}:`, error);
       throw error;
     }
-  }, [token, API_BASE_URL]);
+  }, [API_BASE_URL]);
 
   // Fetch user profile and posts
   const fetchProfile = useCallback(async () => {
-    if (!currentUser && !userId) {
+    const targetUserId = userId || currentUser?._id;
+    if (!targetUserId) {
       setError('User not authenticated');
       setLoading(false);
       return;
@@ -55,15 +53,9 @@ const DeveloperProfile = () => {
       setLoading(true);
       setError(null);
 
-      const targetUserId = userId || currentUser._id;
-      const data = await apiCall(`/api/users/profile/${targetUserId}`);
-
-      if (data.user) {
-        setProfile(data.user);
-        setPosts(data.posts || []);
-      } else {
-        throw new Error('Profile data not found');
-      }
+      const data = await apiCall(`/api/users/${targetUserId}`);
+      setProfile(data.user || data); // Handle both response formats
+      setPosts(data.posts || []);    // Initialize posts if they exist in response
     } catch (error) {
       setError('Failed to load profile. Please try again.');
       console.error('Error fetching profile:', error);
@@ -72,33 +64,37 @@ const DeveloperProfile = () => {
     }
   }, [userId, currentUser, apiCall]);
 
-  // Check follow status for other users
   const checkFollowStatus = useCallback(async () => {
-    if (!userId || isOwnProfile) return;
+    if (!userId || isOwnProfile || !currentUser?._id) return;
 
     try {
-      const data = await apiCall(`/api/follow/status/${userId}`);
-      setFollowStatus(data.status || 'none');
+      const data = await apiCall(`/api/follow/status/${userId}?from=${currentUser._id}`);
+      setFollowStatus(data.isFollowing ? 'following' : 'none');
     } catch (error) {
       console.error('Error checking follow status:', error);
-      // Don't set error state for follow status as it's not critical
     }
-  }, [userId, isOwnProfile, apiCall]);
+  }, [userId, isOwnProfile, currentUser, apiCall]);
 
   // Handle follow action
   const handleFollow = async () => {
-    if (!profile?._id || actionLoading) return;
+    console.log('➡️ handleFollow called');
+    if (!currentUser || !currentUser._id || !profile || !profile._id || actionLoading) return;
+    console.warn('❌ Follow aborted: Missing data or already loading');
 
     try {
       setActionLoading(true);
+      console.log('📤 Sending follow request:', currentUser._id, '→', profile._id);
       await apiCall('/api/follow/request', {
         method: 'POST',
-        body: JSON.stringify({ userId: profile._id })
+        body: JSON.stringify({
+          fromUserId: currentUser._id,
+          toUserId: profile._id
+        })
       });
-
       setFollowStatus('pending');
     } catch (error) {
       setError('Failed to send follow request. Please try again.');
+      console.error('❌ API Error:', error);
       console.error('Error sending follow request:', error);
     } finally {
       setActionLoading(false);
@@ -115,7 +111,6 @@ const DeveloperProfile = () => {
         method: 'DELETE',
         body: JSON.stringify({ userId: profile._id })
       });
-
       setFollowStatus('none');
     } catch (error) {
       setError('Failed to unfollow user. Please try again.');
@@ -137,11 +132,7 @@ const DeveloperProfile = () => {
 
     try {
       setActionLoading(true);
-      const response = await fetch(`${API_BASE_URL}/api/users/portfolio/download/${profile._id}`, {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        }
-      });
+      const response = await fetch(`${API_BASE_URL}/api/users/export/${profile._id}`);
 
       if (!response.ok) {
         throw new Error('Failed to download portfolio');
@@ -260,10 +251,11 @@ const DeveloperProfile = () => {
               <p className="profile-bio">{profile.bio || 'No bio available'}</p>
               <div className="profile-meta">
                 {profile.location && (
-                  <span className="location">📍 {profile.location}</span>
+                  <span className="location">📍 {profile.location }</span>
                 )}
+                <span>{" "}</span>
                 <span className="joined">
-                  Joined {formatDate(profile.createdAt)}
+                   Joined {formatDate(profile.createdAt)}
                 </span>
               </div>
               <div className="profile-stats">

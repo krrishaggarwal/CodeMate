@@ -28,11 +28,8 @@ export const AuthProvider = ({ children }) => {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 8000);
 
-      const res = await fetch(`/api/user/${currentUser.userId}`, {
+      const res = await fetch(`/api/users/${currentUser.userId}`, {
         signal: controller.signal,
-        headers: {
-          'Authorization': `Bearer ${currentUser.token}`
-        }
       });
 
       clearTimeout(timeoutId);
