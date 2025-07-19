@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-
+const User = require('../models/User');
 const {
     getProfile,
     updateProfile,
@@ -12,6 +12,19 @@ const {
 // 📤 Export user's profile as PDF
 // GET /api/users/export/:userId
 router.get('/export/:userId', downloadUserProfilePDF);
+
+
+// 📄 Get all users (used when no search keyword is given)
+// GET /api/users
+router.get('/', async (req, res) => {
+    try {
+        const users = await User.find().select('-password'); // exclude password
+        res.status(200).json(users);
+    } catch (err) {
+        res.status(500).json({ error: 'Failed to fetch users.' });
+    }
+});
+
 
 // 🔍 Search users by name, email, or skills
 // GET /api/users/search?keyword=krish

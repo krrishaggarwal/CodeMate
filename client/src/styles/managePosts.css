@@ -1,12 +1,11 @@
-/* managePosts.css */
-
 .manage-posts-container {
   max-width: 1000px;
   margin: 2rem auto;
   padding: 0 1rem;
 }
 
-.manage-posts-container h1 {
+.manage-posts-container h1,
+.manage-posts-container h2 {
   text-align: center;
   margin-bottom: 2rem;
   font-size: 2.3rem;
@@ -24,6 +23,45 @@
   border-radius: 6px;
   color: #4437aa;
   font-weight: 500;
+}
+
+/* Add Post Form */
+.add-post-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  background: #f9f9f9;
+  padding: 1rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.add-post-form textarea,
+.add-post-form input {
+  padding: 0.8rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  width: 100%;
+  resize: vertical;
+}
+
+.add-post-form button {
+  align-self: flex-start;
+  padding: 0.6rem 1.2rem;
+  background: #6c63ff;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.add-post-form button:hover {
+  background: #7a70ff;
+  box-shadow: 0 0 10px #6c63ff;
 }
 
 /* Posts grid */
@@ -61,8 +99,9 @@
   line-height: 1.5;
 }
 
-/* Image */
-.post-img {
+/* Post image */
+.post-img,
+.post-item img {
   width: 100%;
   max-height: 180px;
   object-fit: cover;
@@ -70,10 +109,11 @@
   margin-bottom: 1rem;
 }
 
-/* Buttons for actions */
+/* Action buttons */
 .post-actions {
   display: flex;
   gap: 0.8rem;
+  margin-top: 1rem;
 }
 
 .post-actions button {
@@ -102,7 +142,47 @@
   box-shadow: 0 0 10px #d32f2f;
 }
 
-/* Loading & empty states */
+/* Comment section */
+.comments {
+  margin-top: 1rem;
+  border-top: 1px solid #ddd;
+  padding-top: 1rem;
+}
+
+.comments h4 {
+  margin-bottom: 0.5rem;
+  color: #1f2937;
+}
+
+.comments p {
+  margin-bottom: 0.5rem;
+  color: #444;
+}
+
+.comments input {
+  width: 100%;
+  padding: 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.comments button {
+  padding: 0.4rem 1rem;
+  background: #6c63ff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.comments button:hover {
+  background: #7a70ff;
+}
+
+/* Empty or loading text */
 .manage-posts-container p {
   text-align: center;
   color: #666;
@@ -112,8 +192,29 @@
 /* ==========================
    DARK MODE SUPPORT
 ========================== */
-body.dark .manage-posts-container h1 {
+body.dark .manage-posts-container h1,
+body.dark .manage-posts-container h2 {
   color: #e2e2e2;
+}
+
+body.dark .add-post-form {
+  background: #1f1f1f;
+  border: 1px solid #333;
+}
+
+body.dark .add-post-form textarea,
+body.dark .add-post-form input {
+  background: #2a2a2a;
+  color: #eee;
+  border: 1px solid #444;
+}
+
+body.dark .add-post-form button {
+  background: #7a70ff;
+}
+
+body.dark .add-post-form button:hover {
+  background: #9d94ff;
 }
 
 body.dark .post-item {
@@ -122,11 +223,13 @@ body.dark .post-item {
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
 }
 
-body.dark .post-item h3 {
+body.dark .post-item h3,
+body.dark .comments h4 {
   color: #f3f3f3;
 }
 
-body.dark .post-item p {
+body.dark .post-item p,
+body.dark .comments p {
   color: #ccc;
 }
 
@@ -152,4 +255,18 @@ body.dark .post-actions button:last-child {
 body.dark .post-actions button:last-child:hover {
   background: #e53935;
   box-shadow: 0 0 10px #ef5350;
+}
+
+body.dark .comments input {
+  background: #2a2a2a;
+  color: #ddd;
+  border: 1px solid #444;
+}
+
+body.dark .comments button {
+  background: #7a70ff;
+}
+
+body.dark .comments button:hover {
+  background: #9d94ff;
 }

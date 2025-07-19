@@ -58,12 +58,18 @@ const DeveloperProfile = () => {
       setLoading(true);
       setError(null);
 
+      // Fetch profile
       const data = await apiCall(`/api/users/${targetUserId}`);
       setProfile(data.user || data);
-      setPosts(data.posts || []);
 
+      // Fetch posts separately
+      const postsData = await apiCall(`/api/posts/user/${targetUserId}`);
+      setPosts(postsData.posts || postsData || []);
+
+      // Fetch stats
       const stats = await apiCall(`/api/users/stats/${targetUserId}`);
       setProfileStats(stats);
+
     } catch (error) {
       setError('Failed to load profile. Please try again.');
       console.error('Error fetching profile:', error);
@@ -71,6 +77,7 @@ const DeveloperProfile = () => {
       setLoading(false);
     }
   }, [userId, currentUser, apiCall]);
+
 
 
 
@@ -460,7 +467,7 @@ const DeveloperProfile = () => {
                 {posts.map(post => (
                   <article key={post._id} className="post-card">
                     <div className="post-content">
-                      <p>{post.content}</p>
+                      <p>{post.text || 'No content available'}</p>
                       {post.image && (
                         <img
                           src={post.image}
@@ -478,7 +485,9 @@ const DeveloperProfile = () => {
                         {formatDate(post.createdAt)}
                       </span>
                       <div className="post-stats">
-                        <span>{post.likes || 0} likes</span>
+                        <span>{post.likes?.length || 0} likes</span>
+                        {" "}
+                        {" "}
                         <span>{post.comments?.length || 0} comments</span>
                       </div>
                     </div>
@@ -492,6 +501,7 @@ const DeveloperProfile = () => {
             )}
           </div>
         )}
+
 
         {activeTab === 'projects' && (
           <div

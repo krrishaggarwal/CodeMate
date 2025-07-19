@@ -6,7 +6,8 @@ const {
     getMyPosts,
     likePost,
     unlikePost,
-    addComment
+    addComment,
+    deletePost
 } = require('../controllers/postController');
 
 // 📝 Create a new post
@@ -71,6 +72,19 @@ router.post('/comment', async (req, res) => {
     if (result.error) return res.status(400).json({ error: result.error });
 
     res.json(result.data);
+});
+
+// 🗑️ DELETE /api/posts/:postId
+router.delete('/:postId', async (req, res) => {
+  const { postId } = req.params;
+  const { userId } = req.body;
+
+  if (!userId) return res.status(400).json({ error: 'userId required in body' });
+
+  const result = await deletePost(postId, userId);
+  if (result.error) return res.status(400).json({ error: result.error });
+
+  res.json({ message: result.data });
 });
 
 module.exports = router;

@@ -4,7 +4,7 @@ import { AuthContext } from '../context/AuthContext';
 import '../styles/Dashboard.css';
 
 const Dashboard = () => {
-  const { user, logout } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   const [stats, setStats] = useState({
     totalPosts: 0,
     followers: 0,
@@ -34,7 +34,7 @@ const Dashboard = () => {
 
         // Fetch stats
         promises.push(
-          fetch(`http://localhost:5000/api/users/stats/${user.userId}`)
+          fetch(`${API_BASE_URL}/api/users/stats/${user.userId}`)
             .then(res => res.ok ? res.json() : Promise.reject('Failed to fetch stats'))
             .then(data => setStats(data))
             .catch(err => console.error('Error fetching stats:', err))
@@ -66,17 +66,15 @@ const Dashboard = () => {
     };
 
     fetchDashboardData();
-  }, [user, navigate]);
+  }, [user, navigate, API_BASE_URL]);
 
   const handleFollowRequest = async (requestId, action) => {
     try {
       const res = await fetch(`${API_BASE_URL}/api/follow/respond`, {
         method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json'
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          requestId: requestId,
+          requestId,
           userId: user.userId,
           status: action === 'accept' ? 'accepted' : 'rejected'
         })
@@ -84,7 +82,6 @@ const Dashboard = () => {
 
       if (res.ok) {
         setFollowRequests(prev => prev.filter(req => req._id !== requestId));
-
         if (action === 'accept') {
           setStats(prev => ({ ...prev, followers: prev.followers + 1 }));
         }
@@ -115,11 +112,6 @@ const Dashboard = () => {
     } catch (err) {
       console.error('Error downloading portfolio:', err);
     }
-  };
-
-  const handleLogout = () => {
-    logout();
-    navigate('/login');
   };
 
   if (loading) {
@@ -176,7 +168,6 @@ const Dashboard = () => {
               <button onClick={() => navigate('/manage-posts')} className="action-btn">Manage Posts</button>
               <button onClick={() => navigate('/explore')} className="action-btn">Explore Developers</button>
               <button onClick={downloadPortfolio} className="action-btn">Download Portfolio</button>
-              <button onClick={handleLogout} className="action-btn">Logout</button>
             </div>
           </div>
         </div>
@@ -238,9 +229,9 @@ const Dashboard = () => {
               ) : (
                 recentPosts.map(post => (
                   <div key={post._id} className="post-item">
-                    <p>{post.content?.substring(0, 100) || 'No content'}...</p>
+                    <p>{post.text?.substring(0, 100) || 'No content'}...</p>
                     <div className="post-meta">
-                      {new Date(post.createdAt).toLocaleDateString()} • {post.likes || 0} likes • {post.comments?.length || 0} comments
+                      {new Date(post.createdAt).toLocaleDateString()} • {post.likes?.length || 0} likes • {post.comments?.length || 0} comments
                     </div>
                   </div>
                 ))

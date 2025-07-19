@@ -1,40 +1,44 @@
 const Post = require('../models/post');
 
-// Create Post
+// 📌 Create a new post
 const createPost = async (userId, text, image) => {
     try {
-        const post = await Post.create({
-            user: userId,
-            text: text,
-            image: image, // optional
-        });
+        const post = await Post.create({ user: userId, text, image });
         return { data: post };
     } catch (error) {
         return { error: error.message };
     }
 };
 
-// Show random Posts (for homepage)
+// 📌 Get all posts (with author and comment authors populated)
 const getPosts = async () => {
     try {
-        const posts = await Post.find().populate('user', 'name');
+        const posts = await Post.find()
+            .populate('user', 'name') // post author
+            .populate('comments.user', 'name') // commenter names ✅
+            .sort({ createdAt: -1 });
+
         return { data: posts };
     } catch (error) {
         return { error: error.message };
     }
 };
 
-// Get my posts
+// 📌 Get posts by a specific user (with commenter names)
 const getMyPosts = async (userId) => {
     try {
-        const posts = await Post.find({ user: userId });
+        const posts = await Post.find({ user: userId })
+            .populate('user', 'name')
+            .populate('comments.user', 'name') // ✅
+            .sort({ createdAt: -1 });
+
         return { data: posts };
     } catch (error) {
         return { error: error.message };
     }
 };
 
-// Like a post
+// ✅ Like a post
 const likePost = async (postId, userId) => {
     try {
         const post = await Post.findById(postId);
@@ -51,7 +55,7 @@ const likePost = async (postId, userId) => {
     }
 };
 
-// Unlike a post
+// ✅ Unlike a post
 const unlikePost = async (postId, userId) => {
     try {
         const post = await Post.findById(postId);
@@ -66,7 +70,7 @@ const unlikePost = async (postId, userId) => {
     }
 };
 
-// Add comment to a post
+// 💬 Add a comment to a post
 const addComment = async (postId, userId, commentText) => {
     try {
         const post = await Post.findById(postId);
@@ -81,7 +85,29 @@ const addComment = async (postId, userId, commentText) => {
         post.comments.push(comment);
         await post.save();
 
-        return { data: post };
+        // 🔁 Refetch with populated commenter info
+        const updatedPost = await Post.findById(postId)
+            .populate('user', 'name')
+            .populate('comments.user', 'name');
+
+        return { data: updatedPost };
+    } catch (error) {
+        return { error: error.message };
+    }
+};
+
+// 🗑️ Delete a post
+const deletePost = async (postId, userId) => {
+    try {
+        const post = await Post.findById(postId);
+        if (!post) return { error: 'Post not found' };
+
+        if (post.user.toString() !== userId) {
+            return { error: 'Unauthorized to delete this post' };
+        }
+
+        await post.deleteOne();
+        return { data: 'Post deleted successfully' };
     } catch (error) {
         return { error: error.message };
     }
@@ -93,5 +119,6 @@ module.exports = {
     getMyPosts,
     likePost,
     unlikePost,
-    addComment
+    addComment,
+    deletePost
 };
