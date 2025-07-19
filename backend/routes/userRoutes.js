@@ -5,7 +5,8 @@ const {
     getProfile,
     updateProfile,
     searchUsers,
-    downloadUserProfilePDF // ✅ added PDF export function
+    downloadUserProfilePDF,
+    getUserStats // ✅ added PDF export function
 } = require('../controllers/userController');
 
 // 📤 Export user's profile as PDF
@@ -51,5 +52,7 @@ router.put('/update/:userId', async (req, res) => {
 
     res.status(200).json(result.data);
 });
+
+router.get('/stats/:id', getUserStats);
 
 module.exports = router;

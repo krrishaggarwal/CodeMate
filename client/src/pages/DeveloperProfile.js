@@ -14,6 +14,11 @@ const DeveloperProfile = () => {
   const [activeTab, setActiveTab] = useState('about');
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const [profileStats, setProfileStats] = useState({
+    followers: 0,
+    following: 0,
+    totalPosts: 0
+  });
 
   const isOwnProfile = !userId || userId === currentUser?._id;
 
@@ -54,8 +59,11 @@ const DeveloperProfile = () => {
       setError(null);
 
       const data = await apiCall(`/api/users/${targetUserId}`);
-      setProfile(data.user || data); // Handle both response formats
-      setPosts(data.posts || []);    // Initialize posts if they exist in response
+      setProfile(data.user || data);
+      setPosts(data.posts || []);
+
+      const stats = await apiCall(`/api/users/stats/${targetUserId}`);
+      setProfileStats(stats);
     } catch (error) {
       setError('Failed to load profile. Please try again.');
       console.error('Error fetching profile:', error);
@@ -63,6 +71,8 @@ const DeveloperProfile = () => {
       setLoading(false);
     }
   }, [userId, currentUser, apiCall]);
+
+
 
   const checkFollowStatus = useCallback(async () => {
     if (!userId || isOwnProfile || !currentUser?._id) return;
@@ -78,8 +88,14 @@ const DeveloperProfile = () => {
   // Handle follow action
   const handleFollow = async () => {
     console.log('➡️ handleFollow called');
-    if (!currentUser || !currentUser._id || !profile || !profile._id || actionLoading) return;
-    console.warn('❌ Follow aborted: Missing data or already loading');
+    if (!currentUser || !currentUser._id || !profile || !profile._id || actionLoading) {
+      console.warn('❌ Follow aborted', {
+        currentUser: currentUser?._id,
+        profile: profile?._id,
+        actionLoading
+      });
+      return;
+    }
 
     try {
       setActionLoading(true);
@@ -251,27 +267,28 @@ const DeveloperProfile = () => {
               <p className="profile-bio">{profile.bio || 'No bio available'}</p>
               <div className="profile-meta">
                 {profile.location && (
-                  <span className="location">📍 {profile.location }</span>
+                  <span className="location">📍 {profile.location}</span>
                 )}
                 <span>{" "}</span>
                 <span className="joined">
-                   Joined {formatDate(profile.createdAt)}
+                  Joined {formatDate(profile.createdAt)}
                 </span>
               </div>
               <div className="profile-stats">
                 <div className="stat">
-                  <span className="stat-number">{profile.followersCount || 0}</span>
+                  <span className="stat-number">{profileStats.followers}</span>
                   <span className="stat-label">Followers</span>
                 </div>
                 <div className="stat">
-                  <span className="stat-number">{profile.followingCount || 0}</span>
+                  <span className="stat-number">{profileStats.following}</span>
                   <span className="stat-label">Following</span>
                 </div>
                 <div className="stat">
-                  <span className="stat-number">{posts.length}</span>
+                  <span className="stat-number">{profileStats.totalPosts}</span>
                   <span className="stat-label">Posts</span>
                 </div>
               </div>
+
             </div>
           </div>
           <div className="profile-actions">

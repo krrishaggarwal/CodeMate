@@ -37,7 +37,7 @@ export const AuthProvider = ({ children }) => {
       if (!res.ok) throw new Error("Session validation failed");
 
       const userData = await res.json();
-      if (userData && userData.userId === currentUser.userId) {
+      if (userData && (userData._id === currentUser.userId || userData._id === currentUser._id)) {
         if (JSON.stringify(userData) !== JSON.stringify(currentUser)) {
           setUser(userData);
           localStorage.setItem('user', JSON.stringify(userData));
@@ -74,6 +74,7 @@ export const AuthProvider = ({ children }) => {
     }
 
     const userData = {
+      _id: data.user._id,
       userId: data.user._id,
       name: data.user.name,
       email: data.user.email,

@@ -17,9 +17,9 @@ const Dashboard = () => {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
+  const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+
   useEffect(() => {
-    console.log("User object in Dashboard:", user);
-    // Redirect to login if no user
     if (!user) {
       navigate('/login');
       return;
@@ -30,12 +30,11 @@ const Dashboard = () => {
         setLoading(true);
         setError(null);
 
-        // Create promises for all API calls
         const promises = [];
 
-        // Fetch user stats
+        // Fetch stats
         promises.push(
-          fetch(`http://localhost:5000/api/users/${user.userId}`)
+          fetch(`http://localhost:5000/api/users/stats/${user.userId}`)
             .then(res => res.ok ? res.json() : Promise.reject('Failed to fetch stats'))
             .then(data => setStats(data))
             .catch(err => console.error('Error fetching stats:', err))
@@ -43,7 +42,7 @@ const Dashboard = () => {
 
         // Fetch follow requests
         promises.push(
-          fetch(`http://localhost:5000/api/follow/requests/${user.userId}`)
+          fetch(`${API_BASE_URL}/api/follow/requests/${user.userId}`)
             .then(res => res.ok ? res.json() : Promise.reject('Failed to fetch requests'))
             .then(data => setFollowRequests(data))
             .catch(err => console.error('Error fetching follow requests:', err))
@@ -51,15 +50,13 @@ const Dashboard = () => {
 
         // Fetch recent posts
         promises.push(
-          fetch(`http://localhost:5000/api/posts/user/${user.userId}`)
+          fetch(`${API_BASE_URL}/api/posts/user/${user.userId}`)
             .then(res => res.ok ? res.json() : Promise.reject('Failed to fetch posts'))
-            .then(data => setRecentPosts(data.slice(0, 5))) // Limit to 5 recent posts
+            .then(data => setRecentPosts(data.slice(0, 5)))
             .catch(err => console.error('Error fetching posts:', err))
         );
 
-        // Wait for all promises to complete
         await Promise.allSettled(promises);
-
       } catch (error) {
         console.error('Error fetching dashboard data:', error);
         setError('Failed to load dashboard data. Please try again.');
@@ -73,23 +70,21 @@ const Dashboard = () => {
 
   const handleFollowRequest = async (requestId, action) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/follow/respond/${requestId}`, {
+      const res = await fetch(`${API_BASE_URL}/api/follow/respond`, {
         method: 'PUT',
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${user.token}` // Add auth if needed
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          action,
-          userId: user.userId // Include user ID in body
+          requestId: requestId,
+          userId: user.userId,
+          status: action === 'accept' ? 'accepted' : 'rejected'
         })
       });
 
       if (res.ok) {
-        // Remove the request from the list
         setFollowRequests(prev => prev.filter(req => req._id !== requestId));
 
-        // Update follower count if accepted
         if (action === 'accept') {
           setStats(prev => ({ ...prev, followers: prev.followers + 1 }));
         }
@@ -103,12 +98,7 @@ const Dashboard = () => {
 
   const downloadPortfolio = async () => {
     try {
-      const res = await fetch(`http://localhost:5000/api/users/export/${user.userId}`, {
-        headers: {
-          'Authorization': `Bearer ${user.token}` // Add auth if needed
-        }
-      });
-
+      const res = await fetch(`${API_BASE_URL}/api/users/export/${user.userId}`);
       if (res.ok) {
         const blob = await res.blob();
         const url = window.URL.createObjectURL(blob);
@@ -132,46 +122,25 @@ const Dashboard = () => {
     navigate('/login');
   };
 
-  // Show loading state
   if (loading) {
-    return (
-      <div className="dashboard-container">
-        <div className="loading">Loading Profile...</div>
-      </div>
-    );
+    return <div className="dashboard-container"><div className="loading">Loading Profile...</div></div>;
   }
 
-  // Show error state
   if (error) {
     return (
       <div className="dashboard-container">
-        <div className="error">
-          {error}
-          <button onClick={() => window.location.reload()}>Retry</button>
-        </div>
-      </div>
-    );
-  }
-
-  // Show login redirect if no user
-  if (!user) {
-    return (
-      <div className="dashboard-container">
-        <div className="loading">Redirecting to login...</div>
+        <div className="error">{error}<button onClick={() => window.location.reload()}>Retry</button></div>
       </div>
     );
   }
 
   return (
     <div className="dashboard-container">
-      <div className="dashboard-header">
-        <h1>My Profile</h1>
-      </div>
+      <div className="dashboard-header"><h1>My Profile</h1></div>
 
       <div className="dashboard-grid modern-layout">
-        {/* LEFT COLUMN: Profile + Quick Actions */}
+        {/* LEFT COLUMN */}
         <div className="left-column">
-          {/* Profile Overview */}
           <div className="dashboard-card profile-overview">
             <div className="card-header">
               <h3>Profile Overview</h3>
@@ -182,9 +151,7 @@ const Dashboard = () => {
                 {user.avatar ? (
                   <img src={user.avatar} alt={user.name || 'User'} />
                 ) : (
-                  <div className="avatar-placeholder">
-                    {user.name?.charAt(0)?.toUpperCase() || 'U'}
-                  </div>
+                  <div className="avatar-placeholder">{user.name?.charAt(0)?.toUpperCase() || 'U'}</div>
                 )}
               </div>
               <div className="profile-details">
@@ -203,7 +170,6 @@ const Dashboard = () => {
             </div>
           </div>
 
-          {/* Quick Actions */}
           <div className="dashboard-card quick-actions">
             <h3>Quick Actions</h3>
             <div className="action-buttons">
@@ -215,32 +181,18 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* RIGHT COLUMN: Stats + Requests + Posts */}
+        {/* RIGHT COLUMN */}
         <div className="right-column">
-          {/* Statistics */}
           <div className="dashboard-card stats-card">
             <h3>Statistics</h3>
             <div className="stats-grid">
-              <div className="stat-item">
-                <div className="stat-number">{stats.followers}</div>
-                <div className="stat-label">Followers</div>
-              </div>
-              <div className="stat-item">
-                <div className="stat-number">{stats.following}</div>
-                <div className="stat-label">Following</div>
-              </div>
-              <div className="stat-item">
-                <div className="stat-number">{stats.totalPosts}</div>
-                <div className="stat-label">Posts</div>
-              </div>
-              <div className="stat-item">
-                <div className="stat-number">{stats.profileViews}</div>
-                <div className="stat-label">Views</div>
-              </div>
+              <div className="stat-item"><div className="stat-number">{stats.followers}</div><div className="stat-label">Followers</div></div>
+              <div className="stat-item"><div className="stat-number">{stats.following}</div><div className="stat-label">Following</div></div>
+              <div className="stat-item"><div className="stat-number">{stats.totalPosts}</div><div className="stat-label">Posts</div></div>
+              <div className="stat-item"><div className="stat-number">{stats.profileViews}</div><div className="stat-label">Views</div></div>
             </div>
           </div>
 
-          {/* Follow Requests */}
           {followRequests.length > 0 && (
             <div className="dashboard-card follow-requests">
               <h3>Follow Requests ({followRequests.length})</h3>
@@ -275,7 +227,6 @@ const Dashboard = () => {
             </div>
           )}
 
-          {/* Recent Posts */}
           <div className="dashboard-card recent-posts">
             <div className="card-header">
               <h3>Recent Posts</h3>
