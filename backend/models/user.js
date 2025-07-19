@@ -1,90 +1,114 @@
-// Import mongoose to create schema
 const mongoose = require('mongoose');
+
+// Define the Project schema (embedded in User)
+const ProjectSchema = new mongoose.Schema({
+  id: {
+    type: Number,
+    required: true
+  },
+  title: {
+    type: String,
+    required: [true, 'Project title is required'],
+    trim: true,
+    maxlength: [100, 'Title cannot exceed 100 characters']
+  },
+  description: {
+    type: String,
+    maxlength: [500, 'Description cannot exceed 500 characters']
+  },
+  technologies: {
+    type: [String],
+    default: []
+  },
+  github: {
+    type: String,
+    match: [/^https?:\/\/(www\.)?github\.com\/.+/, 'Invalid GitHub URL']
+  },
+  live: {
+    type: String,
+    match: [/^https?:\/\/.+/, 'Invalid Live URL']
+  }
+}, { _id: false }); // Prevents auto-generating _id for each project
 
 // Define the User schema
 const UserSchema = new mongoose.Schema({
-    // User's full name
-    name: {
-        type: String,
-        required: [true, 'Name is required'],       // Must be provided
-        trim: true,                                 // Removes leading/trailing spaces
-        minlength: [2, 'Name must be at least 2 characters'], // Min length
-        maxlength: [50, 'Name cannot exceed 50 characters']   // Max length
-    },
+  // Basic Info
+  name: {
+    type: String,
+    required: [true, 'Name is required'],
+    trim: true,
+    minlength: [2, 'Name must be at least 2 characters'],
+    maxlength: [50, 'Name cannot exceed 50 characters']
+  },
+  email: {
+    type: String,
+    required: [true, 'Email is required'],
+    unique: true,
+    trim: true,
+    lowercase: true,
+    match: [/\S+@\S+\.\S+/, 'Email is invalid']
+  },
+  password: {
+    type: String,
+    required: [true, 'Password is required'],
+    minlength: [6, 'Password must be at least 6 characters']
+  },
 
-    // User's email address
-    email: {
-        type: String,
-        required: [true, 'Email is required'],      // Must be provided
-        unique: true,                               // Must be unique in the database
-        trim: true,                                 // Clean up spaces
-        lowercase: true,                            // Converts to lowercase
-        match: [/\S+@\S+\.\S+/, 'Email is invalid']  // Must follow email pattern
-    },
+  // Optional Profile Info
+  bio: {
+    type: String,
+    maxlength: [200, 'Bio cannot exceed 200 characters']
+  },
+  skills: {
+    type: [String],
+    default: []
+  },
+  location: {
+    type: String,
+    trim: true,
+    maxlength: 100
+  },
+  website: {
+    type: String,
+    match: [/^https?:\/\/.+/, 'Invalid Website URL']
+  },
+  github: {
+    type: String,
+    match: [/^https?:\/\/(www\.)?github\.com\/.+/, 'Invalid GitHub URL']
+  },
+  linkedin: {
+    type: String,
+    match: [/^https?:\/\/(www\.)?linkedin\.com\/.+/, 'Invalid LinkedIn URL']
+  },
+  avatar: {
+    type: String, // Image URL
+    match: [/^https?:\/\/.+/, 'Invalid Avatar URL']
+  },
 
-    // User's password (should be hashed)
-    password: {
-        type: String,
-        required: [true, 'Password is required'],   // Must be provided
-        minlength: [6, 'Password must be at least 6 characters'] // Min length
-    },
+  // Social Graph
+  followers: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    default: []
+  }],
+  following: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    default: []
+  }],
 
-    // User's short bio (optional)
-    bio: {
-        type: String,
-        maxlength: [200, 'Bio cannot exceed 200 characters'] // Max length
-    },
+  // Projects
+  projects: {
+    type: [ProjectSchema],
+    default: []
+  },
 
-    // List of technical skills
-    skills: {
-        type: [String]                              // Array of strings
-    },
-
-    // GitHub profile URL
-    github: {
-        type: String
-    },
-
-    // LinkedIn profile URL
-    linkedin: {
-        type: String
-    },
-
-    // List of users following this user
-    followers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
-
-    // List of users this user is following
-    following: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
-
-    // Account creation date
-    createdAt: {
-        type: Date,
-        default: Date.now // Set current time automatically
-    },
-
-    // Personal website
-    website: {
-        type: String
-    },
-
-    // Current location
-    location: {
-        type: String
-    },
-
-    // List of projects
-    projects: [
-        {
-            id: Number,
-            title: String,
-            description: String,
-            technologies: [String],
-            github: String,
-            live: String
-        }
-    ]
-
+  // Metadata
+  createdAt: {
+    type: Date,
+    default: Date.now
+  }
 });
 
-// Export the model to use in other files
+// Export the model
 module.exports = mongoose.model('User', UserSchema);
