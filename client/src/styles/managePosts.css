@@ -18,10 +18,10 @@
   text-align: center;
   margin-bottom: 1rem;
   padding: 0.8rem 1rem;
-  background: #ede9ff;
-  border-left: 4px solid #6c63ff;
+  background: #e3f2fd;
+  border-left: 4px solid #1e88e5;
   border-radius: 6px;
-  color: #4437aa;
+  color: #1565c0;
   font-weight: 500;
 }
 
@@ -50,7 +50,7 @@
 .add-post-form button {
   align-self: flex-start;
   padding: 0.6rem 1.2rem;
-  background: #6c63ff;
+  background: #1e88e5;
   color: #fff;
   border: none;
   border-radius: 8px;
@@ -60,8 +60,8 @@
 }
 
 .add-post-form button:hover {
-  background: #7a70ff;
-  box-shadow: 0 0 10px #6c63ff;
+  background: #1976d2;
+  box-shadow: 0 0 10px #1e88e5;
 }
 
 /* Posts grid */
@@ -119,7 +119,7 @@
 .post-actions button {
   flex: 1;
   padding: 0.6rem 1rem;
-  background: #6c63ff;
+  background: #1e88e5;
   color: #fff;
   border: none;
   border-radius: 8px;
@@ -129,8 +129,8 @@
 }
 
 .post-actions button:hover {
-  background: #7a70ff;
-  box-shadow: 0 0 10px #6c63ff;
+  background: #1976d2;
+  box-shadow: 0 0 10px #1e88e5;
 }
 
 .post-actions button:last-child {
@@ -170,7 +170,7 @@
 
 .comments button {
   padding: 0.4rem 1rem;
-  background: #6c63ff;
+  background: #1e88e5;
   color: white;
   border: none;
   border-radius: 6px;
@@ -179,7 +179,7 @@
 }
 
 .comments button:hover {
-  background: #7a70ff;
+  background: #1976d2;
 }
 
 /* Empty or loading text */
@@ -210,11 +210,11 @@ body.dark .add-post-form input {
 }
 
 body.dark .add-post-form button {
-  background: #7a70ff;
+  background: #1e88e5;
 }
 
 body.dark .add-post-form button:hover {
-  background: #9d94ff;
+  background: #42a5f5;
 }
 
 body.dark .post-item {
@@ -234,18 +234,18 @@ body.dark .comments p {
 }
 
 body.dark .message {
-  background: #2a2e43;
-  border-left-color: #6c63ff;
-  color: #c3bfff;
+  background: #1a2c3a;
+  border-left-color: #1e88e5;
+  color: #90caf9;
 }
 
 body.dark .post-actions button {
-  background: #7a70ff;
+  background: #1e88e5;
 }
 
 body.dark .post-actions button:hover {
-  background: #9d94ff;
-  box-shadow: 0 0 10px #6c63ff;
+  background: #42a5f5;
+  box-shadow: 0 0 10px #1e88e5;
 }
 
 body.dark .post-actions button:last-child {
@@ -264,9 +264,9 @@ body.dark .comments input {
 }
 
 body.dark .comments button {
-  background: #7a70ff;
+  background: #1e88e5;
 }
 
 body.dark .comments button:hover {
-  background: #9d94ff;
+  background: #42a5f5;
 }

@@ -20,7 +20,7 @@
   object-fit: cover;
   border-radius: 50%;
   margin-bottom: 0.8rem;
-  border: 3px solid #6c63ff;
+  border: 3px solid #1e88e5;
 }
 
 .developer-card h3 {
@@ -45,8 +45,8 @@
 }
 
 .skill-tag {
-  background: #ede9ff;
-  color: #4437aa;
+  background: #e3f2fd;
+  color: #1e88e5;
   font-size: 0.75rem;
   padding: 4px 10px;
   border-radius: 12px;
@@ -54,7 +54,7 @@
 }
 
 .developer-card button {
-  background: #6c63ff;
+  background: #1e88e5;
   color: #fff;
   border: none;
   padding: 0.6rem 1.2rem;
@@ -65,8 +65,8 @@
 }
 
 .developer-card button:hover {
-  background: #5848d6;
-  box-shadow: 0 0 8px rgba(108, 99, 255, 0.4);
+  background: #1565c0;
+  box-shadow: 0 0 8px rgba(30, 136, 229, 0.4);
 }
 
 /* ==========================
@@ -86,15 +86,15 @@ body.dark .dev-bio {
 }
 
 body.dark .skill-tag {
-  background: #3b3b4f;
-  color: #ddd;
+  background: #2a3a4b;
+  color: #90caf9;
 }
 
 body.dark .developer-card button {
-  background: #7a70ff;
+  background: #42a5f5;
 }
 
 body.dark .developer-card button:hover {
-  background: #9d94ff;
-  box-shadow: 0 0 10px #6c63ff;
+  background: #64b5f6;
+  box-shadow: 0 0 10px #1e88e5;
 }

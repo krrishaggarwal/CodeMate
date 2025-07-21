@@ -2,6 +2,8 @@ import React, { useState, useEffect, useContext, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import '../styles/DeveloperProfile.css';
+import { Link } from 'react-router-dom';
+import PostCard from '../components/PostCard';
 
 const DeveloperProfile = () => {
   const { userId } = useParams();
@@ -456,51 +458,19 @@ const DeveloperProfile = () => {
         )}
 
         {activeTab === 'posts' && (
-          <div
-            className="posts-section"
-            role="tabpanel"
-            id="posts-panel"
-            aria-labelledby="posts-tab"
-          >
-            {posts.length > 0 ? (
-              <div className="posts-grid">
-                {posts.map(post => (
-                  <article key={post._id} className="post-card">
-                    <div className="post-content">
-                      <p>{post.text || 'No content available'}</p>
-                      {post.image && (
-                        <img
-                          src={post.image}
-                          alt="Post content"
-                          className="post-image"
-                          loading="lazy"
-                          onError={(e) => {
-                            e.target.style.display = 'none';
-                          }}
-                        />
-                      )}
-                    </div>
-                    <div className="post-meta">
-                      <span className="post-date">
-                        {formatDate(post.createdAt)}
-                      </span>
-                      <div className="post-stats">
-                        <span>{post.likes?.length || 0} likes</span>
-                        {" "}
-                        {" "}
-                        <span>{post.comments?.length || 0} comments</span>
-                      </div>
-                    </div>
-                  </article>
-                ))}
-              </div>
-            ) : (
-              <div className="no-posts">
-                <p>{isOwnProfile ? 'You haven\'t posted anything yet.' : 'No posts yet.'}</p>
-              </div>
-            )}
-          </div>
+          posts.length > 0 ? (
+            <div className="posts-grid">
+              {posts.map(post => (
+                <PostCard key={post._id} post={post} currentUser={currentUser} />
+              ))}
+            </div>
+          ) : (
+            <div className="no-posts">
+              <p>{isOwnProfile ? "You haven't posted anything yet." : 'No posts yet.'}</p>
+            </div>
+          )
         )}
+
 
 
         {activeTab === 'projects' && (

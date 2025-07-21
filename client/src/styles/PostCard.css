@@ -1,3 +1,4 @@
+/* ========== Base Post Card ========== */
 .post-card {
   background: #ffffff;
   border: 1px solid #e5e7eb;
@@ -7,6 +8,7 @@
   transition: transform 0.3s, box-shadow 0.3s;
   display: flex;
   flex-direction: column;
+  margin-bottom: 2rem;
 }
 
 .post-card:hover {
@@ -14,69 +16,225 @@
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
 }
 
+/* ========== Post Header (Avatar + Name) ========== */
+.post-card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  padding: 1rem 1rem 0 1rem;
+}
+
+.post-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid #ddd;
+  background-color: #f3f4f6;
+}
+
+.post-username {
+  font-weight: 600;
+  color: #111827;
+  font-size: 0.95rem;
+  margin-bottom: 2px;
+}
+
+.post-date {
+  font-size: 0.8rem;
+  color: #6b7280;
+}
+
+/* ========== Image ========== */
 .post-card-image img {
   width: 100%;
-  height: 200px;
+  height: 220px;
   object-fit: cover;
+  border-top: 1px solid #eee;
 }
 
-.post-card-content {
-  padding: 1rem;
-}
-
-.post-card-content h3 {
-  font-size: 1.2rem;
-  color: #111827;
-  margin-bottom: 0.5rem;
-}
-
+/* ========== Post Text ========== */
 .post-snippet {
   font-size: 0.95rem;
   color: #4b5563;
-  margin-bottom: 1rem;
+  margin: 1rem;
+  white-space: pre-wrap;
+  word-wrap: break-word;
 }
 
-.post-meta {
-  font-size: 0.8rem;
+/* ========== Stats ========== */
+.post-card-content {
+  padding: 0 1rem 1rem 1rem;
+}
+
+.post-stats {
+  font-size: 0.85rem;
   color: #6b7280;
   display: flex;
   justify-content: space-between;
   margin-bottom: 1rem;
 }
 
+/* ========== Like Button ========== */
+.like-btn {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 8px;
+  background-color: #fef3c7;
+  color: #92400e;
+  font-weight: bold;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.like-btn:hover {
+  background-color: #fde68a;
+  box-shadow: 0 2px 6px rgba(255, 193, 7, 0.3);
+}
+
+.like-btn.liked {
+  background-color: #f87171;
+  color: #fff;
+}
+
+.like-btn.liked:hover {
+  background-color: #ef4444;
+}
+
+.like-btn.animated {
+  animation: pop 0.3s ease;
+}
+
+@keyframes pop {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.25);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* ========== Comment Section ========== */
+.comment-section {
+  padding: 1rem;
+  border-top: 1px solid #f1f1f1;
+  background-color: #fafafa;
+}
+
+.comment-section h4 {
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+  color: #374151;
+}
+
+.comment {
+  background-color: #f9fafb;
+  padding: 0.5rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  margin-bottom: 0.5rem;
+}
+
+.comment-input {
+  width: 100%;
+  padding: 0.5rem;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.action-btn {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 8px;
+  background-color: #f3f4f6;
+  color: #111827;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  width: 100%;
+}
+
+.action-btn:hover {
+  background-color: #e5e7eb;
+}
+
+/* ========== View Post Button (Optional) ========== */
 .view-post-btn {
   padding: 0.5rem 1rem;
-  background: #3b82f6;
-  color: #fff;
+  background: #1e88e5;
+  color: #ffffff;
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  transition: background 0.3s;
+  transition: background 0.3s ease, box-shadow 0.3s ease;
 }
 
 .view-post-btn:hover {
-  background: #2563eb;
+  background: #1565c0;
+  box-shadow: 0 0 8px rgba(30, 136, 229, 0.4);
 }
 
-/* Dark mode */
+/* ========== Dark Mode Support ========== */
 body.dark .post-card {
   background: #1f2937;
   border: 1px solid #374151;
 }
 
-body.dark .post-card-content h3 {
+body.dark .post-card-header .post-username {
   color: #f9fafb;
 }
 
+body.dark .post-card-header .post-date,
+body.dark .post-stats,
 body.dark .post-snippet,
-body.dark .post-meta {
+body.dark .comment-section h4 {
   color: #9ca3af;
 }
 
-body.dark .view-post-btn {
-  background: #6366f1;
+body.dark .post-avatar {
+  background-color: #374151;
+  border: 1px solid #4b5563;
 }
 
-body.dark .view-post-btn:hover {
-  background: #4f46e5;
+body.dark .like-btn {
+  background-color: #374151;
+  color: #fcd34d;
+}
+
+body.dark .like-btn:hover {
+  background-color: #4b5563;
+}
+
+body.dark .like-btn.liked {
+  background-color: #ef4444;
+  color: #fff;
+}
+
+body.dark .comment {
+  background-color: #374151;
+  color: #e5e7eb;
+}
+
+body.dark .comment-input {
+  background-color: #1f2937;
+  color: #f3f4f6;
+  border: 1px solid #4b5563;
+}
+
+body.dark .action-btn {
+  background-color: #374151;
+  color: #f9fafb;
+}
+
+body.dark .action-btn:hover {
+  background-color: #4b5563;
 }

@@ -122,7 +122,7 @@
 }
 
 .follow-btn {
-  background: #6c63ff;
+  background: #1e88e5;
 }
 
 .unfollow-btn {
@@ -163,8 +163,8 @@
 .profile-nav button {
   padding: 0.4rem 1rem;
   background: none;
-  border: 2px solid #6c63ff;
-  color: #6c63ff;
+  border: 2px solid #1e88e5;
+  color: #1e88e5;
   border-radius: 6px;
   cursor: pointer;
   transition: all 0.2s;
@@ -174,7 +174,7 @@
 
 .profile-nav button.active,
 .profile-nav button:hover {
-  background: #6c63ff;
+  background: #1e88e5;
   color: #fff;
 }
 
@@ -208,7 +208,7 @@
 
 .skill-tag,
 .tech-tag {
-  background: #6c63ff;
+  background: #1e88e5;
   color: #fff;
   padding: 0.3rem 0.6rem;
   border-radius: 4px;
@@ -218,7 +218,7 @@
 
 .social-link {
   text-decoration: none;
-  color: #6c63ff;
+  color: #1e88e5;
   font-weight: 600;
 }
 
@@ -295,13 +295,13 @@ body.dark .no-projects {
 }
 
 body.dark .profile-nav button {
-  border-color: #82aaff;
-  color: #82aaff;
+  border-color: #64b5f6;
+  color: #64b5f6;
 }
 
 body.dark .profile-nav button.active,
 body.dark .profile-nav button:hover {
-  background: #82aaff;
+  background: #64b5f6;
   color: #121212;
 }
 
@@ -312,5 +312,5 @@ body.dark .tech-tag {
 }
 
 body.dark .social-link {
-  color: #82aaff;
+  color: #64b5f6;
 }

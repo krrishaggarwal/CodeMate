@@ -43,7 +43,7 @@ const PostSchema = new mongoose.Schema({
         type: String,
         default: '', // Default to empty string if not provided
         match: [
-            /^$|^https?:\/\/.+\.(jpg|jpeg|png|gif|webp)$/i,
+            /^$|^https?:\/\/.+\.(jpg|jpeg|png|gif|webp)(\?.*)?$/i,
             'Invalid image URL format'
         ]
     },

@@ -8,11 +8,7 @@ import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import EditProfile from './pages/EditProfile';
 import DeveloperProfile from './pages/DeveloperProfile';
-
 import ManagePosts from './pages/managePosts';
-
-
-
 import Explore from './pages/Explore';
 import Messages from './pages/messages';
 import Settings from './pages/Settings';
@@ -35,6 +31,7 @@ const AppRoutes = () => {
       <Route path="/register" element={<Register />} />
       <Route path="/explore" element={<Explore />} />
       <Route path="/developer/:userId" element={<DeveloperProfile />} />
+
 
       {/* Private Routes */}
       <Route

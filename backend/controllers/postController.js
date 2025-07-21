@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const Post = require('../models/post');
 
 // 📌 Create a new post
@@ -29,7 +30,7 @@ const getMyPosts = async (userId) => {
     try {
         const posts = await Post.find({ user: userId })
             .populate('user', 'name')
-            .populate('comments.user', 'name') // ✅
+            .populate('comments.user', 'name')
             .sort({ createdAt: -1 });
 
         return { data: posts };
@@ -38,7 +39,7 @@ const getMyPosts = async (userId) => {
     }
 };
 
-// ✅ Like a post
+// ✅ Like a post (with populated user/comment user)
 const likePost = async (postId, userId) => {
     try {
         const post = await Post.findById(postId);
@@ -49,13 +50,17 @@ const likePost = async (postId, userId) => {
             await post.save();
         }
 
-        return { data: post };
+        const updatedPost = await Post.findById(postId)
+            .populate('user', 'name')
+            .populate('comments.user', 'name');
+
+        return { data: updatedPost };
     } catch (error) {
         return { error: error.message };
     }
 };
 
-// ✅ Unlike a post
+// ✅ Unlike a post (with populated user/comment user)
 const unlikePost = async (postId, userId) => {
     try {
         const post = await Post.findById(postId);
@@ -64,7 +69,11 @@ const unlikePost = async (postId, userId) => {
         post.likes = post.likes.filter(id => id.toString() !== userId);
         await post.save();
 
-        return { data: post };
+        const updatedPost = await Post.findById(postId)
+            .populate('user', 'name')
+            .populate('comments.user', 'name');
+
+        return { data: updatedPost };
     } catch (error) {
         return { error: error.message };
     }
@@ -113,6 +122,22 @@ const deletePost = async (postId, userId) => {
     }
 };
 
+// 📌 Get single post by ID
+const getPostById = async (postId) => {
+    try {
+        if (!mongoose.Types.ObjectId.isValid(postId)) return null;
+
+        const post = await Post.findById(postId)
+            .populate('user', 'name avatar')
+            .populate('comments.user', 'name avatar');
+
+        return post;
+    } catch (err) {
+        console.error('getPostById error:', err.message);
+        throw err;
+    }
+};
+
 module.exports = {
     createPost,
     getPosts,
@@ -120,5 +145,6 @@ module.exports = {
     likePost,
     unlikePost,
     addComment,
-    deletePost
+    deletePost,
+    getPostById
 };

@@ -31,7 +31,6 @@ body.dark .settings-container {
 .settings-container h1 {
   font-size: 2rem;
   margin-bottom: 1.5rem;
-  color: inherit;
   font-weight: 700;
 }
 
@@ -49,7 +48,6 @@ body.dark .theme-toggle {
 .theme-toggle p {
   font-size: 1.1rem;
   margin-bottom: 0.8rem;
-  color: inherit;
   font-weight: 600;
 }
 
@@ -62,19 +60,12 @@ body.dark .theme-toggle {
   border-radius: 8px;
   cursor: pointer;
   font-weight: 600;
-  transition: background-color 0.2s;
+  transition: background-color 0.2s, box-shadow 0.2s;
 }
 
 .theme-btn:hover {
   background-color: #1565c0;
-}
-
-body.dark .theme-btn {
-  background-color: #1e88e5;
-}
-
-body.dark .theme-btn:hover {
-  background-color: #1565c0;
+  box-shadow: 0 0 8px rgba(30, 136, 229, 0.4);
 }
 
 /* =============== Account Section =============== */
@@ -95,7 +86,6 @@ body.dark .account-section h3 {
 
 .account-section p {
   margin-bottom: 1rem;
-  color: inherit;
   font-weight: 500;
 }
 

@@ -4,32 +4,29 @@ import PostCard from '../components/PostCard';
 import '../styles/Home.css';
 
 const Home = () => {
-  const { user, token } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [filter, setFilter] = useState('trending'); // 'trending' or 'following'
 
   useEffect(() => {
     fetchPosts();
-  }, [filter]);
+  }, []);
 
   const fetchPosts = async () => {
     try {
       setLoading(true);
-      const endpoint = filter === 'trending' ? '/api/posts/trending' : '/api/posts/following';
-      const response = await fetch(`${process.env.REACT_APP_API_URL}${endpoint}`, {
+      const response = await fetch(`http://localhost:5000/api/posts/random?limit=20`, {
         headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
+          'Content-Type': 'application/json',
+        },
       });
-      
+
       if (response.ok) {
         const data = await response.json();
         setPosts(data);
       }
     } catch (error) {
-      console.error('Error fetching posts:', error);
+      console.error('Error fetching random posts:', error);
     } finally {
       setLoading(false);
     }
@@ -37,44 +34,51 @@ const Home = () => {
 
   const handleLike = async (postId) => {
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/posts/${postId}/like`, {
-        method: 'POST',
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/posts/like`, {
+        method: 'PUT',
         headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          postId,
+          userId: user._id,
+        }),
       });
 
       if (response.ok) {
-        setPosts(posts.map(post => 
-          post._id === postId 
-            ? { ...post, likes: post.likes + 1, isLiked: true }
-            : post
-        ));
+        const updated = await response.json();
+        setPosts((prev) =>
+          prev.map((post) =>
+            post._id === postId ? updated : post
+          )
+        );
       }
     } catch (error) {
       console.error('Error liking post:', error);
     }
   };
 
-  const handleComment = async (postId, comment) => {
+  const handleComment = async (postId, commentText) => {
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/posts/${postId}/comment`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/posts/comment`, {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ comment })
+        body: JSON.stringify({
+          postId,
+          userId: user._id,
+          text: commentText,
+        }),
       });
 
       if (response.ok) {
-        const newComment = await response.json();
-        setPosts(posts.map(post => 
-          post._id === postId 
-            ? { ...post, comments: [...post.comments, newComment] }
-            : post
-        ));
+        const updated = await response.json();
+        setPosts((prev) =>
+          prev.map((post) =>
+            post._id === postId ? updated : post
+          )
+        );
       }
     } catch (error) {
       console.error('Error adding comment:', error);
@@ -93,32 +97,19 @@ const Home = () => {
     <div className="home-container">
       <div className="home-header">
         <h1>Welcome back, {user?.name}!</h1>
-        <div className="filter-tabs">
-          <button 
-            className={filter === 'trending' ? 'active' : ''}
-            onClick={() => setFilter('trending')}
-          >
-            Trending Posts
-          </button>
-          <button 
-            className={filter === 'following' ? 'active' : ''}
-            onClick={() => setFilter('following')}
-          >
-            Following
-          </button>
-        </div>
       </div>
 
       <div className="posts-feed">
         {posts.length === 0 ? (
           <div className="no-posts">
-            <p>No posts to show. Start following developers to see their posts!</p>
+            <p>No posts available. Follow developers or create a post!</p>
           </div>
         ) : (
-          posts.map(post => (
-            <PostCard 
-              key={post._id} 
-              post={post} 
+          posts.map((post) => (
+            <PostCard
+              key={post._id}
+              post={post}
+              currentUser={user}
               onLike={handleLike}
               onComment={handleComment}
             />
