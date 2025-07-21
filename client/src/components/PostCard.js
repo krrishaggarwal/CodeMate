@@ -4,7 +4,9 @@ import '../styles/PostCard.css';
 const PostCard = ({ post, currentUser }) => {
   const [localPost, setLocalPost] = useState(post);
   const [comment, setComment] = useState('');
+  const [showCommentBox, setShowCommentBox] = useState(false);
   const [likeAnimating, setLikeAnimating] = useState(false);
+  const [showAllComments, setShowAllComments] = useState(false);
 
   if (!post || !currentUser || !post.user) return null;
 
@@ -51,6 +53,8 @@ const PostCard = ({ post, currentUser }) => {
       if (data.data) {
         setLocalPost(data.data);
         setComment('');
+        setShowCommentBox(false);
+        setShowAllComments(true); // show new comment immediately
       }
     } catch (err) {
       alert('Failed to add comment');
@@ -74,7 +78,6 @@ const PostCard = ({ post, currentUser }) => {
         </div>
       </div>
 
-
       {localPost.image && (
         <div className="post-card-image">
           <img src={localPost.image} alt="Post" />
@@ -82,7 +85,7 @@ const PostCard = ({ post, currentUser }) => {
       )}
 
       <div className="post-snippet">
-        {localPost.text?.length > 0 ? localPost.text : 'No content available.'}
+        <strong>{localPost.text || 'No content available.'}</strong>
       </div>
 
       <div className="post-card-content">
@@ -91,34 +94,55 @@ const PostCard = ({ post, currentUser }) => {
           <span>{localPost.comments?.length || 0} Comments</span>
         </div>
 
-        <button
-          onClick={handleLike}
-          className={`like-btn ${isLikedByUser ? 'liked' : ''} ${likeAnimating ? 'animated' : ''}`}
-        >
-          {isLikedByUser ? '❤️ Liked' : '🤍 Like'}
-        </button>
+        <div className="post-buttons-row">
+          <button
+            onClick={handleLike}
+            className={`like-btn ${isLikedByUser ? 'liked' : ''} ${likeAnimating ? 'animated' : ''}`}
+          >
+            {isLikedByUser ? '❤️ Liked' : '🤍 Like'}
+          </button>
+          <button
+            onClick={() => setShowCommentBox(prev => !prev)}
+            className="comment-toggle-btn"
+          >
+            💬 Comment
+          </button>
+        </div>
       </div>
 
       <div className="comment-section">
+        {showCommentBox && (
+          <div className="comment-input-area">
+            <input
+              type="text"
+              placeholder="Write a comment..."
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
+              className="comment-input"
+            />
+            <button onClick={handleComment} className="send-comment-btn">
+              Send
+            </button>
+          </div>
+        )}
+
         <h4>Recent Comments</h4>
-        <ul>
-          {localPost.comments?.slice(0, 3).map((c, i) => (
+        <ul className="comments-list">
+          {(showAllComments ? localPost.comments : localPost.comments?.slice(0, 3))?.map((c, i) => (
             <li className="comment" key={i}>
               <strong>{c.user?.name || 'User'}:</strong> {c.text}
             </li>
           ))}
         </ul>
 
-        <input
-          type="text"
-          placeholder="Write a comment..."
-          value={comment}
-          onChange={(e) => setComment(e.target.value)}
-          className="comment-input"
-        />
-        <button onClick={handleComment} className="action-btn">
-          Comment
-        </button>
+        {localPost.comments?.length > 3 && (
+          <button
+            className="view-all-comments-btn"
+            onClick={() => setShowAllComments(!showAllComments)}
+          >
+            {showAllComments ? 'Show Less' : 'View All Comments'}
+          </button>
+        )}
       </div>
     </div>
   );

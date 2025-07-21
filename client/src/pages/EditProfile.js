@@ -5,10 +5,9 @@ import '../styles/EditProfile.css';
 import axios from 'axios';
 
 const EditProfile = () => {
-  const { user, token, updateUser } = useContext(AuthContext);
+  const { user, updateUser } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  // Initialize empty form state
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -18,7 +17,8 @@ const EditProfile = () => {
     website: '',
     location: '',
     skills: [],
-    projects: []
+    projects: [],
+    avatar: ''
   });
 
   const [newSkill, setNewSkill] = useState('');
@@ -33,7 +33,6 @@ const EditProfile = () => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState({ text: '', type: '' });
 
-  // Initialize form with user data
   useEffect(() => {
     if (user) {
       setFormData({
@@ -45,7 +44,8 @@ const EditProfile = () => {
         website: user.website || '',
         location: user.location || '',
         skills: user.skills || [],
-        projects: user.projects || []
+        projects: user.projects || [],
+        avatar: user.avatar || ''
       });
     }
   }, [user]);
@@ -83,10 +83,10 @@ const EditProfile = () => {
         .map(tech => tech.trim())
         .filter(Boolean);
 
-      const projectToAdd = { 
-        ...newProject, 
-        id: Date.now(), 
-        technologies: techArray 
+      const projectToAdd = {
+        ...newProject,
+        id: Date.now(),
+        technologies: techArray
       };
 
       setFormData(prev => ({
@@ -94,12 +94,12 @@ const EditProfile = () => {
         projects: [...prev.projects, projectToAdd]
       }));
 
-      setNewProject({ 
-        title: '', 
-        description: '', 
-        technologies: '', 
-        github: '', 
-        live: '' 
+      setNewProject({
+        title: '',
+        description: '',
+        technologies: '',
+        github: '',
+        live: ''
       });
       setShowProjectForm(false);
     }
@@ -114,7 +114,7 @@ const EditProfile = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (!user?.userId) {
       setMessage({ text: 'User not authenticated', type: 'error' });
       return;
@@ -129,26 +129,25 @@ const EditProfile = () => {
         formData,
         {
           headers: {
-            Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json'
           }
         }
       );
 
       updateUser(response.data);
-      setMessage({ 
-        text: 'Profile updated successfully!', 
-        type: 'success' 
+      setMessage({
+        text: 'Profile updated successfully!',
+        type: 'success'
       });
-      
+
       setTimeout(() => navigate('/dashboard'), 2000);
     } catch (err) {
-      const errorMessage = err.response?.data?.message || 
-                         err.message || 
-                         'Failed to update profile';
-      setMessage({ 
-        text: errorMessage, 
-        type: 'error' 
+      const errorMessage = err.response?.data?.message ||
+        err.message ||
+        'Failed to update profile';
+      setMessage({
+        text: errorMessage,
+        type: 'error'
       });
     } finally {
       setLoading(false);
@@ -167,18 +166,14 @@ const EditProfile = () => {
         </div>
         <div className="project-links">
           {proj.github && (
-            <a href={proj.github} target="_blank" rel="noopener noreferrer">
-              GitHub
-            </a>
+            <a href={proj.github} target="_blank" rel="noopener noreferrer">GitHub</a>
           )}
           {proj.live && (
-            <a href={proj.live} target="_blank" rel="noopener noreferrer">
-              Live
-            </a>
+            <a href={proj.live} target="_blank" rel="noopener noreferrer">Live</a>
           )}
         </div>
-        <button 
-          type="button" 
+        <button
+          type="button"
           onClick={() => removeProject(proj.id)}
           aria-label={`Remove ${proj.title}`}
         >
@@ -192,8 +187,8 @@ const EditProfile = () => {
     <div className="edit-profile-container">
       <div className="edit-profile-header">
         <h1>Edit Profile</h1>
-        <button 
-          onClick={() => navigate('/dashboard')} 
+        <button
+          onClick={() => navigate('/dashboard')}
           className="back-btn"
           disabled={loading}
         >
@@ -208,59 +203,83 @@ const EditProfile = () => {
       )}
 
       <form onSubmit={handleSubmit} className="edit-profile-form">
+
         <section className="form-section">
           <h3>Basic Info</h3>
-          <input 
-            name="name" 
-            value={formData.name} 
-            onChange={handleChange} 
-            placeholder="Full Name" 
-            required 
+          <input
+            name="name"
+            value={formData.name}
+            onChange={handleChange}
+            placeholder="Full Name"
+            required
           />
-          <input 
-            name="email" 
-            value={formData.email} 
-            onChange={handleChange} 
-            placeholder="Email" 
+          <input
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            placeholder="Email"
             type="email"
-            required 
+            required
           />
-          <textarea 
-            name="bio" 
-            value={formData.bio} 
-            onChange={handleChange} 
-            placeholder="Your bio" 
+          <textarea
+            name="bio"
+            value={formData.bio}
+            onChange={handleChange}
+            placeholder="Your bio"
             rows="4"
           />
-          <input 
-            name="location" 
-            value={formData.location} 
-            onChange={handleChange} 
-            placeholder="Location" 
+          <input
+            name="location"
+            value={formData.location}
+            onChange={handleChange}
+            placeholder="Location"
           />
+
+          <h4>Avatar</h4>
+          <input
+            type="url"
+            name="avatar"
+            value={formData.avatar}
+            onChange={handleChange}
+            placeholder="Paste avatar image URL"
+          />
+          {formData.avatar && (
+            <img
+              src={formData.avatar}
+              alt="Avatar Preview"
+              style={{
+                width: '100px',
+                height: '100px',
+                borderRadius: '50%',
+                marginTop: '10px',
+                objectFit: 'cover',
+                border: '2px solid #ccc'
+              }}
+            />
+          )}
         </section>
 
         <section className="form-section">
           <h3>Social Links</h3>
-          <input 
-            name="github" 
-            value={formData.github} 
-            onChange={handleChange} 
-            placeholder="GitHub URL" 
+          <input
+            name="github"
+            value={formData.github}
+            onChange={handleChange}
+            placeholder="GitHub URL"
             type="url"
           />
-          <input 
-            name="linkedin" 
-            value={formData.linkedin} 
-            onChange={handleChange} 
-            placeholder="LinkedIn URL" 
+          <input
+            name="linkedin"
+            value={formData.linkedin}
+            onChange={handleChange}
+            placeholder="LinkedIn URL"
             type="url"
           />
-          <input 
-            name="website" 
-            value={formData.website} 
-            onChange={handleChange} 
-            placeholder="Website URL" 
+          <input
+            name="website"
+            value={formData.website}
+            onChange={handleChange}
+            placeholder="Website URL"
             type="url"
           />
         </section>
@@ -268,14 +287,14 @@ const EditProfile = () => {
         <section className="form-section">
           <h3>Skills</h3>
           <div className="skills-input">
-            <input 
-              value={newSkill} 
-              onChange={(e) => setNewSkill(e.target.value)} 
-              placeholder="Add a skill" 
+            <input
+              value={newSkill}
+              onChange={(e) => setNewSkill(e.target.value)}
+              placeholder="Add a skill"
               onKeyPress={(e) => e.key === 'Enter' && addSkill()}
             />
-            <button 
-              type="button" 
+            <button
+              type="button"
               onClick={addSkill}
               disabled={!newSkill.trim()}
             >
@@ -286,8 +305,8 @@ const EditProfile = () => {
             {formData.skills.map((skill, idx) => (
               <span key={idx} className="skill-tag">
                 {skill}
-                <button 
-                  type="button" 
+                <button
+                  type="button"
                   onClick={() => removeSkill(skill)}
                   aria-label={`Remove ${skill}`}
                 >
@@ -300,8 +319,8 @@ const EditProfile = () => {
 
         <section className="form-section">
           <h3>Projects</h3>
-          <button 
-            type="button" 
+          <button
+            type="button"
             onClick={() => setShowProjectForm(!showProjectForm)}
             disabled={loading}
           >
@@ -310,43 +329,43 @@ const EditProfile = () => {
 
           {showProjectForm && (
             <div className="project-form">
-              <input 
-                name="title" 
-                value={newProject.title} 
-                onChange={handleProjectChange} 
-                placeholder="Project Title" 
+              <input
+                name="title"
+                value={newProject.title}
+                onChange={handleProjectChange}
+                placeholder="Project Title"
                 required
               />
-              <textarea 
-                name="description" 
-                value={newProject.description} 
-                onChange={handleProjectChange} 
-                placeholder="Description" 
+              <textarea
+                name="description"
+                value={newProject.description}
+                onChange={handleProjectChange}
+                placeholder="Description"
                 rows="4"
                 required
               />
-              <input 
-                name="technologies" 
-                value={newProject.technologies} 
-                onChange={handleProjectChange} 
-                placeholder="Technologies (comma separated)" 
+              <input
+                name="technologies"
+                value={newProject.technologies}
+                onChange={handleProjectChange}
+                placeholder="Technologies (comma separated)"
               />
-              <input 
-                name="github" 
-                value={newProject.github} 
-                onChange={handleProjectChange} 
-                placeholder="GitHub Link" 
+              <input
+                name="github"
+                value={newProject.github}
+                onChange={handleProjectChange}
+                placeholder="GitHub Link"
                 type="url"
               />
-              <input 
-                name="live" 
-                value={newProject.live} 
-                onChange={handleProjectChange} 
-                placeholder="Live Demo Link" 
+              <input
+                name="live"
+                value={newProject.live}
+                onChange={handleProjectChange}
+                placeholder="Live Demo Link"
                 type="url"
               />
-              <button 
-                type="button" 
+              <button
+                type="button"
                 onClick={addProject}
                 disabled={!newProject.title.trim() || !newProject.description.trim()}
               >
@@ -361,15 +380,15 @@ const EditProfile = () => {
         </section>
 
         <div className="form-actions">
-          <button 
-            type="submit" 
+          <button
+            type="submit"
             disabled={loading}
             className="save-btn"
           >
             {loading ? 'Saving...' : 'Save Profile'}
           </button>
-          <button 
-            type="button" 
+          <button
+            type="button"
             onClick={() => navigate('/dashboard')}
             disabled={loading}
             className="cancel-btn"

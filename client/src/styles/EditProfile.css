@@ -280,3 +280,21 @@ body.dark .skill-tag button {
 body.dark .project-links a {
   color: #66bb6a;
 }
+
+.avatar-preview {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  margin-top: 10px;
+  object-fit: cover;
+  border: 2px solid #ccc;
+  transition: transform 0.2s;
+}
+
+.avatar-preview:hover {
+  transform: scale(1.05);
+}
+
+body.dark .avatar-preview {
+  border-color: #444;
+}
