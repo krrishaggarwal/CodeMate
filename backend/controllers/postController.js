@@ -15,7 +15,7 @@ const createPost = async (userId, text, image) => {
 const getPosts = async () => {
     try {
         const posts = await Post.find()
-            .populate('user', 'name') // post author
+            .populate('user', 'name avatar bio') // post author
             .populate('comments.user', 'name') // commenter names ✅
             .sort({ createdAt: -1 });
 

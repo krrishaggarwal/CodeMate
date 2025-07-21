@@ -395,3 +395,87 @@ body.dark .decline-btn:hover {
   color: #fff;
   font-size: 1.2rem;
 }
+
+/* ======= Projects Section ======= */
+.user-projects .projects-list {
+  margin-top: 1rem;
+}
+
+.project-item {
+  background: #f1f5f9;
+  border-radius: 10px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.project-item h4 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: #1f2937;
+}
+
+.project-item p {
+  font-size: 0.9rem;
+  color: #555;
+  margin-bottom: 0.5rem;
+}
+
+.tech-tags {
+  margin: 0.5rem 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.tech-tag {
+  background: #dbeafe;
+  color: #1e40af;
+  padding: 0.3rem 0.6rem;
+  font-size: 0.75rem;
+  border-radius: 999px;
+  font-weight: 600;
+}
+
+.project-links {
+  margin-top: 0.5rem;
+}
+
+.project-links a {
+  color: #1e88e5;
+  font-weight: 600;
+  font-size: 0.85rem;
+  margin-right: 1rem;
+  transition: color 0.2s ease;
+}
+
+.project-links a:hover {
+  text-decoration: underline;
+  color: #1565c0;
+}
+
+/* ======= Dark Mode Support for Projects ======= */
+body.dark .project-item {
+  background: #1f2937;
+}
+
+body.dark .project-item h4 {
+  color: #f9fafb;
+}
+
+body.dark .project-item p {
+  color: #d1d5db;
+}
+
+body.dark .tech-tag {
+  background: #374151;
+  color: #e5e7eb;
+}
+
+body.dark .project-links a {
+  color: #60a5fa;
+}
+
+body.dark .project-links a:hover {
+  color: #1e88e5;
+}

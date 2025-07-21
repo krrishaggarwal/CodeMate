@@ -13,6 +13,7 @@ const Dashboard = () => {
   });
   const [followRequests, setFollowRequests] = useState([]);
   const [recentPosts, setRecentPosts] = useState([]);
+  const [fullProfile, setFullProfile] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
@@ -32,7 +33,6 @@ const Dashboard = () => {
 
         const promises = [];
 
-        // Fetch stats
         promises.push(
           fetch(`${API_BASE_URL}/api/users/stats/${user.userId}`)
             .then(res => res.ok ? res.json() : Promise.reject('Failed to fetch stats'))
@@ -40,7 +40,6 @@ const Dashboard = () => {
             .catch(err => console.error('Error fetching stats:', err))
         );
 
-        // Fetch follow requests
         promises.push(
           fetch(`${API_BASE_URL}/api/follow/requests/${user.userId}`)
             .then(res => res.ok ? res.json() : Promise.reject('Failed to fetch requests'))
@@ -48,12 +47,18 @@ const Dashboard = () => {
             .catch(err => console.error('Error fetching follow requests:', err))
         );
 
-        // Fetch recent posts
         promises.push(
           fetch(`${API_BASE_URL}/api/posts/user/${user.userId}`)
             .then(res => res.ok ? res.json() : Promise.reject('Failed to fetch posts'))
             .then(data => setRecentPosts(data.slice(0, 5)))
             .catch(err => console.error('Error fetching posts:', err))
+        );
+
+        promises.push(
+          fetch(`${API_BASE_URL}/api/users/${user.userId}`)
+            .then(res => res.ok ? res.json() : Promise.reject('Failed to fetch profile'))
+            .then(data => setFullProfile(data.user || data))
+            .catch(err => console.error('Error fetching profile:', err))
         );
 
         await Promise.allSettled(promises);
@@ -238,6 +243,36 @@ const Dashboard = () => {
               )}
             </div>
           </div>
+
+          {/* ✅ Projects Section */}
+          {fullProfile?.projects?.length > 0 && (
+            <div className="dashboard-card user-projects">
+              <div className="card-header">
+                <h3>Projects</h3>
+                <Link to="/edit-profile" className="view-all-link">Edit</Link>
+              </div>
+              <div className="projects-list">
+                {fullProfile.projects.slice(0, 3).map((proj, i) => (
+                  <div key={i} className="project-item">
+                    <h4>{proj.title}</h4>
+                    <p>{proj.description?.substring(0, 100)}...</p>
+                    <div className="tech-tags">
+                      {proj.technologies?.map((tech, idx) => (
+                        <span key={idx} className="tech-tag">{tech}</span>
+                      ))}
+                    </div>
+                    <div className="project-links">
+                      {proj.github && <a href={proj.github} target="_blank" rel="noopener noreferrer">GitHub</a>}
+                      {proj.live && <a href={proj.live} target="_blank" rel="noopener noreferrer">Live</a>}
+                    </div>
+                  </div>
+                ))}
+                {fullProfile.projects.length > 3 && (
+                  <Link to="/edit-profile" className="view-all-link">View All</Link>
+                )}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

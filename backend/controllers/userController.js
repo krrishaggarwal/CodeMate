@@ -1,9 +1,10 @@
-const User = require('../models/user');
-const Post = require('../models/post');
-const FollowRequest = require('../models/followRequest');
-const { exportUserProfileToPDF } = require('../utils/pdfExporter');
+const User = require("../models/user");
+const Post = require("../models/post");
+const FollowRequest = require("../models/followRequest");
+const Message = require("../models/message");
+const { exportUserProfileToPDF } = require("../utils/pdfExporter");
 
-// Get user profile
+//Get user profile
 const getProfile = async (userId) => {
     try {
         const user = await User.findById(userId).select('-password');
@@ -13,7 +14,7 @@ const getProfile = async (userId) => {
     }
 };
 
-// Update user profile
+//Update user profile
 const updateProfile = async (userId, updates) => {
     try {
         const user = await User.findById(userId);
@@ -26,17 +27,26 @@ const updateProfile = async (userId, updates) => {
         user.linkedin = updates.linkedin || user.linkedin;
         user.website = updates.website || user.website;
         user.location = updates.location || user.location;
-        user.projects = updates.projects || user.projects;
         user.avatar = updates.avatar || user.avatar;
 
-        const updatedUser = await user.save();
+        // ✅ Merge incoming projects with existing ones (preserve old ones)
+        if (Array.isArray(updates.projects)) {
+            const incomingIds = updates.projects.map(p => p.id);
+            const remainingOldProjects = user.projects.filter(p => !incomingIds.includes(p.id));
+            user.projects = [...remainingOldProjects, ...updates.projects];
+        }
+
+        await user.save();
+        const updatedUser = await User.findById(userId).select('-password');
         return { data: updatedUser };
+
     } catch (error) {
         return { error: error.message };
     }
 };
 
-// 🔍 Search users by keyword (name/email/skills)
+
+//Search users by keyword
 const searchUsers = async (keyword) => {
     try {
         const users = await User.find({
@@ -53,7 +63,7 @@ const searchUsers = async (keyword) => {
     }
 };
 
-// 📊 Get user stats: followers, following, posts
+//user stats - followers, following, posts
 const getUserStats = async (req, res) => {
     try {
         const userId = req.params.id;
@@ -74,14 +84,14 @@ const getUserStats = async (req, res) => {
             followers,
             following,
             totalPosts,
-            profileViews: 0 // Optional, or fetch from DB if stored
+            profileViews: 0
         });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
 };
 
-// 📥 Download profile as PDF
+//Download profile as PDF
 const downloadUserProfilePDF = async (req, res) => {
     try {
         const user = await User.findById(req.params.userId).select('-password');
@@ -99,5 +109,5 @@ module.exports = {
     updateProfile,
     searchUsers,
     downloadUserProfilePDF,
-    getUserStats // ✅ Exported for route `/api/users/:id`
+    getUserStats
 };

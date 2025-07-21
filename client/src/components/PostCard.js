@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // ✅ Import navigate
 import '../styles/PostCard.css';
 
 const PostCard = ({ post, currentUser }) => {
@@ -7,6 +8,8 @@ const PostCard = ({ post, currentUser }) => {
   const [showCommentBox, setShowCommentBox] = useState(false);
   const [likeAnimating, setLikeAnimating] = useState(false);
   const [showAllComments, setShowAllComments] = useState(false);
+
+  const navigate = useNavigate(); // ✅ Init navigate
 
   if (!post || !currentUser || !post.user) return null;
 
@@ -54,7 +57,7 @@ const PostCard = ({ post, currentUser }) => {
         setLocalPost(data.data);
         setComment('');
         setShowCommentBox(false);
-        setShowAllComments(true); // show new comment immediately
+        setShowAllComments(true);
       }
     } catch (err) {
       alert('Failed to add comment');
@@ -63,7 +66,12 @@ const PostCard = ({ post, currentUser }) => {
 
   return (
     <div className="post-card">
-      <div className="post-card-header">
+      {/* 👇 Clickable Avatar & Header */}
+      <div
+        className="post-card-header"
+        onClick={() => navigate(`/developer/${localPost.user._id}`)}
+        style={{ cursor: 'pointer' }}
+      >
         <img
           src={localPost.user?.avatar || '/default-avatar.png'}
           alt="Avatar"

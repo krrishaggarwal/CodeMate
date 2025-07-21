@@ -124,35 +124,40 @@ const EditProfile = () => {
     setMessage({ text: '', type: '' });
 
     try {
+      // 🔁 Save updated user to backend
       const response = await axios.put(
         `http://localhost:5000/api/users/update/${user.userId}`,
         formData,
         {
           headers: {
-            'Content-Type': 'application/json'
-          }
+            'Content-Type': 'application/json',
+          },
         }
       );
 
-      updateUser(response.data);
+      // ✅ Fetch the updated user (guaranteed fresh data)
+      const updated = await axios.get(`http://localhost:5000/api/users/${user.userId}`);
+      updateUser(updated.data);
+
       setMessage({
         text: 'Profile updated successfully!',
-        type: 'success'
+        type: 'success',
       });
 
-      setTimeout(() => navigate('/dashboard'), 2000);
+      // ✅ Redirect immediately after updating
+      navigate('/dashboard');
     } catch (err) {
-      const errorMessage = err.response?.data?.message ||
-        err.message ||
-        'Failed to update profile';
+      const errorMessage =
+        err.response?.data?.message || err.message || 'Failed to update profile';
       setMessage({
         text: errorMessage,
-        type: 'error'
+        type: 'error',
       });
     } finally {
       setLoading(false);
     }
   };
+
 
   const renderProjects = useCallback(() => (
     formData.projects.map(proj => (
